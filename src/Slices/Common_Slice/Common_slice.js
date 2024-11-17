@@ -21,8 +21,8 @@ const commonSlice = createSlice({
         validated: false,
 
         //token
-        token: Cookies.get('token'),
-        user_id: Cookies.get('user_id'),
+        token: '',
+        user_id: Cookies.get('user_id') ? Cookies.get('user_id') : '',
     },
     reducers: {
         updateModalShow(state, actions) {
@@ -46,7 +46,6 @@ const commonSlice = createSlice({
         updateCurrentNavMenuIndex(state, action) {
             return {
                 ...state,
-                currentNavMenuIndex: action.payload?.ind,
                 currentMenuName: action.payload?.name,
             }
         },
@@ -119,11 +118,11 @@ const commonSlice = createSlice({
                 user_id: action.payload?.data?.user_id
             }
         },
-        upateFailure(state, action) {
+        updateToast(state, action) {
             return {
                 ...state,
-                Err: action.payload,
-                Toast_Type:"error",
+                Err: action.payload.message,
+                Toast_Type: action.payload.type,
                 buttonSpinner: false
             }
         },
@@ -131,10 +130,12 @@ const commonSlice = createSlice({
 
         //bearer token 
         updateToken(state, action) {
-            Cookies.set("token", action.payload)
+            if (action.payload) {
+                Cookies.set("token", action.payload)
+            }
             return {
                 ...state,
-                token: action.payload
+                token: action.payload ? action.payload : ''
             }
         },
         updateRemoveToken(state, actions) {
@@ -150,7 +151,7 @@ const commonSlice = createSlice({
             return {
                 ...state,
                 Err: null,
-                Toast_Type:null
+                Toast_Type: null
             }
         },
 
@@ -211,7 +212,7 @@ export const {
 
     loginRequest,
     loginResponse,
-    upateFailure,
+    updateToast,
     updateToken,
     updateRemoveToken,
     logout,

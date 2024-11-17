@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
-
-import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
-import { handleUpdateCanvasShow } from 'Actions/Common_actions/Common_action';
+import { CustomUseLocationHook, useDispatch } from 'Components/CustomHooks';
+import { handleCurrentMenuInd, handleUpdateCanvasShow } from 'Actions/Common_actions/Common_action';
 import Header from 'Components/Panel_compnent/Header';
 import Sidebar from 'Components/Panel_compnent/Sidebar';
 import store from 'StoreIndex';
@@ -12,20 +10,19 @@ import JsonData from 'Utils/JsonData';
 import Images from 'Utils/Image';
 
 const Layout = () => {
-    const state = store.getState()
-    const { configurationFlowState } = useSelector((state) => state)
+    const state = store.getState() 
     const dispatch = useDispatch();
-    const navigate = useCustomNavigate();
+    const location = CustomUseLocationHook();
     const handleCanvasOpenOrClose = () => dispatch(handleUpdateCanvasShow)
     const menuOptions = JsonData()?.jsonOnly?.sidebarMenus; 
-    console.log(menuOptions)
-
+    
     useEffect(() => {
         if (state?.commonState?.innerWidth >= 1200 && state?.commonState?.canvasShow) {
             dispatch(handleUpdateCanvasShow)
         }
-    }, [state?.commonState?.innerWidth])
-    console.log(menuOptions)
+        
+        dispatch(handleCurrentMenuInd(menuOptions, location[location.length - 1]))
+    }, [state?.commonState?.innerWidth]) 
 
     return (
         <div className="d-flex flex-wrap">

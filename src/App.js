@@ -9,10 +9,13 @@ import { toast } from 'react-toastify';
 import { useCustomNavigate, useSize } from "Components/CustomHooks";
 import { handleBearerToken, handleClearErrors, handleOnlineOffilne, handleScreenSize } from "Actions/Common_actions/Common_action";
 import Layout from "Views/Main/Layout/Layout";
+import LoadDetails from "Views/Main/Pages/Load_details";
+import Truck_details from "Views/Main/Pages/Truck_details";
+import Driver_details from "Views/Main/Pages/Driver_details";
 
 
 const App = () => {
-  const { isOnline, token, user_id, Err, Toast_Type } = useSelector((state) => state.commonState);
+  const { isOnline, Err, Toast_Type } = useSelector((state) => state.commonState);
   const sizer = useSize();
   const dispatch = useDispatch();
   const navigate = useCustomNavigate();
@@ -22,6 +25,7 @@ const App = () => {
     dispatch(handleOnlineOffilne(navigator.onLine))
     dispatch(handleScreenSize(sizer))
     dispatch(handleBearerToken(Cookies.get("token")))
+
   }, [])
 
   //error state
@@ -51,7 +55,6 @@ const App = () => {
     dispatch(handleOnlineOffilne(false))
   });
 
-
   return isOnline ?
     <HelmetProvider>
       <ToastContainer theme='light' />
@@ -62,10 +65,10 @@ const App = () => {
           <Route path="home" element={<p>hi</p>} />
           <Route path="analytics" element={<p>hi</p>} />
 
-          <Route path="services" element={<p>hi</p>} >
-            <Route path="load_details" element={<p>hi</p>} />
-            <Route path="truck_details" element={<p>hi</p>} />
-            <Route path="driver_details" element={<p>hi</p>} />
+          <Route path="services" >
+            <Route path="load_details" element={<LoadDetails />} />
+            <Route path="truck_details" element={<Truck_details />} />
+            <Route path="driver_details" element={<Driver_details />} />
             <Route path="buy_sell_details" element={<p>hi</p>} />
             <Route path="insurance" element={<p>hi</p>} />
             <Route path="fast_tag" element={<p>hi</p>} />

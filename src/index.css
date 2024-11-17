@@ -1,4 +1,4 @@
-.offcanvas-sidebar{
+.offcanvas-sidebar {
   width: 18rem !important;
 }
 
@@ -15,7 +15,7 @@
 }
 
 .main_rendering_contents_height {
-  height: calc(var(--onBarding-main-body-height));
+  height: calc(var(--main-body-height));
   padding: var(--main-content-padding-y);
 }
 
@@ -24,7 +24,7 @@
 }
 
 .main_rendering_contents-footer_height {
-  height: calc(var(--root-height) - var(--onBarding-main-body-height) - var(--header-height));
+  height: calc(var(--root-height) - var(--main-body-height) - var(--header-height));
 }
 
 .cursor-pointer {
@@ -128,4 +128,66 @@
 .form-check-input.is-valid:focus,
 .was-validated .form-check-input:valid:focus {
   box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25) !important
+}
+
+
+.card-border {
+  border-radius: 10px;
+  border: 1px solid #CECECE;
+}
+
+.fs-12 {
+  font-size: 12px;
+}
+
+.fs-13 {
+  font-size: 13px;
+}
+
+.fs-14 {
+  font-size: 14px;
+}
+
+.fs-15 {
+  font-size: 15px;
+}
+
+.fs-16 {
+  font-size: 16px;
+}
+
+.fs-17 {
+  font-size: 17px;
+}
+
+.fs-18 {
+  font-size: 18px;
+}
+
+.card-blue-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5.466px;
+  border-radius: 8px;
+  background: rgba(51, 123, 255, 0.14);
+  padding: .5rem;
+}
+
+.location-dotted {
+  position: relative;
+}
+
+.location-dotted::after {
+  content: '';
+  position: absolute;
+  top: 1.32rem;
+  left: .57rem;
+  height: .7rem;
+  border: 1px dashed black;
+}
+
+.placeholder{
+  user-select: none;
 }

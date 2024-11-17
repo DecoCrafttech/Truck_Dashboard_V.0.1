@@ -14,16 +14,16 @@ const ButtonComponent = ({
 
 
   return (
-    <Button
+    <button
       as={as}
       type={type}
-      className={className}
+      className={`btn ${className}`}
       onClick={clickFunction}
       title={title}
       disabled={btnDisable}
     >
       {buttonName}
-    </Button>
+    </button>
   );
 };
 

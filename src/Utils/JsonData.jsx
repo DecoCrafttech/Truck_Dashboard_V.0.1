@@ -14,7 +14,7 @@ const JsonData = () => {
                 icon: Icons.dashboardIcon,
                 name: "Dashboard",
                 route: "/dashboard/home",
-                route_name: "dashboard",
+                route_name: "home",
                 type: "link",
                 in: 0,
             },
@@ -37,37 +37,43 @@ const JsonData = () => {
                         icon: Icons.subServivesIcon,
                         name: "Load Details",
                         route: "/dashboard/services/load_details",
-                        route_name: "load_details"
+                        route_name: "load_details",
+                        in: 21
                     },
                     {
                         icon: Icons.subServivesIcon,
                         name: "Truck Details",
                         route: "/dashboard/services/truck_details",
-                        route_name: "truck_details"
+                        route_name: "truck_details",
+                        in: 22
                     },
                     {
                         icon: Icons.subServivesIcon,
                         name: "Driver Details",
                         route: "/dashboard/services/driver_details",
-                        route_name: "driver_details"
+                        route_name: "driver_details",
+                        in: 23
                     },
                     {
                         icon: Icons.subServivesIcon,
-                        name: "Buy/Sell Details",
+                        name: "Buy and Sell Details",
                         route: "/dashboard/services/buy_sell_details",
-                        route_name: "buy_sell_details"
+                        route_name: "buy_sell_details",
+                        in: 23
                     },
                     {
                         icon: Icons.subServivesIcon,
                         name: "Insurance",
                         route: "/dashboard/services/insurance",
-                        route_name: "insurance"
+                        route_name: "insurance",
+                        in: 24
                     },
                     {
                         icon: Icons.subServivesIcon,
                         name: "Fast Tag",
                         route: "/dashboard/services/fast_tag",
-                        route_name: "fast_tag"
+                        route_name: "fast_tag",
+                        in: 24
                     },
                 ],
                 in: 2

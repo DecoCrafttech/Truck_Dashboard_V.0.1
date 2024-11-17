@@ -5,7 +5,7 @@ import { handleCurrentMenuInd } from 'Actions/Common_actions/Common_action';
 import Icons from 'Utils/Icons';
 import Image from 'Utils/Image';
 import OffCanvas from 'Components/Offcanvas/OffCanvas';
-import { CustomUseLocationHook } from 'Components/CustomHooks';
+import { CustomUseLocationHook, useCustomNavigate } from 'Components/CustomHooks';
 import Img from 'Components/Img/Img';
 import NavLinkComp from 'Components/Router_components/NavLink';
 import AccordionSidebar from 'Components/Accordion/AccordionSidebar';
@@ -23,19 +23,22 @@ const Sidebar = ({
 
     footer,
     footerClickFunction
-}) => {
-    const { currentNavMenuIndex } = useSelector((state) => state.commonState);
+}) => { 
     const dispatch = useDispatch();
+    const navigate = useCustomNavigate();
     const location = CustomUseLocationHook();
 
     useEffect(() => {
         dispatch(handleCurrentMenuInd(menuOptions, location[location.length - 1]))
+
+        if(window.location.pathname === "/dashboard" || window.location.pathname === "/dashboard/"){
+            navigate("/dashboard/home")
+          }
     }, [])
 
     const handleDynamicTab = () => {
         const a = window.location.pathname.split('/')
         const b = a[a.length - 1]
-
         dispatch(handleCurrentMenuInd(menuOptions, b))
     }
 
@@ -64,35 +67,32 @@ const Sidebar = ({
             <ul className='w-100 px-1 '>
                 {menuOptions.map((v, i) => (
                     v.type === "link" ?
-                        <li className="list-unstyled w-100" key={i}>
+                        <li className="list-unstyled w-100" key={i} onClick={handleDynamicTab}>
                             <NavLinkComp
                                 componentFrom="sidebar menus"
                                 className='navlink-sidebar'
                                 title={hanldeButton(v)}
-                                to={v.route}
-                                onClick={() => handleDynamicTab()}
+                                to={v.route} 
                             />
                         </li>
                         :
-                        <li className="list-unstyled w-100 " key={i}>
+                        <li className="list-unstyled w-100" key={i} onClick={handleDynamicTab}>
                             <NavLinkComp
                                 componentFrom="sidebar menus"
                                 className=' w-100 d-flex flex-wrap align-items-center mb-1 navlink-sidebar rounded px-2 py-2 text-decoration-none pe-none'
                                 title={hanldeButton(v)}
                                 to={v.route}
-                                onClick={() => handleDynamicTab()}
                             />
 
                             <ul className='h-100 w-100 px-1 ms-4'>
                                 {
                                     v?.options.map((v, i) => (
-                                        <li className="list-unstyled w-100 " key={i}>
+                                        <li className="list-unstyled w-100 " key={i} onClick={handleDynamicTab}>
                                             <NavLinkComp
                                                 componentFrom="sidebar menus"
                                                 className=' w-100 d-flex flex-wrap align-items-center mb-1 navlink-sidebar rounded px-2 py-2 text-decoration-none'
                                                 title={hanldeButton(v)}
-                                                to={v.route}
-                                                onClick={() => handleDynamicTab()}
+                                                to={v.route} 
                                             />
                                         </li>
                                     ))

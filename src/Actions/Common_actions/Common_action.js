@@ -11,17 +11,17 @@ import {
 
     clearError,
     resetValidation,
-    updateValidation, 
+    updateValidation,
 
     loginRequest,
     loginResponse,
-    upateFailure,
+    updateToast,
     updateToken,
     updateRemoveToken,
     logout,
- 
+
     updateResetAllMenus
-} from 'Slices/Common_Slice/Common_slice'; 
+} from 'Slices/Common_Slice/Common_slice';
 
 
 export const handleUpdateModalShow = (dispatch) => {
@@ -38,10 +38,23 @@ export const handleOnlineOffilne = (isOnline) => dispatch => {
 
 export const handleCurrentMenuInd = (menus, myCurrPath) => dispatch => {
     if (myCurrPath) {
-        const currInd = menus.filter((v) => myCurrPath === v.route_name ? v : null)
-        dispatch(updateCurrentNavMenuIndex({ ind: currInd[0]?.in, name: currInd[0]?.name }))
+        const ifNested = menus.filter((value) => {
+            const path = value?.options?.filter((nestedValue) => {
+                if (myCurrPath === nestedValue.route_name) {
+                    dispatch(updateCurrentNavMenuIndex({ name: nestedValue?.name }))
+                    return nestedValue
+                }
+            })
+            if(path?.length){
+                return path
+            } 
+        })
+        if (!ifNested.length) {
+            const currInd = menus.filter((v) => myCurrPath === v.route_name ? v : null)
+            dispatch(updateCurrentNavMenuIndex({ name: currInd[0]?.name }))
+        }
     } else {
-        dispatch(updateCurrentNavMenuIndex({ ind: 0, name: 'Home' }))
+        dispatch(updateCurrentNavMenuIndex({ name: 'Home' }))
     }
 }
 
@@ -84,10 +97,10 @@ export const handleLogin = (basicAuth) => async (dispatch) => {
         if (data.error_code === 200) {
             dispatch(loginResponse(data))
         } else {
-            dispatch(upateFailure(data?.message))
+            dispatch(updateToast({message:data?.message,type:"error"}))
         }
     } catch (err) {
-        dispatch(upateFailure(err?.message))
+        dispatch(updateToast({message:err?.message,type:"error"}))
     }
 }
 
@@ -109,7 +122,7 @@ export const handlerefreshToken = () => async (dispatch) => {
             dispatch(updateRemoveToken())
         }
     } catch (err) {
-        dispatch(upateFailure(err?.message))
+        dispatch(updateToast({message:err?.message,type:"error"}))
     }
 }
 
