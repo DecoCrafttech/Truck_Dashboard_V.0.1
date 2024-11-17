@@ -11,7 +11,7 @@ const Truck_card = ({
         return <Fragment>
             {[{ icon: Icons.greenLocationIcon, location: from }, { icon: Icons.redLocationIcon, location: to }]
                 .map((value, index) => (
-                    <p className={`${placeholder ? 'placeholder py-2 pb-3 rounded-1 col-7' : ''} fs-15 mb-2 ${index === 0 && !placeholder ? 'location-dotted' : ''}`} key={index}>
+                    <p className={`${placeholder ? 'placeholder py-2 pb-3 rounded-1 col-7' : ''} fs-13 mb-2 ${index === 0 && !placeholder ? 'location-dotted' : ''}`} key={index}>
                         {placeholder ? null : <span className='me-1'>{value.icon}</span>}
                         {value.location}
                     </p>
@@ -25,7 +25,7 @@ const Truck_card = ({
             { icon: Icons.containerIcon, value: data?.truck_body_type },{ icon: Icons.truckNumberPlateIcon  , value: data?.truck_name },{ icon: Icons.blueCardCompanyIcon, value: data?.company_name }]
                 .map((val, ind) => (
                     <div className={'col-6'} key={ind}>
-                        <p className={`${placeholder ? 'placeholder pt-2 pb-3 rounded-1 col-11' : ''} mb-2 fs-15 text-secondary`}>
+                        <p className={`${placeholder ? 'placeholder pt-2 pb-3 rounded-1 col-11' : ''} mb-2 fs-13 text-secondary`}>
                             {placeholder ? null : <span className='me-1'>{val.icon}</span>}
                             {placeholder ? null : val.value}
                         </p>
@@ -36,8 +36,8 @@ const Truck_card = ({
                 null
                 :
                 <Fragment>
-                    <h6 className='text-secondary w-100'>Description</h6>
-                    <p className='text-secondary fs-14 ps-2 w-100'>{data?.description ? data?.description : "none"}</p>
+                    <h6 className='text-secondary w-100 fs-15'>Description</h6>
+                    <p className='text-secondary fs-13 ps-2 w-100'>{data?.description ? data?.description : "none"}</p>
                 </Fragment>
             }
         </Fragment>
@@ -46,7 +46,7 @@ const Truck_card = ({
 
     return (
         <div className="col-12 col-sm-6 col-lg-4 p-2 d-inline-flex">
-            <Card className="card-border w-100">
+            <Card className="card-border rounded-3 w-100 shadow border-0">
                 <Card.Header className="d-flex align-items-center bg-transparent border-0">
                     <div className="col">
                         {placeholder ?
@@ -79,7 +79,7 @@ const Truck_card = ({
 
                 <Card.Body className="card-body py-0">
                     <div className={`col-12 ${placeholder ? 'placeholder py-4 rounded' : 'card-blue-title'} mb-2`}>
-                        <h5 className='mb-0'>{truck_data?.profile_name}</h5>
+                        <h5 className='mb-0 fs-14'>{truck_data?.profile_name}</h5>
                         <p className='mb-0'>
                             {Icons.blueCardCompanyIcon}
                             <span className='ms-2'>{truck_data?.name_of_the_transport}</span>
@@ -99,16 +99,16 @@ const Truck_card = ({
                     <hr className='mt-0 mb-1' />
                 </Card.Body>
 
-                <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-2">
+                <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-1">
                     <div className="col px-1">
                         <ButtonComponent
-                            className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'w-100 btn-outline-danger'}`}
+                            className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                             buttonName={placeholder ? "" : 'Delete'}
                         />
                     </div>
                     <div className="col px-1">
                         <ButtonComponent
-                            className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'w-100 btn-success'}`}
+                            className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                             buttonName={placeholder ? "" : 'Edit'}
                         />
                     </div>

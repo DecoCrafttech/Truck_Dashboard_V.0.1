@@ -14,7 +14,7 @@ const Driver_details = () => {
 
 
     return (
-        <div className="d-flex flex-wrap g-2 bg-white p-3 overflowY h-100 rounded placeholder-glow">
+        <div className="d-flex flex-wrap g-2 bg-white px-2 py-3 overflowY h-100 rounded placeholder-glow">
             {driver_glow ?
                 [...Array(6)].map((value, placeholderInd) => (
                     <Driver_card placeholder={driver_glow} key={placeholderInd} />

@@ -14,7 +14,7 @@ const LoadDetails = () => {
 
 
     return (
-        <div className="d-flex flex-wrap g-2 bg-white p-3 overflowY h-100 rounded placeholder-glow">
+        <div className="d-flex flex-wrap g-2 bg-white px-2 py-3 overflowY h-100 rounded placeholder-glow">
             {load_glow ?
                 [...Array(6)].map((value,placeholderInd) => (
                     <LoadCard placeholder={load_glow} key={placeholderInd}/>

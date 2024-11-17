@@ -34,7 +34,7 @@
   --home-main-content-bg: #F1F1FF;
   --home-main-content-padding: 3rem 0 3rem 0;
 
-  --main-background-color: #ebebff;
+  --main-background-color: #EBF1FF;
   --main-content-padding-y: .7rem 0rem .4rem 0rem;
 
   --page-main-content-padding-y: 1rem .2rem;
@@ -122,23 +122,24 @@ body {
 
 .sidebar-body-without-footer {
   height: calc(var(--root-height) - (var(--sidebar-y-padding) + 10rem) - var(--sidebar-header-height));
-  padding: var(--sidebar-body-padding); 
+  padding: var(--sidebar-body-padding);
   /* margin-top: 1.5rem; */
 }
 
 .sidebar-body {
-  height: calc(var(--root-height) - (var(--sidebar-y-padding) ) - (var(--sidebar-header-height)));
+  height: calc(var(--root-height) - (var(--sidebar-y-padding)) - (var(--sidebar-header-height)));
   padding: var(--sidebar-body-padding);
   margin: var(--sidebar-body-margin);
   overflow-y: scroll;
   overflow-x: hidden;
 }
-.sidebar-body::-webkit-scrollbar{
+
+.sidebar-body::-webkit-scrollbar {
   width: 0px !important;
   height: 0px !important;
 }
 
-.navlink-sidebar{
+.navlink-sidebar {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -146,7 +147,7 @@ body {
   margin-bottom: .7rem;
   border-radius: 8px;
   padding: .4rem;
-  text-decoration: none; 
+  text-decoration: none;
 }
 
 .sidebar-header-underline::before {
@@ -192,7 +193,7 @@ body {
 .navlink-sidebar.active,
 .navlink-sidebar.active svg path,
 .navlink-sidebar:hover svg path {
-  color:#FFFFFF !important;
+  color: #FFFFFF !important;
   stroke: #ffffff !important;
   background-color: #C71943 !important;
 }
