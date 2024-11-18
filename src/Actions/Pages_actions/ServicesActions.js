@@ -3,10 +3,23 @@ import { updateToast } from 'Slices/Common_Slice/Common_slice';
 import {
     loadGetRequest,
     loadGetResponse,
+    loadGetFaliure,
+
+
     truckGetRequest,
     truckGetResponse,
+    truckGetFailure,
+
+
     driverGetRequest,
-    driverGetResponse
+    driverGetResponse,
+    driverGetFailure,
+
+
+    buyAndsellGetRequest,
+    buyAndsellGetResponse,
+    buyAndsellGetFailure
+
 
 } from 'Slices/Pages_slice/Services_slice';
 
@@ -20,6 +33,7 @@ export const handleGetLoads = async (dispatch) => {
         if (data?.error_code === 0) {
             dispatch(loadGetResponse(data?.data))
         } else {
+            dispatch(loadGetFaliure())
             dispatch(updateToast(data?.message, "error"))
         }
     } catch (err) {
@@ -43,6 +57,7 @@ export const handleGetTruck = async (dispatch) => {
         if (data?.error_code === 0) {
             dispatch(truckGetResponse(data?.data))
         } else {
+            dispatch(truckGetFailure())
             dispatch(updateToast(data?.message, "error"))
         }
     } catch (err) {
@@ -69,6 +84,33 @@ export const handleGetDriver = async (dispatch) => {
         if (data?.error_code === 0) {
             dispatch(driverGetResponse(data?.data))
         } else {
+            dispatch(driverGetFailure())
+            dispatch(updateToast(data?.message, "error"))
+        }
+    } catch (err) {
+        dispatch(updateToast(err?.message, "error"))
+    }
+}
+
+
+
+
+
+
+
+
+
+//                                                              buy and sell api's                                                                  //
+//get all buy and sell api
+export const handleGetBuyandSell = async (dispatch) => {
+    try {
+        dispatch(buyAndsellGetRequest())
+        const { data } = await axiosInstance.get("/all_buy_sell_details")
+
+        if (data?.error_code === 0) {
+            dispatch(buyAndsellGetResponse(data?.data))
+        } else {
+            dispatch(buyAndsellGetFailure())
             dispatch(updateToast(data?.message, "error"))
         }
     } catch (err) {

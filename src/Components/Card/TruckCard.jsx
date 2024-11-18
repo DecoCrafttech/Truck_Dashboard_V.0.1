@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import { Card } from 'react-bootstrap'
 import Icons from 'Utils/Icons'
 
-const Truck_card = ({
+const TruckCard = ({
     placeholder,
     truck_data
 }) => {
@@ -45,7 +45,7 @@ const Truck_card = ({
 
 
     return (
-        <div className="col-12 col-sm-6 col-lg-4 p-2 d-inline-flex">
+        <div className="col-12 col-sm-6 col-lg-4 p-2 d-inline-flex ">
             <Card className="card-border rounded-3 w-100 shadow border-0">
                 <Card.Header className="d-flex align-items-center bg-transparent border-0">
                     <div className="col">
@@ -118,4 +118,4 @@ const Truck_card = ({
     )
 }
 
-export default Truck_card
+export default TruckCard

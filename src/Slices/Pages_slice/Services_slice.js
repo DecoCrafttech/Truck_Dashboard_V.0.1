@@ -19,6 +19,12 @@ const servicesSlice = createSlice(({
         driverDelete_id: null,
         new_edit_driver_card: {},
 
+
+        buyAndsell_glow: false,
+        allbuyAndsell_details: [],
+        buyAndsellDelete_id: null,
+        new_edit_buyAndsell_card: {},
+
         total_no_of_datas: null
     },
     reducers: {
@@ -38,6 +44,14 @@ const servicesSlice = createSlice(({
                 total_no_of_datas: action.payload?.length
             }
         },
+        loadGetFaliure(state, action) {
+            return {
+                ...state,
+                load_glow: false,
+                allLoads_details: [],
+                total_no_of_datas: 0
+            }
+        },
 
 
 
@@ -55,6 +69,14 @@ const servicesSlice = createSlice(({
                 truck_glow: false,
                 alltrucks_details: action.payload,
                 total_no_of_datas: action.payload?.length
+            }
+        },
+        truckGetFailure(state, action) {
+            return {
+                ...state,
+                truck_glow: false,
+                alltrucks_details: [],
+                total_no_of_datas: 0
             }
         },
 
@@ -77,6 +99,43 @@ const servicesSlice = createSlice(({
                 alldrivers_details: action.payload,
                 total_no_of_datas: action.payload?.length
             }
+        },
+        driverGetFailure(state, action) {
+            return {
+                ...state,
+                driver_glow: false,
+                alldrivers_details: [],
+                total_no_of_datas: 0
+            }
+        },
+
+
+
+
+
+        //                                                            driver api's                                                         //
+        //get driver api
+        buyAndsellGetRequest(state, action) {
+            return {
+                ...state,
+                buyAndsell_glow: true
+            }
+        },
+        buyAndsellGetResponse(state, action) {
+            return {
+                ...state,
+                buyAndsell_glow: false,
+                allbuyAndsell_details: action.payload,
+                total_no_of_datas: action.payload?.length
+            }
+        },
+        buyAndsellGetFailure(state,action){
+            return{
+                ...state,
+                buyAndsell_glow: false,
+                allbuyAndsell_details: [],
+                total_no_of_datas: 0
+            }
         }
     }
 }))
@@ -86,10 +145,22 @@ const { actions, reducer } = servicesSlice;
 export const {
     loadGetRequest,
     loadGetResponse,
+    loadGetFaliure,
+
+
     truckGetRequest,
     truckGetResponse,
+    truckGetFailure,
+
+
     driverGetRequest,
-    driverGetResponse
+    driverGetResponse,
+    driverGetFailure,
+
+
+    buyAndsellGetRequest,
+    buyAndsellGetResponse,
+    buyAndsellGetFailure
 } = actions;
 
 export default reducer;

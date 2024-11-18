@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import { Card } from 'react-bootstrap'
 import Icons from 'Utils/Icons'
 
-const Driver_card = ({
+const DriverCard = ({
     placeholder,
     driver_data
 }) => {
@@ -118,4 +118,4 @@ const Driver_card = ({
     )
 }
 
-export default Driver_card
+export default DriverCard

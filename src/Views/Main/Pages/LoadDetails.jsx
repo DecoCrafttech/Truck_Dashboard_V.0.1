@@ -1,5 +1,5 @@
 import { handleGetLoads } from 'Actions/Pages_actions/ServicesActions'
-import LoadCard from 'Components/Card/Load_card'
+import LoadCard from 'Components/Card/LoadCard'
 import { useDispatch } from 'Components/CustomHooks'
 import React, { Fragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'

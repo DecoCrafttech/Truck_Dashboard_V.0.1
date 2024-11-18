@@ -9,9 +9,10 @@ import { toast } from 'react-toastify';
 import { useCustomNavigate, useSize } from "Components/CustomHooks";
 import { handleBearerToken, handleClearErrors, handleOnlineOffilne, handleScreenSize } from "Actions/Common_actions/Common_action";
 import Layout from "Views/Main/Layout/Layout";
-import LoadDetails from "Views/Main/Pages/Load_details";
-import Truck_details from "Views/Main/Pages/Truck_details";
-import Driver_details from "Views/Main/Pages/Driver_details";
+import LoadDetails from "Views/Main/Pages/LoadDetails";
+import TruckDetails from "Views/Main/Pages/TruckDetails";
+import DriverDetails from "Views/Main/Pages/DriverDetails";
+import BuySellDetails from "Views/Main/Pages/BuySellDetails";
 
 
 const App = () => {
@@ -67,9 +68,9 @@ const App = () => {
 
           <Route path="services" >
             <Route path="load_details" element={<LoadDetails />} />
-            <Route path="truck_details" element={<Truck_details />} />
-            <Route path="driver_details" element={<Driver_details />} />
-            <Route path="buy_sell_details" element={<p>hi</p>} />
+            <Route path="truck_details" element={<TruckDetails />} />
+            <Route path="driver_details" element={<DriverDetails />} />
+            <Route path="buy_sell_details" element={<BuySellDetails/>} />
             <Route path="insurance" element={<p>hi</p>} />
             <Route path="fast_tag" element={<p>hi</p>} />
           </Route>
