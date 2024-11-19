@@ -6,7 +6,7 @@ import { useDispatch } from 'Components/CustomHooks';
 const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
-    const { validated, edited } = useSelector((state) => state.commonState);
+    const { validated } = useSelector((state) => state.commonState);
 
     const jsonOnly = {
         sidebarMenus: [
@@ -106,7 +106,28 @@ const JsonData = () => {
     }
 
     const jsxJson = {
-
+        dashboardMenus:[
+            {
+                icon:Icons.dashboardUserIcon,
+                content:"Total Number Of Users",
+                value: 10
+            },
+            {
+                icon:Icons.dashboardInsuranceIcon,
+                content:"Total Number Of Insurance",
+                value: 10
+            },
+            {
+                icon:Icons.dashboardFastagIcon,
+                content:"Total Number Of Fastag",
+                value: 10
+            },
+            {
+                icon:Icons.dashboardCustomerIcon,
+                content:"New Customer",
+                value: 10
+            }
+        ]
     }
 
     return {

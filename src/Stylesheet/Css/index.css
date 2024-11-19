@@ -191,3 +191,54 @@
 .placeholder{
   user-select: none;
 }
+
+.dashboard-icon{
+  background-color: #C71943;
+  padding: .3rem;
+  border-radius: 8px;
+}
+
+.form-control:focus {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border-color: white !important;
+  outline: 0;
+  box-shadow: none !important;
+}
+.search-input-padding{
+  padding: .4rem 4.4rem .4rem 2rem;
+}
+
+.search-input-padding::placeholder{
+  font-size: .85rem;
+}
+
+.input-group-start-icon{
+  position:absolute;
+  top: .4rem;
+  left: 7px;
+  z-index: 1040 !important;
+}
+
+.input-group-end-icon-one{
+  position:absolute;
+  top: .4rem;
+  right: 10px;
+  z-index: 1040 !important;
+}
+
+.input-group-end-icon-two{
+  position:absolute;
+  top: .4rem;
+  right: 40px;
+  z-index: 1040 !important;
+}
+
+.dashboard-table-height{
+  height: calc(var(--root-height) - 22.5rem)
+}
+
+.table-head{
+  width: 2rem;
+  min-width: 2rem !important;
+}

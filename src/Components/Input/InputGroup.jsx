@@ -1,5 +1,4 @@
-import React from 'react';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import React from 'react'; 
 import Form from 'react-bootstrap/Form';
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
@@ -27,7 +26,7 @@ const InputGroup = ({
     disableRequiredStar,
     btnDisable,
     readOnly,
-    tooltip_content
+    required
 }) => {
 
     return (
@@ -47,7 +46,7 @@ const InputGroup = ({
                 }
             </Form.Label>
             <Form.Control
-                required
+                required={required}
                 className={className}
                 type={
                     inputType === "password" ?

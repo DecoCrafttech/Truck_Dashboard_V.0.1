@@ -5,8 +5,8 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import { LuPlus } from "react-icons/lu";
 import { MdEdit } from "react-icons/md";
 import { FaIndianRupeeSign } from "react-icons/fa6";
-
-
+import { IoIosSearch } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 
 const homeIcon = <IoHomeOutline className="fs-5" />
 const logoutLocon = <CiLogout className="fs-5" />
@@ -14,7 +14,11 @@ const menuIcon = <RiMenuFoldLine className="fs-5" />
 const deleteIcon = <MdOutlineDeleteOutline className="fs-5 text-danger" />
 const reactEditIcon = <MdEdit className="fs-4" />
 const reactPlusIcon = <LuPlus className="fs-4" />
-const reactRupeesIcon =  <FaIndianRupeeSign className="me-1" />
+const reactRupeesIcon = <FaIndianRupeeSign className="me-1" />
+const searchIcon =  <IoIosSearch className="fs-5 text-secondary"/>
+const searchCancelIcon =  <IoMdClose className="fs-5 text-secondary"/>
+
+
 
 const dashboardIcon = <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
     <path d="M3 6.5C3 5.43913 3.42143 4.42172 4.17157 3.67157C4.92172 2.92143 5.93913 2.5 7 2.5C8.06087 2.5 9.07828 2.92143 9.82843 3.67157C10.5786 4.42172 11 5.43913 11 6.5C11 7.56087 10.5786 8.57828 9.82843 9.32843C9.07828 10.0786 8.06087 10.5 7 10.5C5.93913 10.5 4.92172 10.0786 4.17157 9.32843C3.42143 8.57828 3 7.56087 3 6.5ZM14 17.5C14 16.4391 14.4214 15.4217 15.1716 14.6716C15.9217 13.9214 16.9391 13.5 18 13.5C19.0609 13.5 20.0783 13.9214 20.8284 14.6716C21.5786 15.4217 22 16.4391 22 17.5C22 18.5609 21.5786 19.5783 20.8284 20.3284C20.0783 21.0786 19.0609 21.5 18 21.5C16.9391 21.5 15.9217 21.0786 15.1716 20.3284C14.4214 19.5783 14 18.5609 14 17.5ZM22 6.5C22 4.614 22 3.672 21.414 3.086C20.828 2.5 19.886 2.5 18 2.5C16.114 2.5 15.172 2.5 14.586 3.086C14 3.672 14 4.614 14 6.5C14 8.386 14 9.328 14.586 9.914C15.172 10.5 16.114 10.5 18 10.5C19.886 10.5 20.828 10.5 21.414 9.914C22 9.328 22 8.386 22 6.5ZM11 17.5C11 15.614 11 14.672 10.414 14.086C9.828 13.5 8.886 13.5 7 13.5C5.114 13.5 4.172 13.5 3.586 14.086C3 14.672 3 15.614 3 17.5C3 19.386 3 20.328 3.586 20.914C4.172 21.5 5.114 21.5 7 21.5C8.886 21.5 9.828 21.5 10.414 20.914C11 20.328 11 19.386 11 17.5Z" stroke="white" stroke-width="1.5" />
@@ -131,6 +135,31 @@ const truckModelIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height
     <path d="M1.33301 12.6663C1.33301 13.7997 2.19967 14.6663 3.33301 14.6663H12.6663C13.7997 14.6663 14.6663 13.7997 14.6663 12.6663V7.33301H1.33301V12.6663ZM12.6663 2.66634H11.333V1.99967C11.333 1.59967 11.0663 1.33301 10.6663 1.33301C10.2663 1.33301 9.99967 1.59967 9.99967 1.99967V2.66634H5.99967V1.99967C5.99967 1.59967 5.73301 1.33301 5.33301 1.33301C4.93301 1.33301 4.66634 1.59967 4.66634 1.99967V2.66634H3.33301C2.19967 2.66634 1.33301 3.53301 1.33301 4.66634V5.99967H14.6663V4.66634C14.6663 3.53301 13.7997 2.66634 12.6663 2.66634Z" fill="#646464" />
 </svg>
 
+const dashboardUserIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M9.16006 10.87C9.06006 10.86 8.94006 10.86 8.83006 10.87C6.45006 10.79 4.56006 8.84 4.56006 6.44C4.56006 3.99 6.54006 2 9.00006 2C11.4501 2 13.4401 3.99 13.4401 6.44C13.4301 8.84 11.5401 10.79 9.16006 10.87Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M16.41 4C18.35 4 19.91 5.57 19.91 7.5C19.91 9.39 18.41 10.93 16.54 11C16.46 10.99 16.37 10.99 16.28 11" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M4.15997 14.56C1.73997 16.18 1.73997 18.82 4.15997 20.43C6.90997 22.27 11.42 22.27 14.17 20.43C16.59 18.81 16.59 16.17 14.17 14.56C11.43 12.73 6.91997 12.73 4.15997 14.56Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M18.3401 20C19.0601 19.85 19.7401 19.56 20.3001 19.13C21.8601 17.96 21.8601 16.03 20.3001 14.86C19.7501 14.44 19.0801 14.16 18.3701 14" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const dashboardInsuranceIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M10.11 11.15H7.46005C6.83005 11.15 6.32007 11.66 6.32007 12.29V17.41H10.11V11.15V11.15Z" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M12.7613 6.59998H11.2413C10.6113 6.59998 10.1013 7.10999 10.1013 7.73999V17.4H13.8913V7.73999C13.8913 7.10999 13.3913 6.59998 12.7613 6.59998Z" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M16.5482 12.85H13.8982V17.4H17.6882V13.99C17.6782 13.36 17.1682 12.85 16.5482 12.85Z" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const dashboardFastagIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M4.40476 15.5264L8.93476 20.0564C10.7948 21.9164 13.8148 21.9164 15.6848 20.0564L20.0748 15.6664C21.9348 13.8064 21.9348 10.7864 20.0748 8.91637L15.5348 4.39637C14.5848 3.44637 13.2748 2.93637 11.9348 3.00637L6.93476 3.24637C4.93476 3.33637 3.34476 4.92637 3.24476 6.91637L3.00476 11.9164C2.94476 13.2664 3.45476 14.5764 4.40476 15.5264Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M9.73486 12.2263C11.1156 12.2263 12.2349 11.107 12.2349 9.72632C12.2349 8.34561 11.1156 7.22632 9.73486 7.22632C8.35415 7.22632 7.23486 8.34561 7.23486 9.72632C7.23486 11.107 8.35415 12.2263 9.73486 12.2263Z" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+    <path d="M13.2349 17.2263L17.2349 13.2263" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+const dashboardCustomerIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
 const Icons = {
     dashboardIcon,
     analyticsIcon,
@@ -161,7 +190,13 @@ const Icons = {
     ownerIcon,
     buySellTruckIcon,
     kmsDrivernIcon,
-    truckModelIcon
+    truckModelIcon,
+    dashboardUserIcon,
+    dashboardInsuranceIcon,
+    dashboardFastagIcon,
+    dashboardCustomerIcon,
+    searchIcon,
+    searchCancelIcon
 }
 
 export default Icons

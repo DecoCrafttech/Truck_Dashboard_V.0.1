@@ -13,6 +13,7 @@ import LoadDetails from "Views/Main/Pages/LoadDetails";
 import TruckDetails from "Views/Main/Pages/TruckDetails";
 import DriverDetails from "Views/Main/Pages/DriverDetails";
 import BuySellDetails from "Views/Main/Pages/BuySellDetails";
+import Dashboard from "Views/Main/Pages/Dashboard";
 
 
 const App = () => {
@@ -63,7 +64,7 @@ const App = () => {
 
         {/* <Route index> */}
         <Route path="/dashboard" element={<Layout />}>
-          <Route path="home" element={<p>hi</p>} />
+          <Route path="home" element={<Dashboard/>} />
           <Route path="analytics" element={<p>hi</p>} />
 
           <Route path="services" >

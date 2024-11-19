@@ -23,6 +23,11 @@ const commonSlice = createSlice({
         //token
         token: '',
         user_id: Cookies.get('user_id') ? Cookies.get('user_id') : '',
+
+
+        //pagination
+        PageSize: 0,
+        currentPage: 1
     },
     reducers: {
         updateModalShow(state, actions) {
@@ -188,9 +193,26 @@ const commonSlice = createSlice({
                 nextButton: false,
                 edited: false,
                 validated: false,
-                modalShow: false
+                modalShow: false,
+                PageSize: 0,
+                currentPage: 1
             }
         },
+
+        //pagination
+        updatePaginationSize(state, action) {
+            return {
+                ...state,
+                PageSize: action.payload
+            }
+        },
+        updateCurrentPage(state, action) {
+            return {
+                ...state,
+                currentPage: action.payload
+            }
+        }
+
     }
 })
 
@@ -204,8 +226,8 @@ export const {
     updateScreenCurrentDimension,
     updateLoginCredentials,
     updateEyeFunction,
-    updateLoginError,
     clearError,
+    updateResetAllMenus,
 
     resetValidation,
     updateValidation,
@@ -217,22 +239,9 @@ export const {
     updateRemoveToken,
     logout,
 
-    getallclientsRequest,
-    getallclientsResponse,
 
-    selectedClient,
-    resetSelectedClient,
-    updateClientId,
-    updateEditId,
-    clearEditId,
-
-    updateNextButton,
-    updateEditedTrue,
-    updateEditedFalse,
-
-    updateResetAllMenus,
-    submittedTrue,
-    submittedFalse
+    updatePaginationSize,
+    updateCurrentPage
 } = actions;
 
 export default reducer
