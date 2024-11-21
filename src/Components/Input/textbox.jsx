@@ -6,6 +6,8 @@ const Textbox = ({
     className,
     controlId,
     label,
+    labelClassName,
+    mandatory,
     rows,
     cols,
     change,
@@ -13,9 +15,17 @@ const Textbox = ({
 }) => {
 
     return (
-        <Form.Group className={`mb-3 ${className}`} controlId={controlId}>
-            <Form.Label>{label}</Form.Label>
-            <Form.Control as="textarea" rows={rows} cols={cols} onChange={change} value={value}/>
+        <Form.Group className={`${className ? className : ''}`} controlId={controlId}>
+            <Form.Label className={labelClassName}>
+                {label}
+                {
+                    mandatory ?
+                        <span className='text-danger ms-1'>*</span>
+                        :
+                        null
+                }
+            </Form.Label>
+            <Form.Control as="textarea" rows={rows} cols={cols} onChange={change} value={value} />
         </Form.Group>
     )
 }

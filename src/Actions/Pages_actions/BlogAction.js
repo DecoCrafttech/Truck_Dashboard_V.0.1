@@ -1,11 +1,19 @@
 import { updateModalShow } from 'Slices/Common_Slice/Common_slice';
 import {
+    updateBlogEditData,
     updateBlogModalType,
     updateEditBlog,
     updateDeleteBlog
 
 
 } from 'Slices/Pages_slice/Blog_slice';
+
+//                                                            blog input onchange                                                              //
+export const handleBlogInputOnChange = (inputData) => dispatch =>{
+    console.log(inputData)
+    dispatch(updateBlogEditData(inputData))
+}
+
 
 
 //                                                            create blog modal                                                              //

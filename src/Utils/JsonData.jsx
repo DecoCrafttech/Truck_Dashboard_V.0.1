@@ -1,12 +1,13 @@
 import { useSelector } from 'react-redux';
 import Icons from './Icons';
 import { useDispatch } from 'Components/CustomHooks';
+import { handleBlogInputOnChange } from 'Actions/Pages_actions/BlogAction';
 
 
 const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
-    const { validated } = useSelector((state) => state.commonState);
+    const { commonState, blogState } = useSelector((state) => state);
 
     const jsonOnly = {
         sidebarMenus: [
@@ -103,7 +104,7 @@ const JsonData = () => {
                 in: 5
             }
         ],
-        services:[
+        services: [
             "All",
             "Lorry Owner",
             "Logistics",
@@ -113,30 +114,93 @@ const JsonData = () => {
             "Lorry Buy & Sell Dealers/Owner",
             "Fastag",
             "Insurance"
+        ],
+        blogLanguages: [
+            "Tamil",
+            "English",
+            "Hindi"
         ]
     }
 
     const jsxJson = {
-        dashboardMenus:[
+        dashboardMenus: [
             {
-                icon:Icons.dashboardUserIcon,
-                content:"Total Number Of Users",
+                icon: Icons.dashboardUserIcon,
+                content: "Total Number Of Users",
                 value: 10
             },
             {
-                icon:Icons.dashboardInsuranceIcon,
-                content:"Total Number Of Insurance",
+                icon: Icons.dashboardInsuranceIcon,
+                content: "Total Number Of Insurance",
                 value: 10
             },
             {
-                icon:Icons.dashboardFastagIcon,
-                content:"Total Number Of Fastag",
+                icon: Icons.dashboardFastagIcon,
+                content: "Total Number Of Fastag",
                 value: 10
             },
             {
-                icon:Icons.dashboardCustomerIcon,
-                content:"New Customer",
+                icon: Icons.dashboardCustomerIcon,
+                content: "New Customer",
                 value: 10
+            }
+        ],
+        blogInputs: [
+            {
+                name: "Language",
+                type: "select",
+                category:"select",
+                placeholder: "",
+                value: blogState?.langugae,
+                options: jsonOnly.blogLanguages,
+                change: (e) => dispatch(handleBlogInputOnChange({ type: "language", value: { ...blogState?.blog_edit_data, langugae: e.target.value } })),
+                isMandatory:true
+            },
+            {
+                name: "Catergory",
+                type: "select",
+                category:"select",
+                placeholder: "",
+                value: blogState?.blogCategory,
+                options: jsonOnly.services,
+                change: (e) => dispatch(handleBlogInputOnChange({ type: "category", value: { ...blogState?.blog_edit_data, blogCategory: e.target.value }})),
+                isMandatory:true
+            },
+            {
+                name: "Heading",
+                type: "text",
+                category:"input",
+                placeholder: "",
+                value: blogState?.heading,
+                change: (e) => dispatch(handleBlogInputOnChange({ type: "heading", value: { ...blogState?.blog_edit_data, heading: e.target.value }})),
+                isMandatory:true
+            },
+            {
+                name: "Sub Heading",
+                type: "text",
+                category:"input",
+                placeholder: "",
+                value: blogState?.sub_heading,
+                change: (e) => dispatch(handleBlogInputOnChange({ type: "sub_heading", value: { ...blogState?.blog_edit_data, sub_heading: e.target.value }})),
+                isMandatory:true
+            },
+            {
+                name: "Blog Content",
+                type: "textbox",
+                category:"textbox",
+                placeholder: "",
+                value: blogState?.blog_content,
+                change: (e) => dispatch(handleBlogInputOnChange({ type: "blog_content", value: { ...blogState?.blog_edit_data, blog_content: e.target.value }})),
+                isMandatory:true
+            },
+            {
+                name: "Upload image",
+                type: "file",
+                category:"input",
+                placeholder: "",
+                value: blogState?.blog_image,
+                change: (e) => dispatch(handleBlogInputOnChange({ type: "blog_image", value: { ...blogState?.blog_edit_data, blog_image: e.target.files[0] }})),
+                isMandatory:true
             }
         ]
     }

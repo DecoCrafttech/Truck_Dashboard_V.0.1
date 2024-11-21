@@ -18,7 +18,7 @@ const reactPlusIcon = <LuPlus className="fs-4" />
 const reactRupeesIcon = <FaIndianRupeeSign className="me-1" />
 const searchIcon = <IoIosSearch className="fs-5 text-secondary" />
 const searchCancelIcon = <IoMdClose className="fs-5 text-secondary" />
-const backIcon =  <MdKeyboardArrowLeft className="fs-5"/>
+const backIcon = <MdKeyboardArrowLeft className="fs-5" />
 
 
 
@@ -163,6 +163,12 @@ const dashboardCustomerIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20"
     <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
+const fileUploadIcon = <svg xmlns="http://www.w3.org/2000/svg" width="35" height="36" viewBox="0 0 35 36" fill="none">
+    <path d="M30.9897 19.5V12.75C30.9897 10.7609 30.2214 8.85322 28.854 7.4467C27.4865 6.04018 25.6319 5.25 23.698 5.25H11.3022C9.36829 5.25 7.51363 6.04018 6.14618 7.4467C4.77872 8.85322 4.0105 10.7609 4.0105 12.75V23.25C4.0105 24.2349 4.1991 25.2102 4.56554 26.1201C4.93198 27.0301 5.46908 27.8569 6.14618 28.5533C7.51363 29.9598 9.36829 30.75 11.3022 30.75H20.4313" stroke="#818181" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M4.38965 25.4999L8.38548 20.6999C8.91025 20.1639 9.59898 19.8307 10.3351 19.7569C11.0712 19.6831 11.8095 19.8732 12.4251 20.2949C13.0406 20.7167 13.7789 20.9068 14.515 20.833C15.2512 20.7592 15.9399 20.426 16.4646 19.8899L19.8626 16.3949C20.8389 15.3873 22.1316 14.7693 23.5099 14.6511C24.8882 14.533 26.2625 14.9224 27.3876 15.7499L30.9896 18.6149M11.6813 15.2549C11.9992 15.253 12.3136 15.1866 12.6066 15.0597C12.8996 14.9327 13.1654 14.7476 13.3888 14.515C13.6123 14.2824 13.789 14.0068 13.9089 13.704C14.0288 13.4011 14.0895 13.0769 14.0876 12.7499C14.0856 12.423 14.0211 12.0996 13.8977 11.7982C13.7743 11.4969 13.5944 11.2235 13.3682 10.9936C13.1421 10.7638 12.8741 10.5821 12.5797 10.4587C12.2852 10.3354 11.9701 10.273 11.6521 10.2749C11.0101 10.2789 10.3959 10.5451 9.94463 11.0149C9.49337 11.4846 9.24203 12.1196 9.2459 12.7799C9.24977 13.4403 9.50853 14.0721 9.96526 14.5363C10.422 15.0004 11.0393 15.2589 11.6813 15.2549Z" stroke="#818181" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M27.281 22.5V30" stroke="#818181" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" />
+    <path d="M30.6252 25.6574L27.7566 22.7069C27.6945 22.6421 27.6205 22.5907 27.5389 22.5556C27.4573 22.5205 27.3697 22.5024 27.2812 22.5024C27.1928 22.5024 27.1052 22.5205 27.0236 22.5556C26.942 22.5907 26.8679 22.6421 26.8058 22.7069L23.9373 25.6574" stroke="#818181" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
 
 const Icons = {
     dashboardIcon,
@@ -201,7 +207,8 @@ const Icons = {
     dashboardCustomerIcon,
     searchIcon,
     searchCancelIcon,
-    backIcon
+    backIcon,
+    fileUploadIcon
 }
 
 export default Icons

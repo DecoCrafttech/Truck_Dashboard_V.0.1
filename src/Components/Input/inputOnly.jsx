@@ -7,12 +7,14 @@ const InputOnly = ({
     value,
     change, 
     keyDown,
-    className
+    className,
+    type
 }) => {
     return (
         <InputGroup className="mb-3">
             <Form.Control
                 placeholder={placeholder}
+                type={type}
                 value={value}
                 onChange={change}
                 onKeyDown={keyDown}

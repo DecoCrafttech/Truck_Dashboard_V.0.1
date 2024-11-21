@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Form } from 'react-bootstrap'
 
 const SelectBox = ({
@@ -7,17 +7,34 @@ const SelectBox = ({
     className,
     defaultOption,
     disableSelectBox,
-    change
+    change,
+    htmlFor,
+    labelClassName,
+    label,
+    mandatory
 }) => {
 
     return (
-        <Form.Select size={selectBoxSize} className={className} disabled={disableSelectBox} onChange={change}>
-            {
-                selectOptions?.map((value, ind) => {
-                    return <option value={value}>{value}</option>
-                })
-            }
-        </Form.Select>
+        <Fragment>
+            <Form.Label htmlFor={htmlFor} className={labelClassName}>
+                {label}
+
+                {
+                    mandatory ?
+                        <span className='text-danger ms-1'>*</span>
+                        :
+                        null
+                }
+
+            </Form.Label>
+            <Form.Select size={selectBoxSize} className={className} disabled={disableSelectBox} onChange={change}>
+                {
+                    selectOptions?.map((value, ind) => {
+                        return <option value={value} key={ind}>{value}</option>
+                    })
+                }
+            </Form.Select>
+        </Fragment>
     )
 }
 
