@@ -294,6 +294,48 @@ th{
   --bs-btn-disabled-border-color: #0AA50E;
 }
 
+.red-circle{
+  position: relative;
+}
+.red-circle::after{
+  content: '';
+  position: absolute;
+  top: .6rem;
+  left: 1rem;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.yellow-circle{
+  position: relative;
+}
+.yellow-circle::after{
+  content: '';
+  position: absolute;
+  top: .6rem;
+  left: 1rem;
+  width: 20px;
+  height: 20px;
+  background-color: yellow;
+  border-radius: 50%;
+}
+
+.green-circle{
+  position: relative;
+}
+.green-circle::after{
+  content: '';
+  position: absolute;
+  top: .6rem;
+  left: 1rem;
+  width: 20px;
+  height: 20px;
+  background-color: green;
+  border-radius: 50%;
+}
+
 @media (min-width:1500px){
   .profile-main-data{
     width: 40% !important;

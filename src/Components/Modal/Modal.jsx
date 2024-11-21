@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateModalShow } from '../../Redux/Slices/Common_Slice/Common_slice';
+import { updateModalShow } from 'Slices/Common_Slice/Common_slice';
 
 const ModalComponent = ({
   componentFrom,

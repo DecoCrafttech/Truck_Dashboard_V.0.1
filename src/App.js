@@ -17,6 +17,7 @@ import Dashboard from "Views/Main/Pages/Dashboard";
 import Crm from "Views/Main/Pages/Crm";
 import Feedback from "Views/Main/Pages/Feedback";
 import UserProfileDetails from "Views/Main/Pages/UserProfileDetails";
+import Blog from "Views/Main/Pages/Blog";
 
 
 const App = () => {
@@ -82,7 +83,7 @@ const App = () => {
             <Route path="fast_tag" element={<p>hi</p>} />
           </Route>
 
-          <Route path="blog" element={<p>hi</p>} />
+          <Route path="blog" element={<Blog />} />
           <Route path="feedback_complaints" element={<Feedback />} />
           <Route path="crm" element={<Crm />} />
         </Route>
