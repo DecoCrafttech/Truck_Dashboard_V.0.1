@@ -14,6 +14,9 @@ import TruckDetails from "Views/Main/Pages/TruckDetails";
 import DriverDetails from "Views/Main/Pages/DriverDetails";
 import BuySellDetails from "Views/Main/Pages/BuySellDetails";
 import Dashboard from "Views/Main/Pages/Dashboard";
+import Crm from "Views/Main/Pages/Crm";
+import Feedback from "Views/Main/Pages/Feedback";
+import UserProfileDetails from "Views/Main/Pages/UserProfileDetails";
 
 
 const App = () => {
@@ -64,7 +67,10 @@ const App = () => {
 
         {/* <Route index> */}
         <Route path="/dashboard" element={<Layout />}>
-          <Route path="home" element={<Dashboard/>} />
+          <Route path="home">
+            <Route index element={<Dashboard/>}/>
+            <Route path="profile:id" element={<UserProfileDetails/>}/>
+          </Route>
           <Route path="analytics" element={<p>hi</p>} />
 
           <Route path="services" >
@@ -77,8 +83,8 @@ const App = () => {
           </Route>
 
           <Route path="blog" element={<p>hi</p>} />
-          <Route path="feedback_complaints" element={<p>hi</p>} />
-          <Route path="crm" element={<p>hi</p>} />
+          <Route path="feedback_complaints" element={<Feedback />} />
+          <Route path="crm" element={<Crm />} />
         </Route>
         {/* </Route> */}
 

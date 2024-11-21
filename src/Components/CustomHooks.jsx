@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch as useReduxDispatch } from 'react-redux';
+import { useDispatch as useReduxDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { handleScreenSize } from 'Actions/Common_actions/Common_action';
 import { useMemo } from 'react';
@@ -75,17 +75,15 @@ const range = (start, end) => {
   return Array.from({ length }, (_, idx) => idx + start);
 };
 
-export const usePagination = ({
-  totalCount,
-  pageSize,
-  siblingCount = 1,
-  currentPage
-}) => {
-  const paginationRange = useMemo(() => {
-    const totalPageCount = Math.ceil(totalCount / pageSize);
+export const usePagination = () => {
 
+  const {totalCount,pageSize,siblingCount,currentPage} = useSelector((state)=> state.commonState);
+
+  const paginationRange = useMemo(() => {
+    
+    const totalPageCount = Math.ceil(totalCount / pageSize);
     // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
-    const totalPageNumbers = siblingCount + 5;
+    const totalPageNumbers = siblingCount + 3;
 
     /*
       If the number of pages is less than the page numbers we want to show in our
@@ -113,14 +111,14 @@ export const usePagination = ({
     const lastPageIndex = totalPageCount;
 
     if (!shouldShowLeftDots && shouldShowRightDots) {
-      let leftItemCount = 3 + 2 * siblingCount;
+      let leftItemCount = 3 * siblingCount;
       let leftRange = range(1, leftItemCount);
 
       return [...leftRange, DOTS, totalPageCount];
     }
 
     if (shouldShowLeftDots && !shouldShowRightDots) {
-      let rightItemCount = 3 + 2 * siblingCount;
+      let rightItemCount = 3 * siblingCount;
       let rightRange = range(
         totalPageCount - rightItemCount + 1,
         totalPageCount

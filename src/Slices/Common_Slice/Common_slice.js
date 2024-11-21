@@ -12,7 +12,6 @@ const commonSlice = createSlice({
         innerWidth: 0,
         innerHeight: 0,
         buttonSpinner: false,
-        stagesCompetedUpto: 0,
 
         //login states
         usernamee: '',
@@ -25,9 +24,12 @@ const commonSlice = createSlice({
         user_id: Cookies.get('user_id') ? Cookies.get('user_id') : '',
 
 
-        //pagination
-        PageSize: 0,
-        currentPage: 1
+        //custom pagination 
+        showing_entries:[10,20,50],
+        pageSize: 10,
+        currentPage: 3,
+        totalCount: 1500,
+        siblingCount: 1,
     },
     reducers: {
         updateModalShow(state, actions) {
@@ -194,7 +196,7 @@ const commonSlice = createSlice({
                 edited: false,
                 validated: false,
                 modalShow: false,
-                PageSize: 0,
+                pageSize: 0,
                 currentPage: 1
             }
         },
@@ -203,7 +205,7 @@ const commonSlice = createSlice({
         updatePaginationSize(state, action) {
             return {
                 ...state,
-                PageSize: action.payload
+                pageSize: action.payload
             }
         },
         updateCurrentPage(state, action) {

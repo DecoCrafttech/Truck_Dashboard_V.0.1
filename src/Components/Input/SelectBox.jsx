@@ -4,17 +4,17 @@ import { Form } from 'react-bootstrap'
 const SelectBox = ({
     selectBoxSize,
     selectOptions,
+    className,
     defaultOption,
     disableSelectBox,
     change
 }) => {
-    return (
-        <Form.Select size={selectBoxSize} disabled={!disableSelectBox} onChange={change}>
-            <option value={JSON.stringify('')}>{defaultOption}</option>
 
+    return (
+        <Form.Select size={selectBoxSize} className={className} disabled={disableSelectBox} onChange={change}>
             {
                 selectOptions?.map((value, ind) => {
-                    return <option value={JSON.stringify(value)}>{value.service_name}</option>
+                    return <option value={value}>{value}</option>
                 })
             }
         </Form.Select>

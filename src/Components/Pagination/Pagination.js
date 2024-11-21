@@ -2,18 +2,18 @@ import React from 'react';
 import classnames from 'classnames';
 import { usePagination, DOTS } from "Components/CustomHooks";
 import "Stylesheet/Scss/Pagination.scss";
+import { useDispatch } from 'react-redux';
+import { updateCurrentPage } from 'Slices/Common_Slice/Common_slice';
 
 
-const Pagination = props => {
-  const {
-    onPageChange,
+const Pagination = ({
     totalCount,
     siblingCount = 1,
     currentPage,
     pageSize,
     className
-  } = props;
-
+  }) =>{;
+  const dispatch = useDispatch();
   const paginationRange = usePagination({
     currentPage,
     totalCount,
@@ -21,22 +21,23 @@ const Pagination = props => {
     pageSize
   });
 
-  if (currentPage === 0 || paginationRange?.length < 2) {
+
+  if (currentPage === 0) {
     return null;
   }
 
   const onNext = () => {
-    onPageChange(currentPage + 1);
+    dispatch(updateCurrentPage(currentPage + 1));
   };
 
   const onPrevious = () => {
-    onPageChange(currentPage - 1);
+    dispatch(updateCurrentPage(currentPage - 1));
   };
 
   let lastPage = paginationRange[paginationRange?.length - 1];
   return (
     <ul
-      className={classnames('pagination-container', { [className]: className })}
+      className={classnames('pagination-container ps-0 col-7', { [className]: className })}
     >
       <li
         className={classnames('pagination-item', {
@@ -56,7 +57,7 @@ const Pagination = props => {
             className={classnames('pagination-item', {
               selected: pageNumber === currentPage
             })}
-            onClick={() => onPageChange(pageNumber)}
+            onClick={() => dispatch(updateCurrentPage(pageNumber))}
           >
             {pageNumber}
           </li>

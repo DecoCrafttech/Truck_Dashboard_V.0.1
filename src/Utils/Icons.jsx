@@ -7,6 +7,7 @@ import { MdEdit } from "react-icons/md";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 const homeIcon = <IoHomeOutline className="fs-5" />
 const logoutLocon = <CiLogout className="fs-5" />
@@ -15,8 +16,10 @@ const deleteIcon = <MdOutlineDeleteOutline className="fs-5 text-danger" />
 const reactEditIcon = <MdEdit className="fs-4" />
 const reactPlusIcon = <LuPlus className="fs-4" />
 const reactRupeesIcon = <FaIndianRupeeSign className="me-1" />
-const searchIcon =  <IoIosSearch className="fs-5 text-secondary"/>
-const searchCancelIcon =  <IoMdClose className="fs-5 text-secondary"/>
+const searchIcon = <IoIosSearch className="fs-5 text-secondary" />
+const searchCancelIcon = <IoMdClose className="fs-5 text-secondary" />
+const backIcon =  <MdKeyboardArrowLeft className="fs-5"/>
+
 
 
 
@@ -160,6 +163,7 @@ const dashboardCustomerIcon = <svg xmlns="http://www.w3.org/2000/svg" width="20"
     <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 </svg>
 
+
 const Icons = {
     dashboardIcon,
     analyticsIcon,
@@ -196,7 +200,8 @@ const Icons = {
     dashboardFastagIcon,
     dashboardCustomerIcon,
     searchIcon,
-    searchCancelIcon
+    searchCancelIcon,
+    backIcon
 }
 
 export default Icons

@@ -103,6 +103,17 @@ const JsonData = () => {
                 in: 5
             }
         ],
+        services:[
+            "All",
+            "Lorry Owner",
+            "Logistics",
+            "Lorry Constructions",
+            "Load Booking Agent",
+            "Driver",
+            "Lorry Buy & Sell Dealers/Owner",
+            "Fastag",
+            "Insurance"
+        ]
     }
 
     const jsxJson = {

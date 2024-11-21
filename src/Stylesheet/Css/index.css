@@ -201,7 +201,6 @@
 .form-control:focus {
   color: var(--bs-body-color);
   background-color: var(--bs-body-bg);
-  border-color: white !important;
   outline: 0;
   box-shadow: none !important;
 }
@@ -235,10 +234,71 @@
 }
 
 .dashboard-table-height{
-  height: calc(var(--root-height) - 22.5rem)
+  height: calc(var(--root-height) - 23.5rem);
+  width:100%
+}
+
+th{
+  width: 150px;
+  min-width: 150px !important;
 }
 
 .table-head{
-  width: 2rem;
-  min-width: 2rem !important;
+  font-weight: 500;
+}
+
+.table-body-tr td{
+  color: gray !important;
+}
+
+.select-table-sizer{
+  width: 4rem;
+}
+
+.crm-table-height{
+  height: calc(var(--root-height) - 14.5rem);
+  width:100%
+}
+
+.feedback-table-height{
+  height: calc(var(--root-height) - 18.5rem);
+  width:100%
+}
+
+
+.verified-bg{
+  background-color: #0AA50E;
+  color: #ffffff;
+  padding: .2rem .5rem;
+  border-radius: 5px;
+}
+
+.profile-image-width{
+  width: 15rem;
+}
+
+.custom-success {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #0AA50E;
+  --bs-btn-border-color: #0AA50E;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #0AA50E;
+  --bs-btn-hover-border-color: #0AA50E;
+  --bs-btn-focus-shadow-rgb: 60, 153, 110;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #0AA50E;
+  --bs-btn-active-border-color: #0AA50E;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #0AA50E;
+  --bs-btn-disabled-border-color: #0AA50E;
+}
+
+@media (min-width:1500px){
+  .profile-main-data{
+    width: 40% !important;
+  }
+  .post_details_width{
+    width: 20% !important;
+  }
 }

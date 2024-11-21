@@ -35,7 +35,7 @@ const Layout = () => {
                 companyLogo={Images.CompanyLogo}
             />
 
-            <div className="col ">
+            <div className="col overflow-hidden">
                 <main className="main w-100 px-md-2 overflow-hidden">
                     <div className="container-fluid h-100">
                         {/* header  */}
