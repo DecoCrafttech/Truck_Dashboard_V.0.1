@@ -90,13 +90,13 @@ const TruckCard = ({
 
                     <p className={`${placeholder ? 'placeholder py-1 rounded-1 col-7 mb-1' : 'ms-2 mt-2'} fs-12 text-secondary fw-bold  `}>Posted on : {truck_data?.updt?.slice(5, 25)}</p>
 
-                    <hr className={placeholder ? 'm-1' : ''}/>
+                    <hr className={placeholder ? 'm-1 d-none' : ''}/>
 
                     <div className="col-12 d-flex flex-wrap">
                         {cardDetails(truck_data)}
                     </div>
 
-                    <hr className='mt-0 mb-1' />
+                    <hr className={placeholder ? 'm-1 d-none' : ''}/>
                 </Card.Body>
 
                 <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-1">

@@ -19,7 +19,7 @@ const Feedback = () => {
                         <div className="col-12 col-md-6 position-relative">
                             <InputOnly
                                 type="text"
-                                className="search-input-padding"
+                                className="search-input-padding mb-3"
                                 placeholder="Search for anything..."
                                 change={(e) => console.log(e.target.value)}
                                 keyDown={(e) => console.log(e.code)}

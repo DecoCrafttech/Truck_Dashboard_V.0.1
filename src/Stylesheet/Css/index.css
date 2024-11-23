@@ -336,6 +336,15 @@ th{
   border-radius: 50%;
 }
 
+.main-content-card-height{
+  height: calc(100% - 3.7rem);
+}
+
+.pac-container {
+  z-index: 9999 !important;
+}
+
+
 @media (min-width:1500px){
   .profile-main-data{
     width: 40% !important;

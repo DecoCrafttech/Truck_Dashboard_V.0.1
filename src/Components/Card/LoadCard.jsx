@@ -1,4 +1,6 @@
+import { handleDeleteModal, handleEditModal } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
+import { useDispatch } from 'Components/CustomHooks'
 import React, { Fragment } from 'react'
 import { Card } from 'react-bootstrap'
 import Icons from 'Utils/Icons'
@@ -7,6 +9,8 @@ const LoadCard = ({
     placeholder,
     load
 }) => {
+    const dispatch = useDispatch();
+
     function locationFun(from, to) {
         return <Fragment>
             {[{ icon: Icons.greenLocationIcon, location: from }, { icon: Icons.redLocationIcon, location: to }]
@@ -90,13 +94,13 @@ const LoadCard = ({
 
                     <p className={`${placeholder ? 'placeholder py-1 rounded-1 col-7 mb-1' : 'ms-2 mt-2'} fs-12 text-secondary fw-bold  `}>Posted on : {load?.updt?.slice(5, 25)}</p>
 
-                    <hr className={placeholder ? 'm-1' : ''}/>
+                    <hr className={placeholder ? 'm-1 d-none' : ''} />
 
                     <div className="col-12 d-flex flex-wrap">
                         {cardDetails(load)}
                     </div>
 
-                    <hr className='mt-0 mb-1' />
+                    <hr className={placeholder ? 'm-1 d-none' : ''} />
                 </Card.Body>
 
                 <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-1">
@@ -104,12 +108,14 @@ const LoadCard = ({
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                             buttonName={placeholder ? "" : 'Delete'}
+                            clickFunction={() => dispatch(handleDeleteModal({ type: "Load", data: load }))}
                         />
                     </div>
                     <div className="col px-1">
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                             buttonName={placeholder ? "" : 'Edit'}
+                            clickFunction={() => dispatch(handleEditModal({ type: "Load", data: load }))}
                         />
                     </div>
                 </Card.Footer>

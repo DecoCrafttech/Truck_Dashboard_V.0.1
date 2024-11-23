@@ -8,10 +8,11 @@ const InputOnly = ({
     change, 
     keyDown,
     className,
+    InputGroupClassName,
     type
 }) => {
     return (
-        <InputGroup className="mb-3">
+        <InputGroup>
             <Form.Control
                 placeholder={placeholder}
                 type={type}

@@ -1,20 +1,22 @@
 import axiosInstance from 'Services/axiosInstance';
-import { updateToast } from 'Slices/Common_Slice/Common_slice';
+import { updateModalShow, updateToast } from 'Slices/Common_Slice/Common_slice';
 import {
+    updateEditDetails,
+    updateDeleteDetails,
+    updateServiceModalType,
+    
     loadGetRequest,
     loadGetResponse,
-    loadGetFaliure,
-
+    loadGetFaliure, 
+    updateLoadEditData,
 
     truckGetRequest,
     truckGetResponse,
     truckGetFailure,
 
-
     driverGetRequest,
     driverGetResponse,
     driverGetFailure,
-
 
     buyAndsellGetRequest,
     buyAndsellGetResponse,
@@ -22,6 +24,22 @@ import {
 
 
 } from 'Slices/Pages_slice/Services_slice';
+
+export const handleCreateModal = () => (dispatch) => {
+    dispatch(updateServiceModalType("Create"))
+    dispatch(updateModalShow())
+}
+
+export const handleDeleteModal = (deleteDetails) => (dispatch) => {
+    dispatch(updateDeleteDetails(deleteDetails))
+    dispatch(updateModalShow())
+}
+export const handleEditModal = (editDetails) => dispatch => {
+    dispatch(updateEditDetails(editDetails))
+    dispatch(updateModalShow())
+}
+
+
 
 //                                                              load api's                                                                  //
 //get all loads api
@@ -41,7 +59,9 @@ export const handleGetLoads = async (dispatch) => {
     }
 }
 
-
+export const handleLoadInputOnChange = (inputData) => dispatch =>{
+    dispatch(updateLoadEditData(inputData))
+}
 
 
 

@@ -36,7 +36,7 @@ const Dashboard = () => {
                 <div className="position-relative col-xxl-3">
                     <InputOnly
                         type="text"
-                        className="search-input-padding"
+                        className="search-input-padding mb-3"
                         placeholder="Search for anything..."
                         change={(e) => console.log(e.target.value)}
                         keyDown={(e) => console.log(e.code)}
@@ -77,7 +77,7 @@ const Dashboard = () => {
                             </table>
                         </div>
                     </div>
-                    <div className="card-footer w-100 d-flex flex-wrap justify-content-end border-0 bg-transparent ">
+                    <div className="card-footer w-100 d-flex flex-wrap border-0 bg-transparent ">
                         <div className="col-12 col-md-6">
                             <div className='col-12 d-inline-flex flex-wrap align-items-center'>
                                 <p className='m-0'>Showing</p>

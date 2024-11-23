@@ -10,7 +10,6 @@ import {
 
 //                                                            blog input onchange                                                              //
 export const handleBlogInputOnChange = (inputData) => dispatch =>{
-    console.log(inputData)
     dispatch(updateBlogEditData(inputData))
 }
 
