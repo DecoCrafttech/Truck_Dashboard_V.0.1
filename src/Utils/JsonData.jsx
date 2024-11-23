@@ -302,7 +302,8 @@ const JsonData = () => {
                 category: "googleLocation",
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.from_location,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "from_location", value: { ...servicesState?.new_edit_load_card, from_location: e?.target?.value ? e.target.value : e ? e : ''} })),
+                change: (e) => dispatch(handleLoadInputOnChange({ type: "from_location", value: { ...servicesState?.new_edit_load_card, from_location: e.target.value} })),
+                placedSelectedClick : (slectedLoc) => dispatch(handleLoadInputOnChange({ type: "from_location", value: { ...servicesState?.new_edit_load_card, from_location: slectedLoc } })),
                 isMandatory: true
             },
             {
@@ -311,7 +312,8 @@ const JsonData = () => {
                 category: "googleLocation",
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.to_location,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "to_location", value: { ...servicesState?.new_edit_load_card, to_location: e?.target?.value ? e.target.value :  e ? e : '' } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ type: "to_location", value: { ...servicesState?.new_edit_load_card, to_location: e.target.value } })),
+                placedSelectedClick : (slectedLoc) => dispatch(handleLoadInputOnChange({ type: "to_location", value: { ...servicesState?.new_edit_load_card, to_location: slectedLoc } })),
                 isMandatory: true
             },
             {

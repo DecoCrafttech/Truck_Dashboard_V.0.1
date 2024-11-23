@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import { Form } from 'react-bootstrap';
 import Autocomplete from "react-google-autocomplete"
 
 const GoogleLocationInput = ({
     componnetFrom,
     name,
     value,
-    change
+    selcted,
+    change,
+    htmlFor,
+    labelClassName,
+    label,
+    mandatory
 }) => {
     const handleFromLocation = (selectedLocation) => {
         if (selectedLocation) {
@@ -17,24 +23,38 @@ const GoogleLocationInput = ({
             );
 
             if (cityComponent && stateComponent) {
-                change(`${cityComponent.long_name}, ${stateComponent.long_name}`);
+                selcted(`${cityComponent.long_name}, ${stateComponent.long_name}`);
             }
         }
     };
 
     return (
-        <Autocomplete
-            name="name"
-            className="form-control location-input bg-transparent py-2"
-            apiKey={process.env.REACT_APP_API_googleLocationKey}
-            // onPlaceSelected={(place) => {
-            //     if (place) {
-            //         handleFromLocation(place.address_components);
-            //     }
-            // }}
-            // value={value}
-            onChange={change}
-        />
+        <Fragment>
+            <Form.Label htmlFor={htmlFor} className={labelClassName}>
+                {label}
+
+                {
+                    mandatory ?
+                        <span className='text-danger ms-1'>*</span>
+                        :
+                        null
+                }
+
+            </Form.Label>
+
+            <Autocomplete
+                name="name"
+                className="form-control location-input bg-transparent py-2"
+                apiKey={process.env.REACT_APP_API_googleLocationKey}
+                onPlaceSelected={(place) => {
+                    if (place) {
+                        handleFromLocation(place.address_components);
+                    }
+                }}
+                value={value}
+                onChange={change}
+            />
+        </Fragment>
     )
 }
 

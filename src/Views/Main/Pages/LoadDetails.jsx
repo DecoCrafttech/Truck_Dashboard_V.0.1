@@ -63,8 +63,10 @@ const LoadDetails = () => {
                             return <div className='col-6 p-1 mt-2'>
                                 <GoogleLocationInput
                                     name={ipVal?.name}
-                                    value={ipVal?.value}
                                     change={ipVal?.change}
+                                    selcted={ipVal?.placedSelectedClick}
+                                    label={ipVal?.name}
+                                    labelClassName="text-secondary mb-0 fs-14"
                                     mandatory={ipVal?.isMandatory}
                                 />
                             </div>
