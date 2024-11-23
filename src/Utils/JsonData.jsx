@@ -235,7 +235,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: blogState?.blog_edit_data.blogCategory,
+                value: blogState?.blog_edit_data?.blogCategory,
                 options: jsonOnly.services,
                 change: (e) => dispatch(handleBlogInputOnChange({ type: "category", value: { ...blogState?.blog_edit_data, blogCategory: e.target.value } })),
                 isMandatory: true
@@ -245,7 +245,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: blogState?.blog_edit_data.heading,
+                value: blogState?.blog_edit_data?.heading,
                 change: (e) => dispatch(handleBlogInputOnChange({ type: "heading", value: { ...blogState?.blog_edit_data, heading: e.target.value } })),
                 isMandatory: true
             },
@@ -254,7 +254,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: blogState?.blog_edit_data.sub_heading,
+                value: blogState?.blog_edit_data?.sub_heading,
                 change: (e) => dispatch(handleBlogInputOnChange({ type: "sub_heading", value: { ...blogState?.blog_edit_data, sub_heading: e.target.value } })),
                 isMandatory: true
             },
@@ -263,7 +263,7 @@ const JsonData = () => {
                 type: "textbox",
                 category: "textbox",
                 placeholder: "",
-                value: blogState?.blog_edit_data.blog_content,
+                value: blogState?.blog_edit_data?.blog_content,
                 change: (e) => dispatch(handleBlogInputOnChange({ type: "blog_content", value: { ...blogState?.blog_edit_data, blog_content: e.target.value } })),
                 isMandatory: true
             },
@@ -272,7 +272,7 @@ const JsonData = () => {
                 type: "file",
                 category: "input",
                 placeholder: "",
-                value: blogState?.blog_edit_data.blog_image,
+                value: blogState?.blog_edit_data?.blog_image,
                 change: (e) => dispatch(handleBlogInputOnChange({ type: "blog_image", value: { ...blogState?.blog_edit_data, blog_image: e.target.files[0] } })),
                 isMandatory: true
             }

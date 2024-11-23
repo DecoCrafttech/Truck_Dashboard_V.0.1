@@ -7,8 +7,10 @@ import {
     
     loadGetRequest,
     loadGetResponse,
-    loadGetFaliure, 
+    loadGetFaliure,  
     updateLoadEditData,
+    LoadsVerificationRequest,
+    LoadsVerificationResponse,
 
     truckGetRequest,
     truckGetResponse,
@@ -62,6 +64,24 @@ export const handleGetLoads = async (dispatch) => {
 export const handleLoadInputOnChange = (inputData) => dispatch =>{
     dispatch(updateLoadEditData(inputData))
 }
+
+//load post mobile number verification
+export const handlePostLoadsVerification = async (dispatch) => {
+    try {
+        dispatch(LoadsVerificationRequest())
+        const { data } = await axiosInstance.get("/all_load_details")
+
+        if (data?.error_code === 0) {
+            dispatch(LoadsVerificationResponse(data?.data))
+        } else {
+            dispatch(updateToast(data?.message, "error"))
+        }
+    } catch (err) {
+        dispatch(updateToast(err?.message, "error"))
+    }
+}
+
+
 
 
 

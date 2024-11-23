@@ -244,6 +244,8 @@ export const {
     loadGetResponse,
     loadGetFaliure,
     updateLoadEditData,
+    LoadsVerificationRequest,
+    LoadsVerificationResponse,
 
 
     truckGetRequest,
