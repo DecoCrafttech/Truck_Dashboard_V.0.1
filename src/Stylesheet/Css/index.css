@@ -344,6 +344,9 @@ th{
   z-index: 9999 !important;
 }
 
+.filter-select-dropdown{
+  padding: .42rem !important;
+}
 
 @media (min-width:1500px){
   .profile-main-data{

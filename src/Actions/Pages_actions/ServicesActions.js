@@ -4,25 +4,43 @@ import {
     updateEditDetails,
     updateDeleteDetails,
     updateServiceModalType,
-    
+    initializeFilterDetails,
+
     loadGetRequest,
     loadGetResponse,
-    loadGetFaliure,  
-    updateLoadEditData,
+    loadGetFaliure,
     LoadsVerificationRequest,
     LoadsVerificationResponse,
+    updateLoadVerifyData,
+    updateLoadEditData,
+    updateLoadFilterData,
 
     truckGetRequest,
     truckGetResponse,
     truckGetFailure,
+    truckVerificationRequest,
+    truckVerificationResponse,
+    updateTruckVerifyData,
+    updateTruckEditData,
+    updateTruckFilterData,
 
     driverGetRequest,
     driverGetResponse,
     driverGetFailure,
+    driverVerificationRequest,
+    driverVerificationResponse,
+    updateDriverVerifyData,
+    updateDriverEditData,
+    updateDriverFilterData,
 
     buyAndsellGetRequest,
     buyAndsellGetResponse,
-    buyAndsellGetFailure
+    buyAndsellGetFailure,
+    buyAndSellVerificationRequest,
+    buyAndSellVerificationResponse,
+    updateBuyAndSellVerifyData,
+    updateBuyAndSellEditData,
+    updateBuyAndSellFilterData,
 
 
 } from 'Slices/Pages_slice/Services_slice';
@@ -36,10 +54,17 @@ export const handleDeleteModal = (deleteDetails) => (dispatch) => {
     dispatch(updateDeleteDetails(deleteDetails))
     dispatch(updateModalShow())
 }
+
 export const handleEditModal = (editDetails) => dispatch => {
     dispatch(updateEditDetails(editDetails))
     dispatch(updateModalShow())
 }
+
+export const handleFilterModal = (filterServiceName) => dispatch => {
+    dispatch(initializeFilterDetails(filterServiceName))
+    dispatch(updateModalShow())
+}
+
 
 
 
@@ -61,10 +86,6 @@ export const handleGetLoads = async (dispatch) => {
     }
 }
 
-export const handleLoadInputOnChange = (inputData) => dispatch =>{
-    dispatch(updateLoadEditData(inputData))
-}
-
 //load post mobile number verification
 export const handlePostLoadsVerification = async (dispatch) => {
     try {
@@ -81,14 +102,24 @@ export const handlePostLoadsVerification = async (dispatch) => {
     }
 }
 
+export const handleOnchangeLoadVerify = (inputData) => dispatch => {
+    dispatch(updateLoadVerifyData(inputData))
+}
 
+export const handleLoadInputOnChange = (inputData) => dispatch => {
+    dispatch(updateLoadEditData(inputData))
+}
+
+export const handleOnchangeLoadFilter = (inputData) => dispatch => {
+    dispatch(updateLoadFilterData(inputData))
+}
 
 
 
 
 
 //                                                              truck api's                                                                  //
-//get all loads api
+//get all truck api
 export const handleGetTruck = async (dispatch) => {
     try {
         dispatch(truckGetRequest())
@@ -105,8 +136,17 @@ export const handleGetTruck = async (dispatch) => {
     }
 }
 
+export const handleOnchangeTruckVerify = (inputData) => dispatch => {
+    dispatch(updateTruckVerifyData(inputData))
+}
 
+export const handleTruckInputOnChange = (inputData) => dispatch => {
+    dispatch(updateTruckEditData(inputData))
+}
 
+export const handleOnchangeTruckFilter = (inputData) => dispatch => {
+    dispatch(updateTruckFilterData(inputData))
+}
 
 
 
@@ -132,9 +172,17 @@ export const handleGetDriver = async (dispatch) => {
     }
 }
 
+export const handleOnchangeDriverVerify = (inputData) => dispatch => {
+    dispatch(updateDriverVerifyData(inputData))
+}
 
+export const handleDriverInputOnChange = (inputData) => dispatch => {
+    dispatch(updateDriverEditData(inputData))
+}
 
-
+export const handleOnchangeDriverFilter = (inputData) => dispatch => {
+    dispatch(updateDriverFilterData(inputData))
+}
 
 
 

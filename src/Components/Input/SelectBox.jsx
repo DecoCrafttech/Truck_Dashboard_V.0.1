@@ -32,6 +32,7 @@ const SelectBox = ({
                 null
             }
             <Form.Select size={selectBoxSize} className={className} disabled={disableSelectBox} onChange={change}>
+                <option value="">Select</option>
                 {
                     selectOptions?.map((value, ind) => {
                         return <option value={value} key={ind}>{value}</option>

@@ -1,4 +1,6 @@
+import { handleDeleteModal, handleEditModal } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
+import { useDispatch } from 'Components/CustomHooks'
 import React, { Fragment } from 'react'
 import { Card } from 'react-bootstrap'
 import Icons from 'Utils/Icons'
@@ -7,6 +9,8 @@ const TruckCard = ({
     placeholder,
     truck_data
 }) => {
+    const dispatch = useDispatch();
+
     function locationFun(from, to) {
         return <Fragment>
             {[{ icon: Icons.greenLocationIcon, location: from }, { icon: Icons.redLocationIcon, location: to }]
@@ -104,12 +108,14 @@ const TruckCard = ({
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                             buttonName={placeholder ? "" : 'Delete'}
+                            clickFunction={() => dispatch(handleDeleteModal({ type: "Truck", data: truck_data }))}
                         />
                     </div>
                     <div className="col px-1">
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                             buttonName={placeholder ? "" : 'Edit'}
+                            clickFunction={() => dispatch(handleEditModal({ type: "Truck", data: truck_data }))}
                         />
                     </div>
                 </Card.Footer>

@@ -35,9 +35,9 @@ const Input = ({
             />
             {
                 inputError ?
-                    <Form.Text id={label + "Block"} muted>
+                    <div className='text-danger pt-2 ps-1 fs-15'>
                         {inputError}
-                    </Form.Text>
+                    </div>
                     :
                     null
             }

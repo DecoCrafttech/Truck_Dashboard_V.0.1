@@ -15,49 +15,14 @@ const servicesSlice = createSlice(({
         //                                                             load api's                                                         //
         //get load api
         updateBlogEditData(state, action) {
-            switch (action.payload?.type) {
-                case "language":
-                    return {
-                        ...state,
-                        blog_edit_data: action.payload?.value
-                    }
-
-                case "category":
-                    return {
-                        ...state,
-                        blog_edit_data: action.payload?.value
-                    }
-
-                case "heading":
-                    return {
-                        ...state,
-                        blog_edit_data: action.payload?.value
-                    }
-
-                case "sub_heading":
-                    return {
-                        ...state,
-                        blog_edit_data: action.payload?.value
-                    }
-
-                case "blog_content":
-                    return {
-                        ...state,
-                        blog_edit_data: action.payload?.value
-                    }
-
-                case "blog_image":
-                    console.log(action.payload?.value)
-                    return {
-                        ...state,
-                        blog_edit_data: action.payload?.value
-                    }
-
-                default:
-                    break;
+            return {
+                ...state,
+                blog_edit_data: {
+                    ...state.blog_edit_data,
+                    ...action.payload
+                }
             }
         },
-
 
 
         updateBlogModalType(state, action) {

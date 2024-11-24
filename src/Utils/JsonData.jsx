@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import Icons from './Icons';
 import { useDispatch } from 'Components/CustomHooks';
 import { handleBlogInputOnChange } from 'Actions/Pages_actions/BlogAction';
-import { handleLoadInputOnChange } from 'Actions/Pages_actions/ServicesActions';
+import { handleDriverInputOnChange, handleLoadInputOnChange, handleOnchangeDriverFilter, handleOnchangeDriverVerify, handleOnchangeLoadFilter, handleOnchangeLoadVerify, handleOnchangeTruckFilter, handleOnchangeTruckVerify, handleTruckInputOnChange } from 'Actions/Pages_actions/ServicesActions';
 
 
 const JsonData = () => {
@@ -142,12 +142,12 @@ const JsonData = () => {
             "22"
         ],
         tonnage: [
-            { value: 1, label: '1 Ton - 2.5 Ton' },
-            { value: 2, label: '2.5 Ton - 5 Ton' },
-            { value: 3, label: '5 Ton - 10 Ton' },
-            { value: 4, label: '10 Ton - 20 Ton' },
-            { value: 5, label: '20 Ton - 40 Ton' },
-            { value: 6, label: 'Above 40 Ton' }
+            '1 Ton - 2.5 Ton',
+            '2.5 Ton - 5 Ton',
+            '5 Ton - 10 Ton',
+            '10 Ton - 20 Ton',
+            '20 Ton - 40 Ton',
+            'Above 40 Ton'
         ],
         truckBrand: [
             "Ashok Leyland",
@@ -193,6 +193,41 @@ const JsonData = () => {
             '(70,00,001 - 80,00,000)',
             '(80,00,001 - 90,00,000)',
             '(90,00,001 and above)'
+        ],
+        states: [
+            { value: 1, label: 'Andaman and Nicobar Islands' },
+            { value: 2, label: 'Andhra Pradesh' },
+            { value: 3, label: 'Arunachal Pradesh' },
+            { value: 4, label: 'Assam' },
+            { value: 5, label: 'Bihar' },
+            { value: 6, label: 'Chandigarh' },
+            { value: 7, label: 'Chhattisgarh' },
+            { value: 8, label: 'Dadra and Nagar Haveli' },
+            { value: 9, label: 'Delhi' },
+            { value: 10, label: 'Goa' },
+            { value: 11, label: 'Gujarat' },
+            { value: 12, label: 'Haryana' },
+            { value: 13, label: 'Himachal Pradesh' },
+            { value: 14, label: 'Jammu and Kashmir' },
+            { value: 15, label: 'Jharkhand' },
+            { value: 16, label: 'Karnataka' },
+            { value: 17, label: 'Kerala' },
+            { value: 18, label: 'Madhya Pradesh' },
+            { value: 19, label: 'Maharashtra' },
+            { value: 20, label: 'Manipur' },
+            { value: 21, label: 'Meghalaya' },
+            { value: 22, label: 'Mizoram' },
+            { value: 23, label: 'Nagaland' },
+            { value: 24, label: 'Odisha' },
+            { value: 25, label: 'Puducherry' },
+            { value: 26, label: 'Punjab' },
+            { value: 27, label: 'Rajasthan' },
+            { value: 28, label: 'Tamil Nadu' },
+            { value: 29, label: 'Telangana' },
+            { value: 30, label: 'Tripura' },
+            { value: 31, label: 'Uttar Pradesh' },
+            { value: 32, label: 'Uttarakhand' },
+            { value: 33, label: 'West Bengal' }
         ]
     }
 
@@ -219,6 +254,7 @@ const JsonData = () => {
                 value: 10
             }
         ],
+        //                                                              blog                                                                  //
         blogInputs: [
             {
                 name: "Language",
@@ -227,7 +263,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: blogState?.blog_edit_data?.langugae,
                 options: jsonOnly.blogLanguages,
-                change: (e) => dispatch(handleBlogInputOnChange({ type: "language", value: { ...blogState?.blog_edit_data, langugae: e.target.value } })),
+                change: (e) => dispatch(handleBlogInputOnChange({ langugae: e.target.value })),
                 isMandatory: true
             },
             {
@@ -237,7 +273,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: blogState?.blog_edit_data?.blogCategory,
                 options: jsonOnly.services,
-                change: (e) => dispatch(handleBlogInputOnChange({ type: "category", value: { ...blogState?.blog_edit_data, blogCategory: e.target.value } })),
+                change: (e) => dispatch(handleBlogInputOnChange({ blogCategory: e.target.value })),
                 isMandatory: true
             },
             {
@@ -246,7 +282,7 @@ const JsonData = () => {
                 category: "input",
                 placeholder: "",
                 value: blogState?.blog_edit_data?.heading,
-                change: (e) => dispatch(handleBlogInputOnChange({ type: "heading", value: { ...blogState?.blog_edit_data, heading: e.target.value } })),
+                change: (e) => dispatch(handleBlogInputOnChange({ heading: e.target.value })),
                 isMandatory: true
             },
             {
@@ -255,7 +291,7 @@ const JsonData = () => {
                 category: "input",
                 placeholder: "",
                 value: blogState?.blog_edit_data?.sub_heading,
-                change: (e) => dispatch(handleBlogInputOnChange({ type: "sub_heading", value: { ...blogState?.blog_edit_data, sub_heading: e.target.value } })),
+                change: (e) => dispatch(handleBlogInputOnChange({ sub_heading: e.target.value })),
                 isMandatory: true
             },
             {
@@ -264,7 +300,7 @@ const JsonData = () => {
                 category: "textbox",
                 placeholder: "",
                 value: blogState?.blog_edit_data?.blog_content,
-                change: (e) => dispatch(handleBlogInputOnChange({ type: "blog_content", value: { ...blogState?.blog_edit_data, blog_content: e.target.value } })),
+                change: (e) => dispatch(handleBlogInputOnChange({ blog_content: e.target.value })),
                 isMandatory: true
             },
             {
@@ -273,8 +309,23 @@ const JsonData = () => {
                 category: "input",
                 placeholder: "",
                 value: blogState?.blog_edit_data?.blog_image,
-                change: (e) => dispatch(handleBlogInputOnChange({ type: "blog_image", value: { ...blogState?.blog_edit_data, blog_image: e.target.files[0] } })),
+                change: (e) => dispatch(handleBlogInputOnChange({ blog_image: e.target.files[0] })),
                 isMandatory: true
+            }
+        ],
+
+
+        //                                                              load                                                                  //
+        loadVerifyInputs: [
+            {
+                name: "Mobile number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.mobile_number,
+                change: (e) => dispatch(handleOnchangeTruckVerify(e.target.value)),
+                isMandatory: true,
+                Err: commonState?.validated ? "Mobile Number Required" : null
             }
         ],
         loadAddEditInputs: [
@@ -284,7 +335,7 @@ const JsonData = () => {
                 category: "input",
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.company_name,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "company_name", value: { ...servicesState?.new_edit_load_card, company_name: e.target.value } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ company_name: e.target.value })),
                 isMandatory: true
             },
             {
@@ -293,7 +344,7 @@ const JsonData = () => {
                 category: "input",
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.contact_number,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "contact_number", value: { ...servicesState?.new_edit_load_card, contact_number: e.target.value } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ contact_number: e.target.value })),
                 isMandatory: true
             },
             {
@@ -302,8 +353,8 @@ const JsonData = () => {
                 category: "googleLocation",
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.from_location,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "from_location", value: { ...servicesState?.new_edit_load_card, from_location: e.target.value} })),
-                placedSelectedClick : (slectedLoc) => dispatch(handleLoadInputOnChange({ type: "from_location", value: { ...servicesState?.new_edit_load_card, from_location: slectedLoc } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ from_location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleLoadInputOnChange({ from_location: slectedLoc })),
                 isMandatory: true
             },
             {
@@ -312,8 +363,8 @@ const JsonData = () => {
                 category: "googleLocation",
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.to_location,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "to_location", value: { ...servicesState?.new_edit_load_card, to_location: e.target.value } })),
-                placedSelectedClick : (slectedLoc) => dispatch(handleLoadInputOnChange({ type: "to_location", value: { ...servicesState?.new_edit_load_card, to_location: slectedLoc } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ to_location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleLoadInputOnChange({ to_location: slectedLoc })),
                 isMandatory: true
             },
             {
@@ -322,7 +373,7 @@ const JsonData = () => {
                 category: "input",
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.material,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "material", value: { ...servicesState?.new_edit_load_card, material: e.target.value } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ material: e.target.value })),
                 isMandatory: true
             },
             {
@@ -331,7 +382,7 @@ const JsonData = () => {
                 category: "input",
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.ton,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "ton", value: { ...servicesState?.new_edit_load_card, ton: e.target.value } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ ton: e.target.value })),
                 isMandatory: true
             },
             {
@@ -341,7 +392,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.truck_body_type,
                 options: jsonOnly.truckBodyType,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "truck_body_type", value: { ...servicesState?.new_edit_load_card, truck_body_type: e.target.value } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ truck_body_type: e.target.value })),
                 isMandatory: true
             },
             {
@@ -351,7 +402,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.no_of_tyres,
                 options: jsonOnly.noOfTyres,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "no_of_tyres", value: { ...servicesState?.new_edit_load_card, no_of_tyres: e.target.value } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ no_of_tyres: e.target.value })),
                 isMandatory: true
             },
             {
@@ -360,7 +411,379 @@ const JsonData = () => {
                 category: "textbox",
                 placeholder: "",
                 value: servicesState?.new_edit_load_card?.blog_content,
-                change: (e) => dispatch(handleLoadInputOnChange({ type: "blog_content", value: { ...servicesState?.new_edit_load_card, blog_content: e.target.value } })),
+                change: (e) => dispatch(handleLoadInputOnChange({ blog_content: e.target.value })),
+                isMandatory: true
+            }
+        ],
+        loadFilterInputs: [
+            {
+                name: "From",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.from_location,
+                change: (e) => dispatch(handleOnchangeLoadFilter({ from_location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeLoadFilter({ from_location: slectedLoc })),
+                isMandatory: true
+            },
+            {
+                name: "To",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                options: jsonOnly.states,
+                value: servicesState?.load_filter_card?.to_location,
+                change: (value) => dispatch(handleOnchangeLoadFilter({ to_location: value })),
+                isMandatory: true
+            },
+            {
+                name: "Truck Body Type",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.truck_body_type,
+                options: jsonOnly.truckBodyType,
+                change: (e) => dispatch(handleOnchangeLoadFilter({ truck_body_type: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "No Of Tyres",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.no_of_tyres,
+                options: jsonOnly.noOfTyres,
+                change: (e) => dispatch(handleOnchangeLoadFilter({ no_of_tyres: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Material",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.material,
+                change: (e) => dispatch(handleOnchangeLoadFilter({ material: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Ton",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.ton,
+                options: jsonOnly.tonnage,
+                change: (e) => dispatch(handleOnchangeLoadFilter({ ton: e.target.value })),
+                isMandatory: true
+            }
+        ],
+
+
+        //                                                              truck                                                                  //
+        truckVerifyInputs: [
+            {
+                name: "Mobile number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.mobile_number,
+                change: (e) => dispatch(handleOnchangeLoadVerify(e.target.value)),
+                isMandatory: true,
+                Err: commonState?.validated ? "Mobile Number Required" : null
+            }
+        ],
+        truckAddEditInputs: [
+            {
+                name: "Owner Name",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.owner_name,
+                change: (e) => dispatch(handleTruckInputOnChange({ owner_name: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Contact Number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.contact_number,
+                change: (e) => dispatch(handleTruckInputOnChange({ contact_number: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Name of the transport",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.name_of_the_transport,
+                change: (e) => dispatch(handleTruckInputOnChange({ name_of_the_transport: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Ton",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.ton,
+                change: (e) => dispatch(handleTruckInputOnChange({ ton: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Brand Name",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.brand_name,
+                options: jsonOnly.truckBrand,
+                change: (e) => dispatch(handleTruckInputOnChange({ brand_name: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "From",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.from_location,
+                change: (e) => dispatch(handleTruckInputOnChange({ from_location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleTruckInputOnChange({ from_location: slectedLoc })),
+                isMandatory: true
+            },
+            {
+                name: "To",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.to_location,
+                change: (e) => dispatch(handleTruckInputOnChange({ to_location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleTruckInputOnChange({ to_location: slectedLoc })),
+                isMandatory: true
+            },
+
+            {
+                name: "Truck Body Type",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.truck_body_type,
+                options: jsonOnly.truckBodyType,
+                change: (e) => dispatch(handleTruckInputOnChange({ truck_body_type: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "No Of Tyres",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.no_of_tyres,
+                options: jsonOnly.noOfTyres,
+                change: (e) => dispatch(handleTruckInputOnChange({ no_of_tyres: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Blog Content",
+                type: "textbox",
+                category: "textbox",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.blog_content,
+                change: (e) => dispatch(handleTruckInputOnChange({ blog_content: e.target.value })),
+                isMandatory: true
+            }
+        ],
+        truckFilterInputs: [
+            {
+                name: "From",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.from_location,
+                change: (e) => dispatch(handleOnchangeTruckFilter({ from_location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeTruckFilter({ from_location: slectedLoc })),
+                isMandatory: true
+            },
+            {
+                name: "To",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                options: jsonOnly.states,
+                value: servicesState?.load_filter_card?.to_location,
+                change: (value) => dispatch(handleOnchangeTruckFilter({ to_location: value })),
+                isMandatory: true
+            },
+            {
+                name: "Brand Name",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.new_edit_truck_card?.brand_name,
+                options: jsonOnly.truckBrand,
+                change: (e) => dispatch(handleOnchangeTruckFilter({ brand_name: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Truck Body Type",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.truck_body_type,
+                options: jsonOnly.truckBodyType,
+                change: (e) => dispatch(handleOnchangeTruckFilter({ truck_body_type: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "No Of Tyres",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.no_of_tyres,
+                options: jsonOnly.noOfTyres,
+                change: (e) => dispatch(handleOnchangeTruckFilter({ no_of_tyres: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Ton",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.ton,
+                options: jsonOnly.tonnage,
+                change: (e) => dispatch(handleOnchangeTruckFilter({ ton: e.target.value })),
+                isMandatory: true
+            }
+        ],
+
+
+        //                                                              truck                                                                  //
+        driverVerifyInputs: [
+            {
+                name: "Mobile number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.mobile_number,
+                change: (e) => dispatch(handleOnchangeDriverVerify(e.target.value)),
+                isMandatory: true,
+                Err: commonState?.validated ? "Mobile Number Required" : null
+            }
+        ],
+        driverAddEditInputs: [
+            {
+                name: "Owner Name",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.new_edit_driver_card?.owner_name,
+                change: (e) => dispatch(handleDriverInputOnChange({ owner_name: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Company Name",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.new_edit_driver_card?.company_name,
+                change: (e) => dispatch(handleDriverInputOnChange({ company_name: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Contact Number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: servicesState?.new_edit_driver_card?.contact_number,
+                change: (e) => dispatch(handleDriverInputOnChange({ contact_number: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "From",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: servicesState?.new_edit_driver_card?.from_location,
+                change: (e) => dispatch(handleDriverInputOnChange({ from_location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleDriverInputOnChange({ from_location: slectedLoc })),
+                isMandatory: true
+            },
+            {
+                name: "To",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: servicesState?.new_edit_driver_card?.to_location,
+                change: (e) => dispatch(handleDriverInputOnChange({ to_location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleDriverInputOnChange({ to_location: slectedLoc })),
+                isMandatory: true
+            },
+
+            {
+                name: "Truck Body Type",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.new_edit_driver_card?.truck_body_type,
+                options: jsonOnly.truckBodyType,
+                change: (e) => dispatch(handleDriverInputOnChange({ truck_body_type: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "No Of Tyres",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.new_edit_driver_card?.no_of_tyres,
+                options: jsonOnly.noOfTyres,
+                change: (e) => dispatch(handleDriverInputOnChange({ no_of_tyres: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Blog Content",
+                type: "textbox",
+                category: "textbox",
+                placeholder: "",
+                value: servicesState?.new_edit_driver_card?.blog_content,
+                change: (e) => dispatch(handleDriverInputOnChange({ blog_content: e.target.value })),
+                isMandatory: true
+            }
+        ],
+        driverFilterInputs: [
+            {
+                name: "From",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.from_location,
+                change: (e) => dispatch(handleOnchangeDriverFilter({ from_location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeDriverFilter({ from_location: slectedLoc })),
+                isMandatory: true
+            },
+            {
+                name: "To",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                options: jsonOnly.states,
+                value: servicesState?.load_filter_card?.to_location,
+                change: (value) => dispatch(handleOnchangeDriverFilter({ to_location: value })),
+                isMandatory: true
+            },
+            {
+                name: "Truck Body Type",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.truck_body_type,
+                options: jsonOnly.truckBodyType,
+                change: (e) => dispatch(handleOnchangeDriverFilter({ truck_body_type: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "No Of Tyres",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: servicesState?.load_filter_card?.no_of_tyres,
+                options: jsonOnly.noOfTyres,
+                change: (e) => dispatch(handleOnchangeDriverFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
             }
         ],
