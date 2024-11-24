@@ -58,7 +58,6 @@ const Blog = () => {
                                         <div className='cursor-pointer' onClick={() => document.getElementById('file_upload').click()}>
                                             <Input
                                                 type={ipVal?.type}
-                                                value={ipVal?.value}
                                                 change={ipVal?.change}
                                                 label={ipVal?.name}
                                                 labelClassName="text-secondary mb-0 fs-14"

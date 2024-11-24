@@ -1,14 +1,80 @@
-import { useSelector } from 'react-redux';
 import Icons from './Icons';
 import { useDispatch } from 'Components/CustomHooks';
 import { handleBlogInputOnChange } from 'Actions/Pages_actions/BlogAction';
-import { handleDriverInputOnChange, handleLoadInputOnChange, handleOnchangeDriverFilter, handleOnchangeDriverVerify, handleOnchangeLoadFilter, handleOnchangeLoadVerify, handleOnchangeTruckFilter, handleOnchangeTruckVerify, handleTruckInputOnChange } from 'Actions/Pages_actions/ServicesActions';
+import ShortUniqueId from 'short-unique-id';
+import store from 'StoreIndex';
+import {
+    handleBuyAndSellInputOnChange,
+    handleDriverInputOnChange,
+    handleLoadInputOnChange,
+    handleOnchangeBuyAndSellVerify,
+    handleOnchangeDriverFilter,
+    handleOnchangeDriverVerify,
+    handleOnchangeLoadFilter,
+    handleOnchangeLoadVerify,
+    handleOnchangeTruckFilter,
+    handleOnchangeTruckVerify,
+    handleTruckInputOnChange
+} from 'Actions/Pages_actions/ServicesActions';
 
+
+
+
+function modelYears() {
+    const getYear = new Date().getFullYear()
+    var l = []
+    for (var i = 1980; i <= getYear; i++) {
+        l[l.length] = i
+    }
+
+    return l
+}
+
+function modelTenYears() {
+    const getYear = new Date().getFullYear();
+    let l = [];
+    for (let i = 1980; i <= getYear; i += 10) {
+        const incrementTenYear = i + 10
+        if (incrementTenYear > getYear) {
+            l.push(`${i} - ${getYear}`);
+        } else {
+            l.push(`${i} - ${i + 10}`);
+        }
+    }
+    return l;
+}
+
+const readFile = (file) => {
+    return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.onloadend = () => {
+            resolve({
+                id: new ShortUniqueId({ length: 10 }),
+                filename: file.name,
+                filetype: file.type,
+                fileimage: reader.result,
+                datetime: file.lastModifiedDate.toLocaleString("en-IN"),
+                filesize: filesizes(file.size),
+            });
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+};
+
+const filesizes = (bytes, decimals = 2) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+};
 
 const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
-    const { commonState, servicesState, blogState } = useSelector((state) => state);
+    const state = store.getState();
 
     const jsonOnly = {
         sidebarMenus: [
@@ -261,7 +327,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: blogState?.blog_edit_data?.langugae,
+                value: state?.blogState?.blog_edit_data?.langugae,
                 options: jsonOnly.blogLanguages,
                 change: (e) => dispatch(handleBlogInputOnChange({ langugae: e.target.value })),
                 isMandatory: true
@@ -271,7 +337,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: blogState?.blog_edit_data?.blogCategory,
+                value: state?.blogState?.blog_edit_data?.blogCategory,
                 options: jsonOnly.services,
                 change: (e) => dispatch(handleBlogInputOnChange({ blogCategory: e.target.value })),
                 isMandatory: true
@@ -281,7 +347,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: blogState?.blog_edit_data?.heading,
+                value: state?.blogState?.blog_edit_data?.heading,
                 change: (e) => dispatch(handleBlogInputOnChange({ heading: e.target.value })),
                 isMandatory: true
             },
@@ -290,16 +356,16 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: blogState?.blog_edit_data?.sub_heading,
+                value: state?.blogState?.blog_edit_data?.sub_heading,
                 change: (e) => dispatch(handleBlogInputOnChange({ sub_heading: e.target.value })),
                 isMandatory: true
             },
             {
-                name: "Blog Content",
+                name: "Description",
                 type: "textbox",
                 category: "textbox",
                 placeholder: "",
-                value: blogState?.blog_edit_data?.blog_content,
+                value: state?.blogState?.blog_edit_data?.blog_content,
                 change: (e) => dispatch(handleBlogInputOnChange({ blog_content: e.target.value })),
                 isMandatory: true
             },
@@ -308,7 +374,7 @@ const JsonData = () => {
                 type: "file",
                 category: "input",
                 placeholder: "",
-                value: blogState?.blog_edit_data?.blog_image,
+                value: state?.blogState?.blog_edit_data?.blog_image,
                 change: (e) => dispatch(handleBlogInputOnChange({ blog_image: e.target.files[0] })),
                 isMandatory: true
             }
@@ -322,10 +388,14 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.mobile_number,
-                change: (e) => dispatch(handleOnchangeTruckVerify(e.target.value)),
+                value: state?.servicesState?.mobile_number || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(handleOnchangeLoadVerify(e.target.value))
+                    }
+                },
                 isMandatory: true,
-                Err: commonState?.validated ? "Mobile Number Required" : null
+                Err: state?.commonState?.validated ? "Mobile Number Required" : null
             }
         ],
         loadAddEditInputs: [
@@ -334,7 +404,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_load_card?.company_name,
+                value: state?.servicesState?.new_edit_load_card?.company_name || '',
                 change: (e) => dispatch(handleLoadInputOnChange({ company_name: e.target.value })),
                 isMandatory: true
             },
@@ -343,8 +413,12 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_load_card?.contact_number,
-                change: (e) => dispatch(handleLoadInputOnChange({ contact_number: e.target.value })),
+                value: state?.servicesState?.new_edit_load_card?.contact_number || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(handleLoadInputOnChange({ contact_number: e.target.value }))
+                    }
+                },
                 isMandatory: true
             },
             {
@@ -352,7 +426,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: servicesState?.new_edit_load_card?.from_location,
+                value: state?.servicesState?.new_edit_load_card?.from_location || '',
                 change: (e) => dispatch(handleLoadInputOnChange({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleLoadInputOnChange({ from_location: slectedLoc })),
                 isMandatory: true
@@ -362,7 +436,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: servicesState?.new_edit_load_card?.to_location,
+                value: state?.servicesState?.new_edit_load_card?.to_location || '',
                 change: (e) => dispatch(handleLoadInputOnChange({ to_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleLoadInputOnChange({ to_location: slectedLoc })),
                 isMandatory: true
@@ -372,7 +446,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_load_card?.material,
+                value: state?.servicesState?.new_edit_load_card?.material || '',
                 change: (e) => dispatch(handleLoadInputOnChange({ material: e.target.value })),
                 isMandatory: true
             },
@@ -381,8 +455,12 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_load_card?.ton,
-                change: (e) => dispatch(handleLoadInputOnChange({ ton: e.target.value })),
+                value: state?.servicesState?.new_edit_load_card?.ton || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value)) {
+                        dispatch(handleLoadInputOnChange({ ton: e.target.value }))
+                    }
+                },
                 isMandatory: true
             },
             {
@@ -390,7 +468,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_load_card?.truck_body_type,
+                value: state?.servicesState?.new_edit_load_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleLoadInputOnChange({ truck_body_type: e.target.value })),
                 isMandatory: true
@@ -400,18 +478,18 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_load_card?.no_of_tyres,
+                value: state?.servicesState?.new_edit_load_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleLoadInputOnChange({ no_of_tyres: e.target.value })),
                 isMandatory: true
             },
             {
-                name: "Blog Content",
+                name: "Description",
                 type: "textbox",
                 category: "textbox",
                 placeholder: "",
-                value: servicesState?.new_edit_load_card?.blog_content,
-                change: (e) => dispatch(handleLoadInputOnChange({ blog_content: e.target.value })),
+                value: state?.servicesState?.new_edit_load_card?.description || '',
+                change: (e) => dispatch(handleLoadInputOnChange({ description: e.target.value })),
                 isMandatory: true
             }
         ],
@@ -421,7 +499,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.from_location,
+                value: state?.servicesState?.load_filter_card?.from_location || '',
                 change: (e) => dispatch(handleOnchangeLoadFilter({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeLoadFilter({ from_location: slectedLoc })),
                 isMandatory: true
@@ -432,7 +510,7 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: jsonOnly.states,
-                value: servicesState?.load_filter_card?.to_location,
+                value: state?.servicesState?.load_filter_card?.to_location || '',
                 change: (value) => dispatch(handleOnchangeLoadFilter({ to_location: value })),
                 isMandatory: true
             },
@@ -441,7 +519,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.truck_body_type,
+                value: state?.servicesState?.load_filter_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleOnchangeLoadFilter({ truck_body_type: e.target.value })),
                 isMandatory: true
@@ -451,7 +529,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.no_of_tyres,
+                value: state?.servicesState?.load_filter_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleOnchangeLoadFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
@@ -461,7 +539,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.material,
+                value: state?.servicesState?.load_filter_card?.material || '',
                 change: (e) => dispatch(handleOnchangeLoadFilter({ material: e.target.value })),
                 isMandatory: true
             },
@@ -470,7 +548,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.ton,
+                value: state?.servicesState?.load_filter_card?.ton || '',
                 options: jsonOnly.tonnage,
                 change: (e) => dispatch(handleOnchangeLoadFilter({ ton: e.target.value })),
                 isMandatory: true
@@ -485,19 +563,33 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.mobile_number,
-                change: (e) => dispatch(handleOnchangeLoadVerify(e.target.value)),
+                value: state?.servicesState?.mobile_number || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(handleOnchangeTruckVerify(e.target.value))
+                    }
+                },
                 isMandatory: true,
-                Err: commonState?.validated ? "Mobile Number Required" : null
+                Err: state?.commonState?.validated ? "Mobile Number Required" : null
             }
         ],
         truckAddEditInputs: [
+            {
+                name: "Vehicle Number",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_truck_card?.vehicle_number || '',
+                options: state?.servicesState?.new_edit_truck_card?.vehicle_number_options,
+                change: (e) => dispatch(handleTruckInputOnChange({ vehicle_number: e.target.value })),
+                isMandatory: true
+            },
             {
                 name: "Owner Name",
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.owner_name,
+                value: state?.servicesState?.new_edit_truck_card?.owner_name || '',
                 change: (e) => dispatch(handleTruckInputOnChange({ owner_name: e.target.value })),
                 isMandatory: true
             },
@@ -506,8 +598,12 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.contact_number,
-                change: (e) => dispatch(handleTruckInputOnChange({ contact_number: e.target.value })),
+                value: state?.servicesState?.new_edit_truck_card?.contact_number || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(handleTruckInputOnChange({ contact_number: e.target.value }))
+                    }
+                },
                 isMandatory: true
             },
             {
@@ -515,7 +611,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.name_of_the_transport,
+                value: state?.servicesState?.new_edit_truck_card?.name_of_the_transport || '',
                 change: (e) => dispatch(handleTruckInputOnChange({ name_of_the_transport: e.target.value })),
                 isMandatory: true
             },
@@ -524,8 +620,12 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.ton,
-                change: (e) => dispatch(handleTruckInputOnChange({ ton: e.target.value })),
+                value: state?.servicesState?.new_edit_truck_card?.ton || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value)) {
+                        dispatch(handleTruckInputOnChange({ ton: e.target.value }))
+                    }
+                },
                 isMandatory: true
             },
             {
@@ -533,7 +633,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.brand_name,
+                value: state?.servicesState?.new_edit_truck_card?.brand_name || '',
                 options: jsonOnly.truckBrand,
                 change: (e) => dispatch(handleTruckInputOnChange({ brand_name: e.target.value })),
                 isMandatory: true
@@ -543,7 +643,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.from_location,
+                value: state?.servicesState?.new_edit_truck_card?.from_location || '',
                 change: (e) => dispatch(handleTruckInputOnChange({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleTruckInputOnChange({ from_location: slectedLoc })),
                 isMandatory: true
@@ -553,7 +653,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.to_location,
+                value: state?.servicesState?.new_edit_truck_card?.to_location || '',
                 change: (e) => dispatch(handleTruckInputOnChange({ to_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleTruckInputOnChange({ to_location: slectedLoc })),
                 isMandatory: true
@@ -564,7 +664,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.truck_body_type,
+                value: state?.servicesState?.new_edit_truck_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleTruckInputOnChange({ truck_body_type: e.target.value })),
                 isMandatory: true
@@ -574,18 +674,18 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.no_of_tyres,
+                value: state?.servicesState?.new_edit_truck_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleTruckInputOnChange({ no_of_tyres: e.target.value })),
                 isMandatory: true
             },
             {
-                name: "Blog Content",
+                name: "Description",
                 type: "textbox",
                 category: "textbox",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.blog_content,
-                change: (e) => dispatch(handleTruckInputOnChange({ blog_content: e.target.value })),
+                value: state?.servicesState?.new_edit_truck_card?.description || '',
+                change: (e) => dispatch(handleTruckInputOnChange({ description: e.target.value })),
                 isMandatory: true
             }
         ],
@@ -595,7 +695,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.from_location,
+                value: state?.servicesState?.load_filter_card?.from_location || '',
                 change: (e) => dispatch(handleOnchangeTruckFilter({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeTruckFilter({ from_location: slectedLoc })),
                 isMandatory: true
@@ -606,7 +706,7 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: jsonOnly.states,
-                value: servicesState?.load_filter_card?.to_location,
+                value: state?.servicesState?.load_filter_card?.to_location || '',
                 change: (value) => dispatch(handleOnchangeTruckFilter({ to_location: value })),
                 isMandatory: true
             },
@@ -615,7 +715,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.brand_name,
+                value: state?.servicesState?.new_edit_truck_card?.brand_name || '',
                 options: jsonOnly.truckBrand,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ brand_name: e.target.value })),
                 isMandatory: true
@@ -625,7 +725,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.truck_body_type,
+                value: state?.servicesState?.load_filter_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ truck_body_type: e.target.value })),
                 isMandatory: true
@@ -635,7 +735,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.no_of_tyres,
+                value: state?.servicesState?.load_filter_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
@@ -645,7 +745,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.ton,
+                value: state?.servicesState?.load_filter_card?.ton || '',
                 options: jsonOnly.tonnage,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ ton: e.target.value })),
                 isMandatory: true
@@ -660,19 +760,33 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.mobile_number,
-                change: (e) => dispatch(handleOnchangeDriverVerify(e.target.value)),
+                value: state?.servicesState?.mobile_number || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(handleOnchangeDriverVerify(e.target.value))
+                    }
+                },
                 isMandatory: true,
-                Err: commonState?.validated ? "Mobile Number Required" : null
+                Err: state?.commonState?.validated ? "Mobile Number Required" : null
             }
         ],
         driverAddEditInputs: [
+            {
+                name: "Vehicle Number",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_driver_card?.vehicle_number || '',
+                options: state?.servicesState?.new_edit_driver_card?.vehicle_number_options,
+                change: (e) => dispatch(handleDriverInputOnChange({ vehicle_number: e.target.value })),
+                isMandatory: true
+            },
             {
                 name: "Owner Name",
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_driver_card?.owner_name,
+                value: state?.servicesState?.new_edit_driver_card?.owner_name || '',
                 change: (e) => dispatch(handleDriverInputOnChange({ owner_name: e.target.value })),
                 isMandatory: true
             },
@@ -681,7 +795,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_driver_card?.company_name,
+                value: state?.servicesState?.new_edit_driver_card?.company_name || '',
                 change: (e) => dispatch(handleDriverInputOnChange({ company_name: e.target.value })),
                 isMandatory: true
             },
@@ -690,8 +804,12 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: servicesState?.new_edit_driver_card?.contact_number,
-                change: (e) => dispatch(handleDriverInputOnChange({ contact_number: e.target.value })),
+                value: state?.servicesState?.new_edit_driver_card?.contact_number || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(handleDriverInputOnChange({ contact_number: e.target.value }))
+                    }
+                },
                 isMandatory: true
             },
             {
@@ -699,7 +817,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: servicesState?.new_edit_driver_card?.from_location,
+                value: state?.servicesState?.new_edit_driver_card?.from_location || '',
                 change: (e) => dispatch(handleDriverInputOnChange({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleDriverInputOnChange({ from_location: slectedLoc })),
                 isMandatory: true
@@ -709,7 +827,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: servicesState?.new_edit_driver_card?.to_location,
+                value: state?.servicesState?.new_edit_driver_card?.to_location || '',
                 change: (e) => dispatch(handleDriverInputOnChange({ to_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleDriverInputOnChange({ to_location: slectedLoc })),
                 isMandatory: true
@@ -720,7 +838,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_driver_card?.truck_body_type,
+                value: state?.servicesState?.new_edit_driver_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleDriverInputOnChange({ truck_body_type: e.target.value })),
                 isMandatory: true
@@ -730,18 +848,18 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_driver_card?.no_of_tyres,
+                value: state?.servicesState?.new_edit_driver_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleDriverInputOnChange({ no_of_tyres: e.target.value })),
                 isMandatory: true
             },
             {
-                name: "Blog Content",
+                name: "Description",
                 type: "textbox",
                 category: "textbox",
                 placeholder: "",
-                value: servicesState?.new_edit_driver_card?.blog_content,
-                change: (e) => dispatch(handleDriverInputOnChange({ blog_content: e.target.value })),
+                value: state?.servicesState?.new_edit_driver_card?.description || '',
+                change: (e) => dispatch(handleDriverInputOnChange({ description: e.target.value })),
                 isMandatory: true
             }
         ],
@@ -751,7 +869,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.from_location,
+                value: state?.servicesState?.load_filter_card?.from_location || '',
                 change: (e) => dispatch(handleOnchangeDriverFilter({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeDriverFilter({ from_location: slectedLoc })),
                 isMandatory: true
@@ -762,7 +880,7 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: jsonOnly.states,
-                value: servicesState?.load_filter_card?.to_location,
+                value: state?.servicesState?.load_filter_card?.to_location || '',
                 change: (value) => dispatch(handleOnchangeDriverFilter({ to_location: value })),
                 isMandatory: true
             },
@@ -771,7 +889,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.truck_body_type,
+                value: state?.servicesState?.load_filter_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleOnchangeDriverFilter({ truck_body_type: e.target.value })),
                 isMandatory: true
@@ -781,12 +899,272 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.load_filter_card?.no_of_tyres,
+                value: state?.servicesState?.load_filter_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleOnchangeDriverFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
             }
         ],
+
+
+        //                                                              buy and sell                                                          //
+        buyAndSellVerifyInputs: [
+            {
+                name: "Mobile number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.mobile_number || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(handleOnchangeBuyAndSellVerify(e.target.value))
+                    }
+                },
+                isMandatory: true,
+                Err: state?.commonState?.validated ? "Mobile Number Required" : null
+            }
+        ],
+        buyAndSellAddEdit: [
+            {
+                name: "Model Year",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                options: modelYears(),
+                value: state?.servicesState?.new_edit_buyAndsell_card?.model_year || '',
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ model_year: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Brand Name",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.brand_name || '',
+                options: jsonOnly.truckBrand,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ brand_name: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Owner Name",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.owner_name || '',
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ owner_name: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Vehicle Number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.vehicle_number || '',
+                options: state?.servicesState?.new_edit_buyAndsell_card?.vehicle_number_options,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ vehicle_number: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Kilometers driven",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.kmd_driven || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value)) {
+                        dispatch(handleBuyAndSellInputOnChange({ kmd_driven: e.target.value }))
+                    }
+                },
+                isMandatory: true
+            },
+            {
+                name: "Price",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.price || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value)) {
+                        dispatch(handleBuyAndSellInputOnChange({ price: e.target.value }))
+                    }
+                },
+                isMandatory: true
+            },
+            {
+                name: "Tonnage",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.ton || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value)) {
+                        dispatch(handleBuyAndSellInputOnChange({ ton: e.target.value }))
+                    }
+                },
+                isMandatory: true
+            },
+            {
+                name: "Location",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.location || '',
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleBuyAndSellInputOnChange({ location: slectedLoc })),
+                isMandatory: true
+            },
+            {
+                name: "Contact Number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.contact_number || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(handleBuyAndSellInputOnChange({ contact_number: e.target.value }))
+                    }
+                },
+                isMandatory: true
+            },
+
+            {
+                name: "Truck Body Type",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.truck_body_type || '',
+                options: jsonOnly.truckBodyType,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ truck_body_type: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "No Of Tyres",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.no_of_tyres || '',
+                options: jsonOnly.noOfTyres,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ no_of_tyres: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Upload image",
+                type: "file",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.blog_image_show_ui || [],
+                change: (e) => {
+                    // -- For Multiple File Input
+                    let myImages = state?.servicesState?.new_edit_buyAndsell_card?.blog_image_show_ui;
+                    let makeImagesList = [];
+
+                    // Use `Promise.all` to handle async file reading
+                    Promise.all(
+                        Array.from(e.target.files).map((file) => readFile(file))
+                    )
+                        .then((results) => {
+                            makeImagesList = results;
+                            if (myImages) {
+                                makeImagesList = [...myImages, ...makeImagesList];
+                            }
+                            dispatch(handleBuyAndSellInputOnChange({ blog_image_show_ui: makeImagesList, blog_image_send_api: e.target.files }));
+                        })
+                        .catch((error) => console.error('Error reading files:', error));
+                },
+                isMandatory: true
+            },
+            {
+                name: "Description",
+                type: "textbox",
+                category: "textbox",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.description || '',
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ description: e.target.value })),
+                isMandatory: true
+            }
+        ],
+        buyAndSellFilterInputs: [
+            {
+                name: "Model Year",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                options: modelTenYears(),
+                value: state?.servicesState?.new_edit_buyAndsell_card?.model_year,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ model_year: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Brand Name",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.brand_name,
+                options: jsonOnly.truckBrand,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ brand_name: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Location",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.location,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleBuyAndSellInputOnChange({ location: slectedLoc })),
+                isMandatory: true
+            },
+            {
+                name: "Kilometers driven",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.kmd_driven,
+                options: jsonOnly.filterKilometers,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ kmd_driven: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Price",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.price,
+                options: jsonOnly.filterPrice,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ price: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Tonnage",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.ton,
+                options: jsonOnly.tonnage,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ ton: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Truck Body Type",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.truck_body_type,
+                options: jsonOnly.truckBodyType,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ truck_body_type: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "No Of Tyres",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_buyAndsell_card?.no_of_tyres,
+                options: jsonOnly.noOfTyres,
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ no_of_tyres: e.target.value })),
+                isMandatory: true
+            }
+        ]
     }
 
     return {

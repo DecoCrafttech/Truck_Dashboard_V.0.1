@@ -10,7 +10,9 @@ const Input = ({
     labelClassName,
     mandatory,
     inputError,
-    change
+    change,
+    multiple,
+    value
 }) => {
 
     return (
@@ -32,6 +34,8 @@ const Input = ({
                 placeholder={placeholder}
                 className={className}
                 onChange={change}
+                multiple={multiple}
+                value={value}
             />
             {
                 inputError ?

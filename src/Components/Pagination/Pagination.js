@@ -47,9 +47,9 @@ const Pagination = ({
       >
         <div className="arrow left" />
       </li>
-      {paginationRange?.map(pageNumber => {
+      {paginationRange?.map((pageNumber,pageInd) => {
         if (pageNumber === DOTS) {
-          return <li className="pagination-item dots">&#8230;</li>;
+          return <li className="pagination-item dots" key={pageInd}>&#8230;</li>;
         }
 
         return (
@@ -58,6 +58,7 @@ const Pagination = ({
               selected: pageNumber === currentPage
             })}
             onClick={() => dispatch(updateCurrentPage(pageNumber))}
+            key={pageInd}
           >
             {pageNumber}
           </li>

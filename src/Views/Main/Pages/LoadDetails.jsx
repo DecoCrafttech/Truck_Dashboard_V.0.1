@@ -7,6 +7,7 @@ import Input from 'Components/Input/Input'
 import InputOnly from 'Components/Input/inputOnly'
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import SelectBox from 'Components/Input/SelectBox'
+import Textbox from 'Components/Input/textbox'
 import ModalComponent from 'Components/Modal/Modal'
 import Pagination from 'Components/Pagination/Pagination'
 import React, { Fragment, useEffect } from 'react'
@@ -101,6 +102,20 @@ const LoadDetails = () => {
                             type={ipVal?.type}
                             value={ipVal?.value}
                             change={ipVal?.change}
+                            label={ipVal?.name}
+                            labelClassName="text-secondary mb-0 fs-14"
+                            mandatory={ipVal?.isMandatory}
+                        />
+                    </div>
+
+                case "textbox":
+                    return <div className='col-12 p-1 mt-2'>
+                        <Textbox
+                            value={ipVal?.value}
+                            change={ipVal?.change}
+                            cols={10}
+                            rows={5}
+                            className=""
                             label={ipVal?.name}
                             labelClassName="text-secondary mb-0 fs-14"
                             mandatory={ipVal?.isMandatory}

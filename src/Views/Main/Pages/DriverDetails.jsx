@@ -1,39 +1,3 @@
-// import { handleGetDriver } from 'Actions/Pages_actions/ServicesActions'
-// import DriverCard from 'Components/Card/DriverCard'
-// import { useDispatch } from 'Components/CustomHooks'
-// import React, { Fragment, useEffect } from 'react'
-// import { useSelector } from 'react-redux'
-
-// const DriverDetails = () => {
-//     const { driver_glow, alldrivers_details } = useSelector((state) => state.servicesState)
-//     const dispatch = useDispatch();
-
-//     useEffect(() => {
-//         dispatch(handleGetDriver)
-//     }, [])
-
-
-//     return (
-//         <div className="d-flex flex-wrap g-2 bg-white px-2 py-3 overflowY h-100 rounded placeholder-glow">
-//             {driver_glow ?
-//                 [...Array(6)].map((value, placeholderInd) => (
-//                     <DriverCard placeholder={driver_glow} key={placeholderInd} />
-//                 ))
-//                 :
-//                 alldrivers_details.map((driverData, driverInd) => (
-//                     <Fragment key={driverInd}>
-//                         <DriverCard placeholder={driver_glow} driver_data={driverData} />
-//                     </Fragment>
-//                 ))
-//             }
-//         </div>
-//     )
-// }
-
-// export default DriverDetails
-
-
-
 import { handleCreateModal, handleFilterModal, handleGetDriver } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
 import DriverCard from 'Components/Card/DriverCard'
@@ -43,6 +7,7 @@ import Input from 'Components/Input/Input'
 import InputOnly from 'Components/Input/inputOnly'
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import SelectBox from 'Components/Input/SelectBox'
+import Textbox from 'Components/Input/textbox'
 import ModalComponent from 'Components/Modal/Modal'
 import Pagination from 'Components/Pagination/Pagination'
 import React, { Fragment, useEffect } from 'react'
@@ -137,6 +102,20 @@ const DriverDetails = () => {
                             type={ipVal?.type}
                             value={ipVal?.value}
                             change={ipVal?.change}
+                            label={ipVal?.name}
+                            labelClassName="text-secondary mb-0 fs-14"
+                            mandatory={ipVal?.isMandatory}
+                        />
+                    </div>
+
+                case "textbox":
+                    return <div className='col-12 p-1 mt-2'>
+                        <Textbox
+                            value={ipVal?.value}
+                            change={ipVal?.change}
+                            cols={10}
+                            rows={5}
+                            className=""
                             label={ipVal?.name}
                             labelClassName="text-secondary mb-0 fs-14"
                             mandatory={ipVal?.isMandatory}

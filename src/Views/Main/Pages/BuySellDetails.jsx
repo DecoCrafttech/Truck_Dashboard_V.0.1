@@ -1,49 +1,13 @@
-// import React, { Fragment, useEffect } from 'react'
-// import { handleGetBuyandSell } from 'Actions/Pages_actions/ServicesActions';
-// import { useDispatch, useSelector } from 'react-redux';
-// import BuyandSellCard from 'Components/Card/BuyandSellCard';
-
-// const BuySellDetails = () => {
-//     const { buyAndsell_glow, allbuyAndsell_details } = useSelector((state) => state.servicesState)
-//     const dispatch = useDispatch();
-
-//     useEffect(() => {
-//         dispatch(handleGetBuyandSell)
-//     }, [])
-
-
-//     return (
-//         <div className="d-flex flex-wrap g-2 bg-white px-2 py-3 overflowY h-100 rounded placeholder-glow">
-//             {buyAndsell_glow ?
-//                 [...Array(6)].map((value, placeholderInd) => (
-//                     <BuyandSellCard placeholder={buyAndsell_glow} key={placeholderInd} />
-//                 ))
-//                 :
-//                 allbuyAndsell_details.map((truckData, truckInd) => (
-//                     <Fragment key={truckInd}>
-//                         <BuyandSellCard placeholder={buyAndsell_glow} truck_data={truckData} />
-//                     </Fragment>
-//                 ))
-//             }
-//         </div>
-//     )
-// }
-
-// export default BuySellDetails
-
-
-
-
-import { handleCreateModal, handleFilterModal, handleGetBuyandSell } from 'Actions/Pages_actions/ServicesActions'
+import { handleBuyAndSellInputOnChange, handleCreateModal, handleFilterModal, handleGetBuyandSell } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
 import BuyandSellCard from 'Components/Card/BuyandSellCard'
-import TruckCard from 'Components/Card/TruckCard'
 import { useDispatch } from 'Components/CustomHooks'
 import GoogleLocationInput from 'Components/Input/GoogleLocationInput'
 import Input from 'Components/Input/Input'
 import InputOnly from 'Components/Input/inputOnly'
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import SelectBox from 'Components/Input/SelectBox'
+import Textbox from 'Components/Input/textbox'
 import ModalComponent from 'Components/Modal/Modal'
 import Pagination from 'Components/Pagination/Pagination'
 import React, { Fragment, useEffect } from 'react'
@@ -63,19 +27,35 @@ const BuySellDetails = () => {
     }, [])
 
 
+    const DeleteSelectFile = (id) => {
+        const result = servicesState?.new_edit_buyAndsell_card?.blog_image_show_ui.filter((data) => data.id !== id);
+
+        const overallFile = result.map((data) => data.filename);
+        var newImages = [];
+        for (let i = 0; i < servicesState?.new_edit_buyAndsell_card?.blog_image_send_api.length; i++) {
+            if (overallFile.includes(servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i].name)) {
+                newImages[newImages.length] = servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i];
+            }
+        }
+
+        dispatch(handleBuyAndSellInputOnChange({ blog_image_show_ui: result, blog_image_send_api: newImages }));
+    };
+
+
+
     function modalHeaderFun() {
         switch (servicesState?.modal_type) {
             case "Edit":
-                return <h6 className='mb-0'>Edit Truck</h6>;
+                return <h6 className='mb-0'>Edit Buy And Sell</h6>;
 
             case "Delete":
-                return <h6 className='mb-0'>Delete Truck</h6>;
+                return <h6 className='mb-0'>Delete Buy And Sell</h6>;
 
             case "Create":
-                return <h6 className='mb-0'>Create Truck</h6>;
+                return <h6 className='mb-0'>Create Buy And Sell</h6>;
 
             case "Filter":
-                return <h6 className='mb-0'>Filter Truck</h6>;
+                return <h6 className='mb-0'>Filter Buy And Sell</h6>;
 
             default:
                 break;
@@ -85,15 +65,15 @@ const BuySellDetails = () => {
     function dynamicInput() {
         let funBy = null
         if (["Edit", "Create"].includes(servicesState?.modal_type)) {
-            funBy = JsonJsx?.truckAddEditInputs
+            funBy = JsonJsx?.buyAndSellAddEdit
         } else {
-            funBy = JsonJsx?.truckFilterInputs
+            funBy = JsonJsx?.buyAndSellFilterInputs
         }
 
         return funBy?.map((ipVal, iPInd) => {
             switch (ipVal?.category) {
                 case "select":
-                    return <div className='col-6 p-1 mt-2'>
+                    return <div className='col-6 p-1 mt-2' key={iPInd}>
                         {
                             servicesState?.modal_type === "Filter" && ipVal?.name === "To" ?
                                 <ReactDropdownSelect
@@ -120,7 +100,7 @@ const BuySellDetails = () => {
                     </div>
 
                 case "googleLocation":
-                    return <div className='col-6 p-1 mt-2'>
+                    return <div className='col-6 p-1 mt-2' key={iPInd}>
                         <GoogleLocationInput
                             name={ipVal?.name}
                             value={ipVal?.value}
@@ -133,11 +113,91 @@ const BuySellDetails = () => {
                     </div>
 
                 case "input":
-                    return <div className="col-6 p-1 mt-2">
-                        <Input
-                            type={ipVal?.type}
+                    return ipVal?.type === "file" ?
+                        <Fragment>
+                            <div className='cursor-pointer col-12' onClick={() => document.getElementById('file_upload').click()} key={iPInd}>
+                                <Input
+                                    type={ipVal?.type}
+                                    change={ipVal?.change}
+                                    label={ipVal?.name}
+                                    labelClassName="text-secondary mb-0 fs-14"
+                                    mandatory={ipVal?.isMandatory}
+                                    className="d-none"
+                                    htmlFor="file_upload"
+                                    multiple={true}
+                                />
+                                <div className='border py-2 rounded-2 col-12 text-center'>
+                                    <span className='me-2'>{Icons.fileUploadIcon}</span>
+                                    <span className='text-secondary fs-15'>Click here to choose image</span>
+                                </div>
+                            </div>
+
+                            <div className="mt-4 w-100">
+                                {ipVal?.value?.map((data, index) => {
+                                    const {
+                                        id,
+                                        filename, 
+                                        fileimage,
+                                        datetime,
+                                        filesize,
+                                    } = data;
+                                    return (
+                                        <div className="file-atc-box w-100" key={id}>
+                                            {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ? (
+                                                <div className="file-image">
+                                                    {" "}
+                                                    <img src={fileimage} alt="" />
+                                                </div>
+                                            ) : (
+                                                <div className="file-image">
+                                                    <i className="far fa-file-alt"></i>
+                                                </div>
+                                            )}
+                                            <div className="file-detail row">
+                                                <h6>{filename}</h6>
+                                                <div className="col-9">
+                                                    <p>
+                                                        <span>Size : {filesize}</span>,
+                                                        <span className="ps-1 ml-2">
+                                                            Modified Time : {datetime}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div className="file-actions col-3">
+                                                    <button
+                                                        type="button"
+                                                        className="file-action-btn"
+                                                        onClick={() => DeleteSelectFile(id)}
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </Fragment>
+                        :
+                        <div className="col-6 p-1 mt-2" key={iPInd}>
+                            <Input
+                                type={ipVal?.type}
+                                value={ipVal?.value}
+                                change={ipVal?.change}
+                                label={ipVal?.name}
+                                labelClassName="text-secondary mb-0 fs-14"
+                                mandatory={ipVal?.isMandatory}
+                            />
+                        </div>
+
+                case "textbox":
+                    return <div className='col-12 p-1 mt-2' key={iPInd}>
+                        <Textbox
                             value={ipVal?.value}
                             change={ipVal?.change}
+                            cols={10}
+                            rows={5}
+                            className=""
                             label={ipVal?.name}
                             labelClassName="text-secondary mb-0 fs-14"
                             mandatory={ipVal?.isMandatory}
@@ -150,6 +210,7 @@ const BuySellDetails = () => {
         })
     }
 
+
     function modalBodyFun() {
         switch (servicesState?.modal_type) {
             case "Edit":
@@ -160,7 +221,7 @@ const BuySellDetails = () => {
                         dynamicInput()
                         :
                         JsonJsx?.loadVerifyInputs?.map((ipVal, iPInd) => {
-                            return <div className="col-12 p-1 mt-2 p-4">
+                            return <div className="col-12 p-1 mt-2 p-4" key={iPInd}>
                                 <Input
                                     type={ipVal?.type}
                                     value={ipVal?.value}
@@ -302,9 +363,9 @@ const BuySellDetails = () => {
                                 <BuyandSellCard placeholder={servicesState?.buyAndsell_glow} key={placeholderInd} />
                             ))
                             :
-                            servicesState?.allbuyAndsell_details.map((truckData, truckInd) => (
-                                <Fragment key={truckInd}>
-                                    <BuyandSellCard placeholder={servicesState?.buyAndsell_glow} truck_data={truckData} />
+                            servicesState?.allbuyAndsell_details.map((buyAndSellData, buyAndSellInd) => (
+                                <Fragment key={buyAndSellInd}>
+                                    <BuyandSellCard placeholder={servicesState?.buyAndsell_glow} buy_sell_data={buyAndSellData} />
                                 </Fragment>
                             ))
                         }
@@ -344,6 +405,7 @@ const BuySellDetails = () => {
                 modalCloseButton={true}
                 showModalHeader={true}
                 modalHeaderClassname="border-0"
+                modalClassname={["Edit", "Create"].includes(servicesState?.modal_type) ? "buyAndSell_model_height" : ''}
                 modalHeader={modalHeaderFun()}
                 modalBodyClassname="py-2"
                 modalBody={<div className='d-flex flex-wrap p-3 pt-0'>{modalBodyFun()}</div>}

@@ -1,37 +1,3 @@
-// import { handleGetTruck } from 'Actions/Pages_actions/ServicesActions';
-// import React, { Fragment, useEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux';
-// import TruckCard from 'Components/Card/TruckCard';
-
-// const TruckDetails = () => {
-//     const { truck_glow, alltrucks_details } = useSelector((state) => state.servicesState)
-//     const dispatch = useDispatch();
-
-//     useEffect(() => {
-//         dispatch(handleGetTruck)
-//     }, [])
-
-
-//     return (
-//         <div className="d-flex flex-wrap g-2 bg-white px-2 py-3 overflowY h-100 rounded placeholder-glow">
-//             {truck_glow ?
-//                 [...Array(6)].map((value, placeholderInd) => (
-//                     <TruckCard placeholder={truck_glow} key={placeholderInd} />
-//                 ))
-//                 :
-//                 alltrucks_details.map((truckData, truckInd) => (
-//                     <Fragment key={truckInd}>
-//                         <TruckCard placeholder={truck_glow} truck_data={truckData} />
-//                     </Fragment>
-//                 ))
-//             }
-//         </div>
-//     )
-// }
-
-// export default TruckDetails
-
-
 import { handleCreateModal, handleFilterModal, handleGetTruck } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
 import TruckCard from 'Components/Card/TruckCard'
@@ -41,6 +7,7 @@ import Input from 'Components/Input/Input'
 import InputOnly from 'Components/Input/inputOnly'
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import SelectBox from 'Components/Input/SelectBox'
+import Textbox from 'Components/Input/textbox'
 import ModalComponent from 'Components/Modal/Modal'
 import Pagination from 'Components/Pagination/Pagination'
 import React, { Fragment, useEffect } from 'react'
@@ -135,6 +102,20 @@ const TruckDetails = () => {
                             type={ipVal?.type}
                             value={ipVal?.value}
                             change={ipVal?.change}
+                            label={ipVal?.name}
+                            labelClassName="text-secondary mb-0 fs-14"
+                            mandatory={ipVal?.isMandatory}
+                        />
+                    </div>
+
+                case "textbox":
+                    return <div className='col-12 p-1 mt-2'>
+                        <Textbox
+                            value={ipVal?.value}
+                            change={ipVal?.change}
+                            cols={10}
+                            rows={5}
+                            className=""
                             label={ipVal?.name}
                             labelClassName="text-secondary mb-0 fs-14"
                             mandatory={ipVal?.isMandatory}
@@ -301,7 +282,7 @@ const TruckDetails = () => {
                             :
                             servicesState?.alltrucks_details.map((truckData, truckInd) => (
                                 <Fragment key={truckInd}>
-                                    <TruckCard placeholder={servicesState?.truck_glow} truck_data={truckData} key={truckInd}/>
+                                    <TruckCard placeholder={servicesState?.truck_glow} truck_data={truckData} key={truckInd} />
                                 </Fragment>
                             ))
                         }

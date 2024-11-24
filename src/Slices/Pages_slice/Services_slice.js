@@ -295,8 +295,8 @@ const servicesSlice = createSlice(({
 
 
 
-        //                                                            driver api's                                                         //
-        //get driver api
+        //                                                            buy and sell api's                                                         //
+        //get buy and sell api
         buyAndsellGetRequest(state, action) {
             return {
                 ...state,
@@ -318,7 +318,31 @@ const servicesSlice = createSlice(({
                 allbuyAndsell_details: [],
                 total_no_of_datas: 0
             }
-        }
+        },
+        updateBuyAndSellVerifyData(state, action) {
+            return {
+                ...state,
+                mobile_number: action.payload
+            }
+        },
+        updateBuyAndSellEditData(state, action) {
+            return {
+                ...state,
+                new_edit_buyAndsell_card: {
+                    ...state.new_edit_buyAndsell_card,
+                    ...action.payload
+                }
+            }
+        },
+        updateBuyAndSellFilterData(state, action) {
+            return {
+                ...state,
+                buyAndsell_filter_card: {
+                    ...state.buyAndsell_filter_card,
+                    ...action.payload
+                }
+            }
+        },
     }
 }))
 

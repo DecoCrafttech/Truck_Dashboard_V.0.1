@@ -205,3 +205,16 @@ export const handleGetBuyandSell = async (dispatch) => {
         dispatch(updateToast(err?.message, "error"))
     }
 }
+
+export const handleOnchangeBuyAndSellVerify = (inputData) => dispatch => {
+    dispatch(updateBuyAndSellVerifyData(inputData))
+}
+
+export const handleBuyAndSellInputOnChange = (inputData) => dispatch => {
+    dispatch(updateBuyAndSellEditData(inputData))
+}
+
+export const handleOnchangeBuyAndSellFilter = (inputData) => dispatch => {
+    dispatch(updateBuyAndSellFilterData(inputData))
+}
+

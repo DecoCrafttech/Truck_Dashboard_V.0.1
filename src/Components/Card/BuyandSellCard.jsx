@@ -1,4 +1,6 @@
+import { handleDeleteModal, handleEditModal } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
+import { useDispatch } from 'Components/CustomHooks'
 import Img from 'Components/Img/Img'
 import LinkComponent from 'Components/Router_components/LinkComponent'
 import React, { Fragment } from 'react'
@@ -9,12 +11,14 @@ import Icons from 'Utils/Icons'
 
 const BuyandSellCard = ({
     placeholder,
-    truck_data
+    buy_sell_data
 }) => {
+    const dispatch = useDispatch();
+
     function cardDetails(data) {
         return <Fragment>
-            {[{ icon: Icons.ownerIcon, value: `${data?.owner_name} Tone` }, { icon: Icons.buySellTruckIcon, value: data?.vehicle_number },
-            { icon: Icons.truckModelIcon, value: data?.model }, { icon: Icons.kmsDrivernIcon, value: data?.kms_driven }]
+            {[{ icon: Icons.ownerIcon, value: `${data?.owner_name}` }, { icon: Icons.buySellTruckIcon, value: data?.vehicle_number },
+            { icon: Icons.truckModelIcon, value: data?.model }, { icon: Icons.kmsDrivernIcon, value:  `${data?.kms_driven} kms` }]
                 .map((val, ind) => (
                     <div className={'col-6'} key={ind}>
                         <p className={`${placeholder ? 'placeholder pt-2 pb-3 rounded-1 col-11' : ''} mb-2 fs-13 text-secondary`}>
@@ -52,7 +56,7 @@ const BuyandSellCard = ({
                             <p className='mb-0 placeholder w-75 rounded-1 pt-3 pb-2'></p>
                             :
                             <Fragment>
-                                {[...Array(5)].map((starVal, starInd) => starInd < truck_data?.user_review_count ?
+                                {[...Array(5)].map((starVal, starInd) => starInd < buy_sell_data?.user_review_count ?
                                     <span key={starInd}>
                                         {Icons.startBlack}
                                     </span>
@@ -61,7 +65,7 @@ const BuyandSellCard = ({
                                         {Icons.starGray}
                                     </span>
                                 )}
-                                < span className='text-secondary ms-1 fs-12'>({truck_data?.user_review_count})</span>
+                                < span className='text-secondary ms-1 fs-12'>({buy_sell_data?.user_review_count})</span>
                             </Fragment>
                         }
                     </div>
@@ -71,37 +75,37 @@ const BuyandSellCard = ({
                         </div>
                         :
                         <div className="col text-end">
-                            <p className='fs-12 m-0'>Post : <span className='text-secondary'>{truck_data?.user_post}</span></p>
+                            <p className='fs-12 m-0'>Post : <span className='text-secondary'>{buy_sell_data?.user_post}</span></p>
                         </div>
                     }
                 </Card.Header>
 
                 <Card.Body className="card-body py-0">
                     <div className={`col-12 ${placeholder ? 'placeholder py-4 rounded' : 'card-blue-title'} py-3 mb-2`}>
-                        <h5 className='mb-0 fs-14'>{truck_data?.profile_name}</h5>
+                        <h5 className='mb-0 fs-14'>{buy_sell_data?.profile_name}</h5>
                     </div>
 
                     <div className="col-12 px-1">
                         <Img
-                            src={truck_data?.images[0]}
+                            src={buy_sell_data?.images[0]}
                             width="100%"
                             height="200px"
                             className={`${placeholder ? 'placeholder rounded-1' : ''} rounded-3`}
                         />
                     </div>
-                    <h5 className='mb-0 fs-14 fw-bold mt-3'>{truck_data?.brand}</h5>
+                    <h5 className='mb-0 fs-14 fw-bold mt-3'>{buy_sell_data?.brand}</h5>
 
                     <p className={`${placeholder ? 'placeholder py-2 pb-3 rounded-1 col-7' : ''} mb-1 fs-13 mt-2`}>
                         {placeholder ? null : <span className='me-1'>{Icons.greenLocationIcon}</span>}
-                        {truck_data?.location}
+                        {buy_sell_data?.location}
                     </p>
 
-                    <p className={`${placeholder ? 'placeholder py-1 rounded-1 col-7 mb-1' : 'ms-2'} fs-12 text-secondary fw-bold`}>Posted on : {truck_data?.updt?.slice(5, 25)}</p>
+                    <p className={`${placeholder ? 'placeholder py-1 rounded-1 col-7 mb-1' : 'ms-2'} fs-12 text-secondary fw-bold`}>Posted on : {buy_sell_data?.updt?.slice(5, 25)}</p>
 
                     <hr className={placeholder ? 'm-1 d-none' : ''}/>
 
                     <div className="col-12 d-flex flex-wrap">
-                        {cardDetails(truck_data)}
+                        {cardDetails(buy_sell_data)}
                     </div>
 
                     <hr className={placeholder ? 'm-1 d-none' : ''}/>
@@ -112,12 +116,14 @@ const BuyandSellCard = ({
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                             buttonName={placeholder ? "" : 'Delete'}
+                            clickFunction={() => dispatch(handleDeleteModal({ type: "BuyAndSell", data: buy_sell_data }))}
                         />
                     </div>
                     <div className="col px-1">
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                             buttonName={placeholder ? "" : 'Edit'}
+                            clickFunction={() => dispatch(handleEditModal({ type: "BuyAndSell", data: buy_sell_data }))}
                         />
                     </div>
                 </Card.Footer>
