@@ -405,7 +405,11 @@ const BuySellDetails = () => {
                 modalCloseButton={true}
                 showModalHeader={true}
                 modalHeaderClassname="border-0"
-                modalClassname={["Edit", "Create"].includes(servicesState?.modal_type) ? "buyAndSell_model_height" : ''}
+                modalClassname={
+                    servicesState?.modal_type === "Create" ?
+                    servicesState?.is_mobile_num_verified ? "buyAndSell_model_height" : "md"
+                    :
+                    ["Edit", "Create"].includes(servicesState?.modal_type) ? "buyAndSell_model_height" : ''}
                 modalHeader={modalHeaderFun()}
                 modalBodyClassname="py-2"
                 modalBody={<div className='d-flex flex-wrap p-3 pt-0'>{modalBodyFun()}</div>}

@@ -3,8 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import Cookies from 'js-cookie'
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie'
 
 import { useCustomNavigate, useSize } from "Components/CustomHooks";
 import { handleBearerToken, handleClearErrors, handleOnlineOffilne, handleScreenSize } from "Actions/Common_actions/Common_action";
@@ -31,7 +31,6 @@ const App = () => {
     dispatch(handleOnlineOffilne(navigator.onLine))
     dispatch(handleScreenSize(sizer))
     dispatch(handleBearerToken(Cookies.get("token")))
-
   }, [])
 
   //error state
