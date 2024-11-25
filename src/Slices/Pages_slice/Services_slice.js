@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { updateCurrentPage } from "Slices/Common_Slice/Common_slice";
 
 const servicesSlice = createSlice(({
     name: "service_slice",
@@ -32,9 +33,6 @@ const servicesSlice = createSlice(({
         buyAndsellDelete_id: null,
         new_edit_buyAndsell_card: {},
         buyAndsell_filter_card: {},
-
-
-        total_no_of_datas: null
     },
     reducers: {
         updateServiceModalType(state, action) {
@@ -151,8 +149,7 @@ const servicesSlice = createSlice(({
             return {
                 ...state,
                 load_glow: false,
-                allLoads_details: action.payload,
-                total_no_of_datas: action.payload?.length
+                allLoads_details: action.payload?.load_data,
             }
         },
         loadGetFaliure(state, action) {
@@ -202,8 +199,7 @@ const servicesSlice = createSlice(({
             return {
                 ...state,
                 truck_glow: false,
-                alltrucks_details: action.payload,
-                total_no_of_datas: action.payload?.length
+                alltrucks_details: action.payload?.truck_data,
             }
         },
         truckGetFailure(state, action) {
@@ -230,6 +226,7 @@ const servicesSlice = createSlice(({
             }
         },
         updateTruckFilterData(state, action) {
+            console.log(action.payload)
             return {
                 ...state,
                 truck_filter_card: {
@@ -343,8 +340,11 @@ const servicesSlice = createSlice(({
                 }
             }
         },
-    }
+    } 
 }))
+
+
+
 
 const { actions, reducer } = servicesSlice;
 

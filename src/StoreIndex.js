@@ -15,7 +15,7 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false
     }).concat(thunk),
-    devTools: false
+    devTools: true
 })
 
 export default store;

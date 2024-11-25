@@ -70,10 +70,24 @@ export const handleFilterModal = (filterServiceName) => dispatch => {
 
 //                                                              load api's                                                                  //
 //get all loads api
-export const handleGetLoads = async (dispatch) => {
+export const handleGetLoads = (paginationSize, currentPage, searchValue) => async (dispatch) => {
     try {
+        const params = {
+            company_name: "",
+            from_location: "",
+            to_location: [],
+            material: "",
+            tone: "",
+            truck_body_type: "",
+            no_of_tyres: "",
+            page_no: currentPage || 1,
+            search_val: searchValue || "",
+            data_limit: paginationSize || 10
+        }
+
+
         dispatch(loadGetRequest())
-        const { data } = await axiosInstance.get("/all_load_details")
+        const { data } = await axiosInstance.post("/dashboard_load_details", params)
 
         if (data?.error_code === 0) {
             dispatch(loadGetResponse(data?.data))
@@ -120,10 +134,10 @@ export const handleOnchangeLoadFilter = (inputData) => dispatch => {
 
 //                                                              truck api's                                                                  //
 //get all truck api
-export const handleGetTruck = async (dispatch) => {
+export const handleGetTruck = (params) => async (dispatch) => {
     try {
         dispatch(truckGetRequest())
-        const { data } = await axiosInstance.get("/all_truck_details")
+        const { data } = await axiosInstance.post("/dashboard_truck_details",params)
 
         if (data?.error_code === 0) {
             dispatch(truckGetResponse(data?.data))

@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
+import { initializeFilterDetails, truckGetResponse } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
-    name: 'common slice',
+    name: 'commonSlice',
     initialState: {
         modalShow: false,
         canvasShow: false,
@@ -23,13 +24,23 @@ const commonSlice = createSlice({
         token: '',
         user_id: Cookies.get('user_id') ? Cookies.get('user_id') : '',
 
+        //no of entries
+        showing_entries: [10, 20, 50],
+        pageSize: 10,
+        entries_selected: false,
 
         //custom pagination 
-        showing_entries:[10,20,50],
-        pageSize: 10,
-        currentPage: 3,
-        totalCount: 1500,
+        currentPage: 1,
+        totalCount: 0,
         siblingCount: 1,
+
+        //search 
+        search_value: '',
+        search_clicked: false,
+
+        //apply filter
+        apply_filter_clicked: false,
+        apply_filter: false
     },
     reducers: {
         updateModalShow(state, actions) {
@@ -196,8 +207,13 @@ const commonSlice = createSlice({
                 edited: false,
                 validated: false,
                 modalShow: false,
-                pageSize: 0,
-                currentPage: 1
+                pageSize: 10,
+                currentPage: 1,
+                entries_selected: false,
+                search_value: '',
+                search_clicked: false,
+                apply_filter: false,
+                apply_filter_clicked: false
             }
         },
 
@@ -213,8 +229,78 @@ const commonSlice = createSlice({
                 ...state,
                 currentPage: action.payload
             }
-        }
+        },
 
+        //search
+        updateSearchValue(state, action) {
+            return {
+                ...state,
+                search_value: action.payload,
+                search_clicked: false
+            }
+        },
+        clearSearch(state, action) {
+            return {
+                ...state,
+                search_value: '',
+                search_clicked: false
+            }
+        },
+        updateSearchClickedTrue(state, action) {
+            return {
+                ...state,
+                search_clicked: true,
+                apply_filter: false,
+                apply_filter_clicked: false
+            }
+        },
+        updateSearchClickedFalse(state, action) {
+            return {
+                ...state,
+                search_clicked: true
+            }
+        },
+
+        //number of entries select
+        updateEntriesCount(state, action) {
+            return {
+                ...state,
+                currentPage: 1,
+                pageSize: action.payload,
+                entries_selected: true,
+                search_clicked: false
+            }
+        },
+
+        //apply filter button click state
+        updateApplyFilterClickedTrue(state, action) {
+            return {
+                ...state,
+                apply_filter_clicked: true,
+                apply_filter: true,
+                search_clicked: false
+            }
+        },
+        updateApplyFilterClickedFalse(state, action) {
+            return {
+                ...state,
+                apply_filter_clicked: false,
+                apply_filter: false
+            }
+        },
+
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(truckGetResponse, (state, action) => {
+                state.totalCount = action.payload?.total_no_of_data
+                state.apply_filter = false
+                state.modalShow = false
+            })
+        // .addCase(initializeFilterDetails, (state, action) => {
+        //     state.apply_filter_clicked = false
+        //     state.apply_filter = false
+        // })  
     }
 })
 
@@ -243,7 +329,15 @@ export const {
 
 
     updatePaginationSize,
-    updateCurrentPage
+    updateCurrentPage,
+    updateSearchValue,
+    clearSearch,
+    updateSearchClickedTrue,
+    updateSearchClickedFalse,
+    updateApplyFilterClickedTrue,
+    updateApplyFilterClickedFalse,
+
+    updateEntriesCount
 } = actions;
 
 export default reducer

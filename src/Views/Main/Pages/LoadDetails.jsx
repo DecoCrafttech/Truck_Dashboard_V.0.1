@@ -23,7 +23,7 @@ const LoadDetails = () => {
     const JsonJsx = JsonData()?.jsxJson;
 
     useEffect(() => {
-        dispatch(handleGetLoads)
+        dispatch(handleGetLoads(commonState?.pageSize,commonState?.currentPage,commonState?.searchValue))
     }, [])
 
 

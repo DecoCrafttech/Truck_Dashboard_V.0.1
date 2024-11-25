@@ -695,7 +695,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: state?.servicesState?.load_filter_card?.from_location || '',
+                value: state?.servicesState?.truck_filter_card?.from_location || '',
                 change: (e) => dispatch(handleOnchangeTruckFilter({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeTruckFilter({ from_location: slectedLoc })),
                 isMandatory: true
@@ -706,7 +706,7 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: jsonOnly.states,
-                value: state?.servicesState?.load_filter_card?.to_location || '',
+                value: state?.servicesState?.truck_filter_card?.to_location || '',
                 change: (value) => dispatch(handleOnchangeTruckFilter({ to_location: value })),
                 isMandatory: true
             },
@@ -715,7 +715,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_truck_card?.brand_name || '',
+                value: state?.servicesState?.truck_filter_card?.brand_name || '',
                 options: jsonOnly.truckBrand,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ brand_name: e.target.value })),
                 isMandatory: true
@@ -725,7 +725,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.load_filter_card?.truck_body_type || '',
+                value: state?.servicesState?.truck_filter_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ truck_body_type: e.target.value })),
                 isMandatory: true
@@ -735,7 +735,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.load_filter_card?.no_of_tyres || '',
+                value: state?.servicesState?.truck_filter_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
@@ -745,9 +745,9 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.load_filter_card?.ton || '',
+                value: state?.servicesState?.truck_filter_card?.tone || '',
                 options: jsonOnly.tonnage,
-                change: (e) => dispatch(handleOnchangeTruckFilter({ ton: e.target.value })),
+                change: (e) => dispatch(handleOnchangeTruckFilter({ tone: e.target.value })),
                 isMandatory: true
             }
         ],

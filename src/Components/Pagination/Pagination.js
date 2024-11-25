@@ -21,7 +21,6 @@ const Pagination = ({
     pageSize
   });
 
-
   if (currentPage === 0) {
     return null;
   }
@@ -33,8 +32,8 @@ const Pagination = ({
   const onPrevious = () => {
     dispatch(updateCurrentPage(currentPage - 1));
   };
-
   let lastPage = paginationRange[paginationRange?.length - 1];
+
   return (
     <ul
       className={classnames('pagination-container ps-0 col-7', { [className]: className })}

@@ -210,7 +210,6 @@ const BuySellDetails = () => {
         })
     }
 
-
     function modalBodyFun() {
         switch (servicesState?.modal_type) {
             case "Edit":

@@ -75,15 +75,17 @@ const range = (start, end) => {
   return Array.from({ length }, (_, idx) => idx + start);
 };
 
-export const usePagination = () => {
-
-  const {totalCount,pageSize,siblingCount,currentPage} = useSelector((state)=> state.commonState);
-
+export const usePagination = ({
+  totalCount,
+  pageSize,
+  siblingCount = 1,
+  currentPage
+}) => {
   const paginationRange = useMemo(() => {
-    
     const totalPageCount = Math.ceil(totalCount / pageSize);
+
     // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
-    const totalPageNumbers = siblingCount + 3;
+    const totalPageNumbers = siblingCount + 5;
 
     /*
       If the number of pages is less than the page numbers we want to show in our
@@ -111,14 +113,14 @@ export const usePagination = () => {
     const lastPageIndex = totalPageCount;
 
     if (!shouldShowLeftDots && shouldShowRightDots) {
-      let leftItemCount = 3 * siblingCount;
+      let leftItemCount = 3 + 2 * siblingCount;
       let leftRange = range(1, leftItemCount);
 
       return [...leftRange, DOTS, totalPageCount];
     }
 
     if (shouldShowLeftDots && !shouldShowRightDots) {
-      let rightItemCount = 3 * siblingCount;
+      let rightItemCount = 3 + 2 * siblingCount;
       let rightRange = range(
         totalPageCount - rightItemCount + 1,
         totalPageCount
