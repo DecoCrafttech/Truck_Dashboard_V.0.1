@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
-import { initializeFilterDetails, truckGetResponse } from "Slices/Pages_slice/Services_slice";
+import { buyAndsellGetResponse, driverGetResponse, initializeFilterDetails, loadGetResponse, truckGetResponse } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
     name: 'commonSlice',
@@ -37,6 +37,7 @@ const commonSlice = createSlice({
         //search 
         search_value: '',
         search_clicked: false,
+        apply_filter: false,
 
         //apply filter
         apply_filter_clicked: false,
@@ -268,7 +269,6 @@ const commonSlice = createSlice({
                 currentPage: 1,
                 pageSize: action.payload,
                 entries_selected: true,
-                search_clicked: false
             }
         },
 
@@ -297,10 +297,21 @@ const commonSlice = createSlice({
                 state.apply_filter = false
                 state.modalShow = false
             })
-        // .addCase(initializeFilterDetails, (state, action) => {
-        //     state.apply_filter_clicked = false
-        //     state.apply_filter = false
-        // })  
+            .addCase(loadGetResponse, (state, action) => {
+                state.totalCount = action.payload?.total_no_of_data
+                state.apply_filter = false
+                state.modalShow = false
+            })
+            .addCase(driverGetResponse, (state, action) => {
+                state.totalCount = action.payload?.total_no_of_data
+                state.apply_filter = false
+                state.modalShow = false
+            })
+            .addCase(buyAndsellGetResponse, (state, action) => {
+                state.totalCount = action.payload?.total_no_of_data
+                state.apply_filter = false
+                state.modalShow = false
+            })
     }
 })
 

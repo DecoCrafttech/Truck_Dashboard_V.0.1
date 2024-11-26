@@ -1,3 +1,4 @@
+import { handleResetAlMenus } from 'Actions/Common_actions/Common_action'
 import { handleCreateModal, handleFilterModal, handleGetTruck } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
 import TruckCard from 'Components/Card/TruckCard'
@@ -22,6 +23,10 @@ const TruckDetails = () => {
     const dispatch = useDispatch();
     const JsonJsx = JsonData()?.jsxJson;
 
+    useEffect(()=>{
+        dispatch(handleResetAlMenus)
+    },[])
+    
     const params = {
         vehicle_number: "",
         contact_no: "",
@@ -43,10 +48,7 @@ const TruckDetails = () => {
         }
         else if (commonState?.apply_filter_clicked) {
             const newParams = { ...params }
-            newParams.vehicle_number = servicesState?.truck_filter_card?.vehicle_number || ''
-            newParams.contact_no = servicesState?.truck_filter_card?.contact_no || ''
             newParams.truck_name = servicesState?.truck_filter_card?.truck_name || ''
-            newParams.company_name = servicesState?.truck_filter_card?.company_name || ''
             newParams.from_location = servicesState?.truck_filter_card?.from_location || ''
             newParams.to_location = servicesState?.truck_filter_card?.to_location ? [servicesState?.truck_filter_card?.to_location] : [] || []
             newParams.tone = servicesState?.truck_filter_card?.tone || ''
@@ -58,6 +60,7 @@ const TruckDetails = () => {
         else {
             dispatch(handleGetTruck(params))
         }
+        
     }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter])
 
 
@@ -313,7 +316,7 @@ const TruckDetails = () => {
                             <ButtonComponent
                                 className="bg-white py-2 w-100"
                                 buttonName="Filter"
-                                clickFunction={() => dispatch(handleFilterModal("Load"))}
+                                clickFunction={() => dispatch(handleFilterModal)}
                             />
                         </div>
                         <div className="col-3 text-end p-1">
@@ -329,7 +332,7 @@ const TruckDetails = () => {
                                         </span>
                                     </span>
                                 }
-                                clickFunction={() => dispatch(handleCreateModal())}
+                                clickFunction={() => dispatch(handleCreateModal)}
                             />
                         </div>
                     </div>
@@ -362,6 +365,8 @@ const TruckDetails = () => {
                                                 className="col"
                                                 disableSelectBox={false}
                                                 change={(e) => dispatch(updateEntriesCount(e.target.value))}
+                                                value={commonState?.pageSize}
+                                                componentFrom="Entries"
                                             />
                                         </div>
                                     </div>

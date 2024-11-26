@@ -2,10 +2,11 @@ import React, { Fragment } from 'react'
 import { Form } from 'react-bootstrap'
 
 const SelectBox = ({
+    componentFrom,
     selectBoxSize,
     selectOptions,
     className,
-    defaultOption,
+    value,
     disableSelectBox,
     change,
     htmlFor,
@@ -31,8 +32,8 @@ const SelectBox = ({
                 :
                 null
             }
-            <Form.Select size={selectBoxSize} className={className} disabled={disableSelectBox} onChange={change}>
-                <option value="">Select</option>
+            <Form.Select size={selectBoxSize} className={className} disabled={disableSelectBox} onChange={change} defaultValue={value}>
+                {componentFrom !== "Entries" ? <option value="">Select</option> : null}
                 {
                     selectOptions?.map((value, ind) => {
                         return <option value={value} key={ind}>{value}</option>

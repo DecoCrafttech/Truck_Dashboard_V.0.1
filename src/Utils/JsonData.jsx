@@ -7,6 +7,7 @@ import {
     handleBuyAndSellInputOnChange,
     handleDriverInputOnChange,
     handleLoadInputOnChange,
+    handleOnchangeBuyAndSellFilter,
     handleOnchangeBuyAndSellVerify,
     handleOnchangeDriverFilter,
     handleOnchangeDriverVerify,
@@ -16,6 +17,7 @@ import {
     handleOnchangeTruckVerify,
     handleTruckInputOnChange
 } from 'Actions/Pages_actions/ServicesActions';
+import { useSelector } from 'react-redux';
 
 
 
@@ -75,6 +77,7 @@ const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
     const state = store.getState();
+    const { servicesState } = useSelector((state) => state);
 
     const jsonOnly = {
         sidebarMenus: [
@@ -695,7 +698,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: state?.servicesState?.truck_filter_card?.from_location || '',
+                value: servicesState?.truck_filter_card?.from_location || '',
                 change: (e) => dispatch(handleOnchangeTruckFilter({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeTruckFilter({ from_location: slectedLoc })),
                 isMandatory: true
@@ -706,7 +709,7 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: jsonOnly.states,
-                value: state?.servicesState?.truck_filter_card?.to_location || '',
+                value: servicesState?.truck_filter_card?.to_location || '',
                 change: (value) => dispatch(handleOnchangeTruckFilter({ to_location: value })),
                 isMandatory: true
             },
@@ -715,9 +718,9 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.truck_filter_card?.brand_name || '',
+                value: servicesState?.truck_filter_card?.truck_name || '',
                 options: jsonOnly.truckBrand,
-                change: (e) => dispatch(handleOnchangeTruckFilter({ brand_name: e.target.value })),
+                change: (e) => dispatch(handleOnchangeTruckFilter({ truck_name: e.target.value })),
                 isMandatory: true
             },
             {
@@ -725,7 +728,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.truck_filter_card?.truck_body_type || '',
+                value: servicesState?.truck_filter_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ truck_body_type: e.target.value })),
                 isMandatory: true
@@ -735,7 +738,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.truck_filter_card?.no_of_tyres || '',
+                value: servicesState?.truck_filter_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
@@ -745,7 +748,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.truck_filter_card?.tone || '',
+                value: servicesState?.truck_filter_card?.tone || '',
                 options: jsonOnly.tonnage,
                 change: (e) => dispatch(handleOnchangeTruckFilter({ tone: e.target.value })),
                 isMandatory: true
@@ -869,7 +872,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: state?.servicesState?.load_filter_card?.from_location || '',
+                value: state?.servicesState?.driver_filter_card?.from_location || '',
                 change: (e) => dispatch(handleOnchangeDriverFilter({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeDriverFilter({ from_location: slectedLoc })),
                 isMandatory: true
@@ -880,7 +883,7 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: jsonOnly.states,
-                value: state?.servicesState?.load_filter_card?.to_location || '',
+                value: state?.servicesState?.driver_filter_card?.to_location || '',
                 change: (value) => dispatch(handleOnchangeDriverFilter({ to_location: value })),
                 isMandatory: true
             },
@@ -889,7 +892,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.load_filter_card?.truck_body_type || '',
+                value: state?.servicesState?.driver_filter_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleOnchangeDriverFilter({ truck_body_type: e.target.value })),
                 isMandatory: true
@@ -899,7 +902,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.load_filter_card?.no_of_tyres || '',
+                value: state?.servicesState?.driver_filter_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleOnchangeDriverFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
@@ -1090,8 +1093,8 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: modelTenYears(),
-                value: state?.servicesState?.new_edit_buyAndsell_card?.model_year,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ model_year: e.target.value })),
+                value: state?.servicesState?.buyAndsell_filter_card?.model,
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ model: e.target.value })),
                 isMandatory: true
             },
             {
@@ -1099,9 +1102,9 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.brand_name,
+                value: state?.servicesState?.buyAndsell_filter_card?.brand,
                 options: jsonOnly.truckBrand,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ brand_name: e.target.value })),
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ brand: e.target.value })),
                 isMandatory: true
             },
             {
@@ -1109,9 +1112,9 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.location,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ location: e.target.value })),
-                placedSelectedClick: (slectedLoc) => dispatch(handleBuyAndSellInputOnChange({ location: slectedLoc })),
+                value: state?.servicesState?.buyAndsell_filter_card?.location,
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeBuyAndSellFilter({ location: slectedLoc })),
                 isMandatory: true
             },
             {
@@ -1119,9 +1122,9 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.kmd_driven,
+                value: state?.servicesState?.buyAndsell_filter_card?.kmd_driven,
                 options: jsonOnly.filterKilometers,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ kmd_driven: e.target.value })),
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ kmd_driven: e.target.value })),
                 isMandatory: true
             },
             {
@@ -1129,9 +1132,9 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.price,
+                value: state?.servicesState?.buyAndsell_filter_card?.price,
                 options: jsonOnly.filterPrice,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ price: e.target.value })),
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ price: e.target.value })),
                 isMandatory: true
             },
             {
@@ -1139,9 +1142,9 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.ton,
+                value: state?.servicesState?.buyAndsell_filter_card?.tonnage,
                 options: jsonOnly.tonnage,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ ton: e.target.value })),
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ tonnage: e.target.value })),
                 isMandatory: true
             },
             {
@@ -1149,9 +1152,9 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.truck_body_type,
+                value: state?.servicesState?.buyAndsell_filter_card?.truck_body_type,
                 options: jsonOnly.truckBodyType,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ truck_body_type: e.target.value })),
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ truck_body_type: e.target.value })),
                 isMandatory: true
             },
             {
@@ -1159,9 +1162,9 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.no_of_tyres,
+                value: state?.servicesState?.buyAndsell_filter_card?.no_of_tyres,
                 options: jsonOnly.noOfTyres,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ no_of_tyres: e.target.value })),
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
             }
         ]

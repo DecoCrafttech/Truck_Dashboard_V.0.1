@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { updateCurrentPage } from "Slices/Common_Slice/Common_slice";
 
 const servicesSlice = createSlice(({
     name: "service_slice",
     initialState: {
-        modal_type: "",
+        modal_type: "Create",
         mobile_number: null,
-        is_mobile_num_verified: false,
+        is_mobile_num_verified: true,
 
         load_glow: false,
         allLoads_details: [],
@@ -46,25 +45,28 @@ const servicesSlice = createSlice(({
                 case "Load":
                     return {
                         ...state,
-                        modal_type: "Edit"
+                        modal_type: 'Edit',
+                        new_edit_load_card:action.payload?.data
                     }
-
                 case "Truck":
                     return {
                         ...state,
-                        modal_type: "Edit"
+                        modal_type: 'Edit',
+                        new_edit_truck_card:action.payload?.data
                     }
 
                 case "Driver":
                     return {
                         ...state,
-                        modal_type: "Edit"
+                        modal_type: 'Edit',
+                        new_edit_driver_card:action.payload?.data
                     }
 
                 case "BuyAndSell":
                     return {
                         ...state,
-                        modal_type: "Edit"
+                        modal_type: 'Edit',
+                        new_edit_buyAndsell_card:action.payload?.data
                     }
 
                 default:
@@ -76,25 +78,28 @@ const servicesSlice = createSlice(({
                 case "Load":
                     return {
                         ...state,
-                        modal_type: "Delete"
+                        modal_type: 'Delete',
+                        // new_edit_load_card:action.payload?.data
                     }
-
                 case "Truck":
                     return {
                         ...state,
-                        modal_type: "Delete"
+                        modal_type: 'Delete',
+                        // new_edit_truck_card:action.payload?.data
                     }
 
                 case "Driver":
                     return {
                         ...state,
-                        modal_type: "Delete"
+                        modal_type: 'Delete',
+                        // new_edit_driver_card:action.payload?.data
                     }
 
                 case "BuyAndSell":
                     return {
                         ...state,
-                        modal_type: "Delete"
+                        modal_type: 'Delete',
+                        // new_edit_buyAndsell_card:action.payload?.data
                     }
 
                 default:
@@ -102,37 +107,9 @@ const servicesSlice = createSlice(({
             }
         },
         initializeFilterDetails(state, action) {
-            switch (action.payload) {
-                case "Load":
-                    return {
-                        ...state,
-                        load_filter_card: {},
-                        modal_type: 'Filter'
-                    }
-
-                case "Truck":
-                    return {
-                        ...state,
-                        truck_filter_card: {},
-                        modal_type: 'Filter'
-                    }
-
-                case "Driver":
-                    return {
-                        ...state,
-                        driver_filter_card: {},
-                        modal_type: 'Filter'
-                    }
-
-                case "Buy_sell":
-                    return {
-                        ...state,
-                        buyAndsell_filter_card: {},
-                        modal_type: 'Filter'
-                    }
-
-                default:
-                    break;
+            return {
+                ...state,
+                modal_type: 'Filter'
             }
         },
 
@@ -253,8 +230,7 @@ const servicesSlice = createSlice(({
             return {
                 ...state,
                 driver_glow: false,
-                alldrivers_details: action.payload,
-                total_no_of_datas: action.payload?.length
+                alldrivers_details: action.payload?.driver_data
             }
         },
         driverGetFailure(state, action) {
@@ -304,8 +280,7 @@ const servicesSlice = createSlice(({
             return {
                 ...state,
                 buyAndsell_glow: false,
-                allbuyAndsell_details: action.payload,
-                total_no_of_datas: action.payload?.length
+                allbuyAndsell_details: action.payload?.buy_sell_data
             }
         },
         buyAndsellGetFailure(state, action) {
@@ -340,7 +315,7 @@ const servicesSlice = createSlice(({
                 }
             }
         },
-    } 
+    }
 }))
 
 

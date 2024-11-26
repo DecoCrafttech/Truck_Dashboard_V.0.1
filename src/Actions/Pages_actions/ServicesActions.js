@@ -45,23 +45,23 @@ import {
 
 } from 'Slices/Pages_slice/Services_slice';
 
-export const handleCreateModal = () => (dispatch) => {
+export const handleCreateModal = dispatch => {
     dispatch(updateServiceModalType("Create"))
     dispatch(updateModalShow())
 }
 
-export const handleDeleteModal = (deleteDetails) => (dispatch) => {
-    dispatch(updateDeleteDetails(deleteDetails))
+export const handleDeleteModal = deleteData => dispatch => {
+    dispatch(updateDeleteDetails(deleteData))
     dispatch(updateModalShow())
 }
 
-export const handleEditModal = (editDetails) => dispatch => {
-    dispatch(updateEditDetails(editDetails))
+export const handleEditModal = editData => dispatch => {
+    dispatch(updateEditDetails(editData))
     dispatch(updateModalShow())
 }
 
-export const handleFilterModal = (filterServiceName) => dispatch => {
-    dispatch(initializeFilterDetails(filterServiceName))
+export const handleFilterModal = dispatch => {
+    dispatch(initializeFilterDetails())
     dispatch(updateModalShow())
 }
 
@@ -70,22 +70,8 @@ export const handleFilterModal = (filterServiceName) => dispatch => {
 
 //                                                              load api's                                                                  //
 //get all loads api
-export const handleGetLoads = (paginationSize, currentPage, searchValue) => async (dispatch) => {
+export const handleGetLoads = (params) => async (dispatch) => {
     try {
-        const params = {
-            company_name: "",
-            from_location: "",
-            to_location: [],
-            material: "",
-            tone: "",
-            truck_body_type: "",
-            no_of_tyres: "",
-            page_no: currentPage || 1,
-            search_val: searchValue || "",
-            data_limit: paginationSize || 10
-        }
-
-
         dispatch(loadGetRequest())
         const { data } = await axiosInstance.post("/dashboard_load_details", params)
 
@@ -137,7 +123,7 @@ export const handleOnchangeLoadFilter = (inputData) => dispatch => {
 export const handleGetTruck = (params) => async (dispatch) => {
     try {
         dispatch(truckGetRequest())
-        const { data } = await axiosInstance.post("/dashboard_truck_details",params)
+        const { data } = await axiosInstance.post("/dashboard_truck_details", params)
 
         if (data?.error_code === 0) {
             dispatch(truckGetResponse(data?.data))
@@ -170,10 +156,10 @@ export const handleOnchangeTruckFilter = (inputData) => dispatch => {
 
 //                                                              driver api's                                                                  //
 //get all loads api
-export const handleGetDriver = async (dispatch) => {
+export const handleGetDriver = (params) => async (dispatch) => {
     try {
         dispatch(driverGetRequest())
-        const { data } = await axiosInstance.get("/all_driver_details")
+        const { data } = await axiosInstance.post("/dashboard_driver_details", params)
 
         if (data?.error_code === 0) {
             dispatch(driverGetResponse(data?.data))
@@ -204,10 +190,10 @@ export const handleOnchangeDriverFilter = (inputData) => dispatch => {
 
 //                                                              buy and sell api's                                                                  //
 //get all buy and sell api
-export const handleGetBuyandSell = async (dispatch) => {
+export const handleGetBuyandSell = (params) => async (dispatch) => {
     try {
         dispatch(buyAndsellGetRequest())
-        const { data } = await axiosInstance.get("/all_buy_sell_details")
+        const { data } = await axiosInstance.post("/dashboard_buy_sell_details",params)
 
         if (data?.error_code === 0) {
             dispatch(buyAndsellGetResponse(data?.data))
