@@ -3,6 +3,7 @@
       "baseUrl": "src",
       "paths": {
         "Components/*": ["Components/*"],
+        "ResuableFunctions/*": ["ResuableFunctions/*"],
         "Stylesheet/*": ["Stylesheet/*"],
         "Assets/*": ["Assets/*"],
         "Actions/*": ["Actions/*"],

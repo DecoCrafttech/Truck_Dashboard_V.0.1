@@ -77,7 +77,7 @@ const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
     const state = store.getState();
-    const { servicesState } = useSelector((state) => state);
+    const { dashboardState,servicesState } = useSelector((state) => state);
 
     const jsonOnly = {
         sidebarMenus: [
@@ -305,22 +305,22 @@ const JsonData = () => {
             {
                 icon: Icons.dashboardUserIcon,
                 content: "Total Number Of Users",
-                value: 10
+                value: dashboardState?.dashboard_data?.tot_number_of_users
             },
             {
                 icon: Icons.dashboardInsuranceIcon,
                 content: "Total Number Of Insurance",
-                value: 10
+                value: dashboardState?.dashboard_data?.tot_number_of_insurance
             },
             {
                 icon: Icons.dashboardFastagIcon,
                 content: "Total Number Of Fastag",
-                value: 10
+                value: dashboardState?.dashboard_data?.tot_number_of_fastag
             },
             {
                 icon: Icons.dashboardCustomerIcon,
                 content: "New Customer",
-                value: 10
+                value: dashboardState?.dashboard_data?.new_customer
             }
         ],
         //                                                              blog                                                                  //

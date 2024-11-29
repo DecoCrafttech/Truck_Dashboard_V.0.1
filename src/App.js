@@ -17,7 +17,7 @@ import Dashboard from "Views/Main/Pages/Dashboard";
 import Crm from "Views/Main/Pages/Crm";
 import Feedback from "Views/Main/Pages/Feedback";
 import UserProfileDetails from "Views/Main/Pages/UserProfileDetails";
-import Blog from "Views/Main/Pages/Blog";
+import Blog from "Views/Main/Pages/Blog"; 
 
 
 const App = () => {
@@ -35,6 +35,7 @@ const App = () => {
 
   //error state
   useEffect(() => {
+    console.log(Err)
     if (Err) {
       toast(Err, {
         position: "top-right",
@@ -69,7 +70,7 @@ const App = () => {
         <Route path="/dashboard" element={<Layout />}>
           <Route path="home">
             <Route index element={<Dashboard/>}/>
-            <Route path="profile:id" element={<UserProfileDetails/>}/>
+            <Route path="profile" element={<UserProfileDetails/>}/>
           </Route>
           <Route path="analytics" element={<p>hi</p>} />
 

@@ -4,8 +4,7 @@ import ButtonComponent from 'Components/Button/Button'
 import TruckCard from 'Components/Card/TruckCard'
 import { useDispatch } from 'Components/CustomHooks'
 import GoogleLocationInput from 'Components/Input/GoogleLocationInput'
-import Input from 'Components/Input/Input'
-import InputOnly from 'Components/Input/inputOnly'
+import Input from 'Components/Input/Input' 
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import SelectBox from 'Components/Input/SelectBox'
 import Textbox from 'Components/Input/textbox'
@@ -14,7 +13,8 @@ import Pagination from 'Components/Pagination/Pagination'
 import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { clearSearch, updateApplyFilterClickedTrue, updateEntriesCount, updateModalShow, updateSearchClickedTrue, updateSearchValue, updateToast } from 'Slices/Common_Slice/Common_slice'
+import { SearchComponent } from 'ResuableFunctions/SearchFun'
+import { updateApplyFilterClickedTrue, updateEntriesCount, updateModalShow } from 'Slices/Common_Slice/Common_slice'
 import Icons from 'Utils/Icons'
 import JsonData from 'Utils/JsonData'
 
@@ -265,24 +265,6 @@ const TruckDetails = () => {
         }
     }
 
-    function handleSearchEnter(event) {
-        if (event.code === "Enter") {
-            if (commonState?.search_value) {
-                dispatch(updateSearchClickedTrue())
-            } else {
-                dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
-            }
-        }
-    }
-
-    function handleSearchClicked() {
-        if (commonState?.search_value) {
-            dispatch(updateSearchClickedTrue())
-        } else {
-            dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
-        }
-    }
-
     return (
         <Fragment>
             <div className="h-100">
@@ -297,21 +279,8 @@ const TruckDetails = () => {
                         </p>
                     </div>
                     <div className="col-6 d-inline-flex justify-content-end align-items-center">
-                        <div className="position-relative w-100">
-                            <InputOnly
-                                type="text"
-                                InputGroupClassName="m-0"
-                                className="search-input-padding py-2 mb-0"
-                                placeholder="Search for anything..."
-                                change={(e) => dispatch(updateSearchValue(e.target.value))}
-                                keyDown={handleSearchEnter}
-                                value={commonState?.search_value}
-                            />
+                        <SearchComponent className="search-input-padding py-2 mb-0" placeholder="Search for anything..." />
 
-                            <span className="input-group-start-icon">{Icons.searchIcon}</span>
-                            {commonState?.search_value ? <span className="input-group-end-icon-two cursor-pointer" onClick={() => handleSearchClicked()}>{Icons.searchIcon}</span> : null}
-                            <span className={`${!commonState?.search_clicked ? "pe-none" : 'cursor-pointer'} input-group-end-icon-one`} onClick={() => dispatch(clearSearch())}>{Icons.searchCancelIcon}</span>
-                        </div>
                         <div className="col-3 text-end p-1">
                             <ButtonComponent
                                 className="bg-white py-2 w-100"

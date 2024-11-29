@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
+import { getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
 import { buyAndsellGetResponse, driverGetResponse, initializeFilterDetails, loadGetResponse, truckGetResponse } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
@@ -292,6 +293,12 @@ const commonSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+
+            .addCase(getDashboardResponse, (state, action) => {
+                state.totalCount = action.payload?.row_count
+                state.apply_filter = false
+                state.modalShow = false
+            })
             .addCase(truckGetResponse, (state, action) => {
                 state.totalCount = action.payload?.total_no_of_data
                 state.apply_filter = false

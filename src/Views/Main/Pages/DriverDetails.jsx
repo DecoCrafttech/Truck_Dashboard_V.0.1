@@ -5,7 +5,6 @@ import DriverCard from 'Components/Card/DriverCard'
 import { useDispatch } from 'Components/CustomHooks'
 import GoogleLocationInput from 'Components/Input/GoogleLocationInput'
 import Input from 'Components/Input/Input'
-import InputOnly from 'Components/Input/inputOnly'
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import SelectBox from 'Components/Input/SelectBox'
 import Textbox from 'Components/Input/textbox'
@@ -14,7 +13,8 @@ import Pagination from 'Components/Pagination/Pagination'
 import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { clearSearch, updateApplyFilterClickedTrue, updateEntriesCount, updateModalShow, updateSearchClickedTrue, updateSearchValue, updateToast } from 'Slices/Common_Slice/Common_slice'
+import { SearchComponent } from 'ResuableFunctions/SearchFun'
+import { updateApplyFilterClickedTrue, updateEntriesCount, updateModalShow, updateSearchClickedTrue, updateToast } from 'Slices/Common_Slice/Common_slice'
 import Icons from 'Utils/Icons'
 import JsonData from 'Utils/JsonData'
 
@@ -22,10 +22,10 @@ const DriverDetails = () => {
     const { commonState, servicesState } = useSelector((state) => state);
     const dispatch = useDispatch();
     const JsonJsx = JsonData()?.jsxJson;
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         dispatch(handleResetAlMenus)
-    },[])
+    }, [])
 
     const params = {
         driver_name: "",
@@ -289,28 +289,15 @@ const DriverDetails = () => {
                 <div className="w-100 d-inline-flex flex-wrap align-items-center">
                     <div className="col-6">
                         <p className='m-0 ps-1'>{`showing ${commonState?.currentPage * commonState?.pageSize <= commonState?.totalCount ?
-                                commonState?.currentPage * commonState?.pageSize
-                                :
-                                (commonState?.currentPage - 1) * commonState?.pageSize + servicesState?.alltrucks_details?.length
+                            commonState?.currentPage * commonState?.pageSize
+                            :
+                            (commonState?.currentPage - 1) * commonState?.pageSize + servicesState?.alltrucks_details?.length
                             } of ${commonState?.totalCount}`}
                         </p>
                     </div>
                     <div className="col-6 d-inline-flex justify-content-end align-items-center">
-                        <div className="position-relative w-100">
-                            <InputOnly
-                                type="text"
-                                InputGroupClassName="m-0"
-                                className="search-input-padding py-2 mb-0"
-                                placeholder="Search for anything..."
-                                change={(e) => dispatch(updateSearchValue(e.target.value))}
-                                keyDown={handleSearchEnter}
-                                value={commonState?.search_value}
-                            />
+                        <SearchComponent className="search-input-padding py-2 mb-0" placeholder="Search for anything..." />
 
-                            <span className="input-group-start-icon">{Icons.searchIcon}</span>
-                            {commonState?.search_value ? <span className="input-group-end-icon-two cursor-pointer" onClick={() => handleSearchClicked()}>{Icons.searchIcon}</span> : null}
-                            <span className={`${!commonState?.search_clicked ? "pe-none" : 'cursor-pointer'} input-group-end-icon-one`} onClick={() => dispatch(clearSearch())}>{Icons.searchCancelIcon}</span>
-                        </div>
                         <div className="col-3 text-end p-1">
                             <ButtonComponent
                                 className="bg-white py-2 w-100"

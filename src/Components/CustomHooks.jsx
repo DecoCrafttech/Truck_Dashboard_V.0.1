@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch as useReduxDispatch, useSelector } from 'react-redux';
+import { useDispatch as useReduxDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { handleScreenSize } from 'Actions/Common_actions/Common_action';
 import { useMemo } from 'react';
+
 
 //                                                   navigation hook                                                                         //
 export const useCustomNavigate = () => {

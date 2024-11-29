@@ -79,10 +79,10 @@ export const handleGetLoads = (params) => async (dispatch) => {
             dispatch(loadGetResponse(data?.data))
         } else {
             dispatch(loadGetFaliure())
-            dispatch(updateToast(data?.message, "error"))
+            dispatch(updateToast({ message: data?.message, type: "error" }))
         }
     } catch (err) {
-        dispatch(updateToast(err?.message, "error"))
+        dispatch(updateToast({ message: err?.message, type: "error" }))
     }
 }
 
@@ -95,10 +95,10 @@ export const handlePostLoadsVerification = async (dispatch) => {
         if (data?.error_code === 0) {
             dispatch(LoadsVerificationResponse(data?.data))
         } else {
-            dispatch(updateToast(data?.message, "error"))
+            dispatch(updateToast({ message: data?.message, type: "error" }))
         }
     } catch (err) {
-        dispatch(updateToast(err?.message, "error"))
+        dispatch(updateToast({ message: err?.message, type: "error" }))
     }
 }
 
@@ -129,10 +129,10 @@ export const handleGetTruck = (params) => async (dispatch) => {
             dispatch(truckGetResponse(data?.data))
         } else {
             dispatch(truckGetFailure())
-            dispatch(updateToast(data?.message, "error"))
+            dispatch(updateToast({ message: data?.message, type: "error" })) 
         }
     } catch (err) {
-        dispatch(updateToast(err?.message, "error"))
+        dispatch(updateToast({ message: err?.message, type: "error" }))
     }
 }
 
@@ -164,11 +164,11 @@ export const handleGetDriver = (params) => async (dispatch) => {
         if (data?.error_code === 0) {
             dispatch(driverGetResponse(data?.data))
         } else {
-            dispatch(driverGetFailure())
-            dispatch(updateToast(data?.message, "error"))
+            dispatch(driverGetFailure()) 
+            dispatch(updateToast({ message: data?.message, type: "error" }))
         }
     } catch (err) {
-        dispatch(updateToast(err?.message, "error"))
+        dispatch(updateToast({ message: err?.message, type: "error" }))
     }
 }
 
@@ -193,16 +193,16 @@ export const handleOnchangeDriverFilter = (inputData) => dispatch => {
 export const handleGetBuyandSell = (params) => async (dispatch) => {
     try {
         dispatch(buyAndsellGetRequest())
-        const { data } = await axiosInstance.post("/dashboard_buy_sell_details",params)
+        const { data } = await axiosInstance.post("/dashboard_buy_sell_details", params)
 
         if (data?.error_code === 0) {
             dispatch(buyAndsellGetResponse(data?.data))
         } else {
-            dispatch(buyAndsellGetFailure())
-            dispatch(updateToast(data?.message, "error"))
+            dispatch(buyAndsellGetFailure()) 
+            dispatch(updateToast({ message: data?.message, type: "error" }))
         }
     } catch (err) {
-        dispatch(updateToast(err?.message, "error"))
+        dispatch(updateToast({ message: err?.message, type: "error" }))
     }
 }
 

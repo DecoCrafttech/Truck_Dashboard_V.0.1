@@ -1,30 +1,56 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
-import { useCustomNavigate } from 'Components/CustomHooks'
+import { useCustomNavigate, useDispatch } from 'Components/CustomHooks'
 import Icons from 'Utils/Icons'
 import Img from 'Components/Img/Img'
 import ButtonComponent from 'Components/Button/Button'
 import InputOnly from 'Components/Input/inputOnly'
+import { isValidBase64 } from 'ResuableFunctions/ValidateBAseString'
+import { updateToast } from 'Slices/Common_Slice/Common_slice'
+import { handleGetDashboardProfile } from 'Actions/Pages_actions/dashboardAction'
+import { useSelector } from 'react-redux'
 
 const UserProfileDetails = () => {
+    const { dashboardState } = useSelector((state) => state)
     const navigate = useCustomNavigate()
+    const dispatch = useDispatch()
+    const queryParams = new URLSearchParams(window.location.search);
+    const userId = queryParams.get('id');
+
+
+    useEffect(() => {
+        if (isValidBase64(userId)) {
+            const data = window.atob(userId)
+            if (isFinite(data)) {
+                dispatch(handleGetDashboardProfile({ user_id: data }))
+            } else {
+                navigate("/dashboard/home")
+                dispatch(updateToast({ message: "Invalid id", type: "error" }))
+            }
+        } else {
+            navigate("/dashboard/home")
+            dispatch(updateToast({ message: "Invalid id", type: "error" }))
+        }
+    }, [])
+
+
 
     function userDetailsOne() {
-        return [{ key: "Name", value: "Krishna" }, { key: "Mobile Number", value: "9787533778" }, { key: "Date of birth", value: "18-03-2000" }, { key: "Pin Code", value: "627415" }]
+        return [{ key: "Name", value: dashboardState?.dashboard_profile_data?.name }, { key: "Mobile Number", value: dashboardState?.dashboard_profile_data?.phone_number }, { key: "Date of birth", value: dashboardState?.dashboard_profile_data?.date_of_birth }, { key: "Pin Code", value: dashboardState?.dashboard_profile_data?.pincode }]
             .map((value, index) => (
                 <div className='col-12 d-inline-flex mb-2' key={index}>
                     <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
                         <h6 className='text-secondary fw-bold'>{value.key}</h6>
                     </div>
                     <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
-                        <h6 className='text-secondary'>: {value.value}</h6>
+                        <h6 className='text-secondary'>{value.value}</h6>
                     </div>
                 </div>
             ))
     }
 
     function userDetailsTwo() {
-        return [{ key: "Name", value: "Krishna" }, { key: "Mobile Number", value: "9787533778" }, { key: "Date of birth", value: "18-03-2000" }, { key: "Pin Code", value: "627415" }]
+        return [{ key: "Mail ID", value: dashboardState?.dashboard_profile_data?.mail_id }, { key: "State", value: dashboardState?.dashboard_profile_data?.state?.length ? dashboardState?.dashboard_profile_data?.state[0] : "" }, { key: "Category", value: dashboardState?.dashboard_profile_data?.category }]
             .map((value, index) => (
                 <div className='col-12 d-inline-flex mb-2' key={index}>
                     <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
@@ -71,7 +97,7 @@ const UserProfileDetails = () => {
     }
 
     function vehicleStatus(status) {
-        return [{ title: "Fitness UpTo", date: "2024-10-1" }, { title: "Insurance", date: "2024-12-22" }, { title: "PUCC", date: "2025-1-1" }, { title: "Road Tax", date: "2023-1-1" }, { title: "RC Status", date: "2024-12-21" }]
+        return [{ title: "Fitness UpTo", date: "2024-10-1" }, { title: "Insurance", date: "2024-12-22" }, { title: "PUCC", date: "2024-12-21" }, { title: "Road Tax", date: "2023-1-1" }, { title: "RC Status", date: "2024-12-21" }]
             .map((sts, stsInd) => (
                 <div className="col-12 d-inline-flex p-2 border-bottom" key={stsInd}>
                     <div className="col-10">
@@ -117,7 +143,7 @@ const UserProfileDetails = () => {
                     <div className="w-100 d-flex flex-wrap align-items-center justify-content-center">
                         <div className="profile-image-width text-center">
                             <Img
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR__zJOFi3ef7eGRIlVWo2DKdUXKrCq8dBwtQ&s"
+                                src={dashboardState?.dashboard_profile_data?.profile_image_name}
                                 alt="user-image"
                                 width="200px"
                                 height="200px"

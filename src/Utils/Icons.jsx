@@ -170,6 +170,11 @@ const fileUploadIcon = <svg xmlns="http://www.w3.org/2000/svg" width="35" height
     <path d="M30.6252 25.6574L27.7566 22.7069C27.6945 22.6421 27.6205 22.5907 27.5389 22.5556C27.4573 22.5205 27.3697 22.5024 27.2812 22.5024C27.1928 22.5024 27.1052 22.5205 27.0236 22.5556C26.942 22.5907 26.8679 22.6421 26.8058 22.7069L23.9373 25.6574" stroke="#818181" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
+const eyeIcon = <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+    <path d="M13.0223 10.0001C13.0223 11.6501 11.689 12.9834 10.039 12.9834C8.389 12.9834 7.05566 11.6501 7.05566 10.0001C7.05566 8.35006 8.389 7.01672 10.039 7.01672C11.689 7.01672 13.0223 8.35006 13.0223 10.0001Z" stroke="#020B2A" strokeWidth="1.5" stroke-linecap="round" strokeLinejoin="round" />
+    <path d="M10.0392 16.8916C12.9808 16.8916 15.7225 15.1583 17.6308 12.1583C18.3808 10.9833 18.3808 9.00831 17.6308 7.83331C15.7225 4.83331 12.9808 3.09998 10.0392 3.09998C7.09751 3.09998 4.35584 4.83331 2.44751 7.83331C1.69751 9.00831 1.69751 10.9833 2.44751 12.1583C4.35584 15.1583 7.09751 16.8916 10.0392 16.8916Z" stroke="#020B2A" strokeWidth="1.5" stroke-linecap="round" strokeLinejoin="round" />
+</svg>
+
 const Icons = {
     dashboardIcon,
     analyticsIcon,
@@ -208,7 +213,8 @@ const Icons = {
     searchIcon,
     searchCancelIcon,
     backIcon,
-    fileUploadIcon
+    fileUploadIcon,
+    eyeIcon
 }
 
 export default Icons

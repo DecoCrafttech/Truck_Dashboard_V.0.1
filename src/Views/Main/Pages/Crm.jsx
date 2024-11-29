@@ -44,8 +44,8 @@ const Crm = () => {
                     </div>
                 </div>
                 <div className="feedback-table-height p-3 card-body">
-                    <div class="table-responsive h-100 overflow-scroll">
-                        <table class="table ">
+                    <div className="table-responsive h-100 overflow-scroll">
+                        <table className="table ">
                             <thead>
                                 <tr>
                                     <th className="table-head">Complaint ID</th>
