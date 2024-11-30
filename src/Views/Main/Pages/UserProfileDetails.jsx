@@ -34,9 +34,8 @@ const UserProfileDetails = () => {
     }, [])
 
 
-
     function userDetailsOne() {
-        return [{ key: "Name", value: dashboardState?.dashboard_profile_data?.name }, { key: "Mobile Number", value: dashboardState?.dashboard_profile_data?.phone_number }, { key: "Date of birth", value: dashboardState?.dashboard_profile_data?.date_of_birth }, { key: "Pin Code", value: dashboardState?.dashboard_profile_data?.pincode }]
+        return [{ key: "Name", value: dashboardState?.profile_data?.name }, { key: "Mobile Number", value: dashboardState?.profile_data?.phone_number }, { key: "Date of birth", value: dashboardState?.profile_data?.date_of_birth }, { key: "Pin Code", value: dashboardState?.profile_data?.pincode }]
             .map((value, index) => (
                 <div className='col-12 d-inline-flex mb-2' key={index}>
                     <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
@@ -50,7 +49,7 @@ const UserProfileDetails = () => {
     }
 
     function userDetailsTwo() {
-        return [{ key: "Mail ID", value: dashboardState?.dashboard_profile_data?.mail_id }, { key: "State", value: dashboardState?.dashboard_profile_data?.state?.length ? dashboardState?.dashboard_profile_data?.state[0] : "" }, { key: "Category", value: dashboardState?.dashboard_profile_data?.category }]
+        return [{ key: "Mail ID", value: dashboardState?.profile_data?.mail_id }, { key: "State", value: dashboardState?.profile_data?.state }, { key: "Category", value: dashboardState?.profile_data?.category }]
             .map((value, index) => (
                 <div className='col-12 d-inline-flex mb-2' key={index}>
                     <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
@@ -64,7 +63,7 @@ const UserProfileDetails = () => {
     }
 
     function postDetails() {
-        return [{ title: "Total Load Post", value: 16 }, { title: "Total Truck Post", value: "9787533778" }, { title: "Total Driver Post", value: "18-03-2000" }, { title: "Total Buy/Sell Post", value: "627415" }, { title: "Total Truck Added", value: "627415" }]
+        return [{ title: "Total Load Post", value: dashboardState?.dashboard_profile_data?.total_load_post }, { title: "Total Truck Post", value: dashboardState?.dashboard_profile_data?.total_truck_post }, { title: "Total Driver Post", value: dashboardState?.dashboard_profile_data?.total_driver_post }, { title: "Total Buy/Sell Post", value: dashboardState?.dashboard_profile_data?.total_buy_and_sell }, { title: "Total Truck Added", value: dashboardState?.dashboard_profile_data?.total_truck_added }]
             .map((value, index) => (
                 <div className="col-12 col-sm-6 col-md-4 col-lg-3 post_details_width p-1" key={index}>
                     <div className="border border-danger rounded p-3">
@@ -143,7 +142,7 @@ const UserProfileDetails = () => {
                     <div className="w-100 d-flex flex-wrap align-items-center justify-content-center">
                         <div className="profile-image-width text-center">
                             <Img
-                                src={dashboardState?.dashboard_profile_data?.profile_image_name}
+                                src={dashboardState?.profile_data?.profile_image_name}
                                 alt="user-image"
                                 width="200px"
                                 height="200px"

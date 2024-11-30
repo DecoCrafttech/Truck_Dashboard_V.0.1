@@ -6,7 +6,7 @@ const dashboardSlice = createSlice({
         initialGlow: false,
         dashboard_data: {},
 
-        profileGlow:false,
+        profileGlow: false,
         dashboard_profile_data: {},
     },
     reducers: {
@@ -14,7 +14,10 @@ const dashboardSlice = createSlice({
         getDashboardRequest(state, action) {
             return {
                 ...state,
-                initialGlow: true
+                initialGlow: true,
+                dashboard_data: {},
+                dashboard_profile_data: {},
+                profile_data:{}
             }
         },
         getDashboardResponse(state, action) {
@@ -44,7 +47,8 @@ const dashboardSlice = createSlice({
             return {
                 ...state,
                 profileGlow: false,
-                dashboard_profile_data: action.payload
+                dashboard_profile_data: action.payload,
+                profile_data:action.payload?.profile_data?.length ? action.payload?.profile_data[0] : {}
             }
         },
         getDashboardFailureResponse(state, action) {
