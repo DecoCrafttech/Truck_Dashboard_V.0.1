@@ -1,7 +1,5 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import SelectBox from 'Components/Input/SelectBox';
-import Pagination from 'Components/Pagination/Pagination';
 import InputOnly from 'Components/Input/inputOnly';
 import Icons from 'Utils/Icons';
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter';

@@ -2,11 +2,8 @@ import React, { Fragment, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import JsonData from 'Utils/JsonData'
 import Icons from 'Utils/Icons';
-import Pagination from 'Components/Pagination/Pagination';
-import SelectBox from 'Components/Input/SelectBox';
 import { handleGetDashboard } from 'Actions/Pages_actions/dashboardAction';
 import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
-import { updateEntriesCount } from 'Slices/Common_Slice/Common_slice';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import Img from 'Components/Img/Img';
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter';

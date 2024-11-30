@@ -9,13 +9,12 @@ import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import SelectBox from 'Components/Input/SelectBox'
 import Textbox from 'Components/Input/textbox'
 import ModalComponent from 'Components/Modal/Modal'
-import Pagination from 'Components/Pagination/Pagination'
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter'
 import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { SearchComponent } from 'ResuableFunctions/SearchFun'
-import { updateApplyFilterClickedTrue, updateEntriesCount, updateModalShow, updateSearchClickedTrue, updateToast } from 'Slices/Common_Slice/Common_slice'
+import { updateApplyFilterClickedTrue, updateModalShow } from 'Slices/Common_Slice/Common_slice'
 import Icons from 'Utils/Icons'
 import JsonData from 'Utils/JsonData'
 
@@ -262,25 +261,6 @@ const DriverDetails = () => {
 
             default:
                 break;
-        }
-    }
-
-
-    function handleSearchEnter(event) {
-        if (event.code === "Enter") {
-            if (commonState?.search_value) {
-                dispatch(updateSearchClickedTrue())
-            } else {
-                dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
-            }
-        }
-    }
-
-    function handleSearchClicked() {
-        if (commonState?.search_value) {
-            dispatch(updateSearchClickedTrue())
-        } else {
-            dispatch(updateToast({ type: "error", message: "search field should not be empty" }))
         }
     }
 
