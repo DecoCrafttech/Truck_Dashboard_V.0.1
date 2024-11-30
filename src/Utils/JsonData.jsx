@@ -330,21 +330,21 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.blogState?.blog_edit_data?.langugae,
+                value: blogState?.blog_edit_data?.language,
                 options: jsonOnly.blogLanguages,
-                change: (e) => dispatch(handleBlogInputOnChange({ langugae: e.target.value })),
+                change: (e) => dispatch(handleBlogInputOnChange({ language: e.target.value })),
                 isMandatory: true,
-                error: commonState?.validated && !blogState?.blog_edit_data?.langugae ? "Language required" : null
+                error: commonState?.validated && !blogState?.blog_edit_data?.language ? "Language required" : null
             },
             {
                 name: "Catergory",
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.blogState?.blog_edit_data?.blogCategory,
+                value: blogState?.blog_edit_data?.category,
                 options: jsonOnly.services,
-                change: (e) => dispatch(handleBlogInputOnChange({ blogCategory: e.target.value })),
-                error: commonState?.validated && !blogState?.blog_edit_data?.blogCategory ? "Category required" : null,
+                change: (e) => dispatch(handleBlogInputOnChange({ category: e.target.value })),
+                error: commonState?.validated && !blogState?.blog_edit_data?.category ? "Category required" : null,
                 isMandatory: true
             },
             {
@@ -352,9 +352,9 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.blogState?.blog_edit_data?.heading,
-                change: (e) => dispatch(handleBlogInputOnChange({ heading: e.target.value })),
-                error: commonState?.validated && !blogState?.blog_edit_data?.heading ? "Heading required" : null,
+                value: blogState?.blog_edit_data?.heading1,
+                change: (e) => dispatch(handleBlogInputOnChange({ heading1: e.target.value })),
+                error: commonState?.validated && !blogState?.blog_edit_data?.heading1 ? "Heading required" : null,
                 isMandatory: true
             },
             {
@@ -362,9 +362,9 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.blogState?.blog_edit_data?.sub_heading,
-                change: (e) => dispatch(handleBlogInputOnChange({ sub_heading: e.target.value })),
-                error: commonState?.validated && !blogState?.blog_edit_data?.sub_heading ? "Sub-Heading required" : null,
+                value: blogState?.blog_edit_data?.heading2,
+                change: (e) => dispatch(handleBlogInputOnChange({ heading2: e.target.value })),
+                error: commonState?.validated && !blogState?.blog_edit_data?.heading2 ? "Sub-Heading required" : null,
                 isMandatory: true
             },
             {
@@ -372,7 +372,7 @@ const JsonData = () => {
                 type: "textbox",
                 category: "textbox",
                 placeholder: "",
-                value: state?.blogState?.blog_edit_data?.blog_content,
+                value: blogState?.blog_edit_data?.blog_content,
                 change: (e) => dispatch(handleBlogInputOnChange({ blog_content: e.target.value })),
                 error: commonState?.validated && !blogState?.blog_edit_data?.blog_content ? "Blog content required" : null,
                 isMandatory: true
@@ -382,7 +382,7 @@ const JsonData = () => {
                 type: "file",
                 category: "input",
                 placeholder: "",
-                value: state?.blogState?.blog_edit_data?.blog_image_show_ui || [],
+                value: blogState?.blog_edit_data?.blog_image_show_ui || [],
                 change: (e) => {
                     // -- For Multiple File Input
                     let myImages = state?.blogState?.blog_edit_data?.blog_image_show_ui;

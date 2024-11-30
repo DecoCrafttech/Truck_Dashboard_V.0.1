@@ -21,7 +21,6 @@ const dashboardSlice = createSlice({
             }
         },
         getDashboardResponse(state, action) {
-            console.log(action.payload)
             return {
                 ...state,
                 initialGlow: false,

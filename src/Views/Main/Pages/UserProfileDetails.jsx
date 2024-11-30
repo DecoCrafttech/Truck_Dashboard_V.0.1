@@ -208,26 +208,34 @@ const UserProfileDetails = () => {
                     <section className="w-100 mt-4 p-1 ">
                         <Card className='rounded-1 w-100'>
                             <Card.Body className='d-flex flex-wrap'>
-                                {dashboardState?.dashboard_profile_data?.vehicle_data?.map((vehItem, vehInd) => (
-                                    <div className='col-6 col-lg-4 p-1' key={vehInd}>
-                                        <Card className='rounded-2'>
-                                            <Card.Body>
-                                                <div className="d-flex flex-wrap align-items-center">
-                                                    <div className="col-11 ">
-                                                        <h6 className='mb-0'>{vehItem?.vehicle_no}</h6>
+                                {dashboardState?.dashboard_profile_data?.vehicle_data?.length ?
+                                    dashboardState?.dashboard_profile_data?.vehicle_data?.map((vehItem, vehInd) => (
+                                        <div className='col-6 col-lg-4 p-1' key={vehInd}>
+                                            <Card className='rounded-2'>
+                                                <Card.Body>
+                                                    <div className="d-flex flex-wrap align-items-center">
+                                                        <div className="col-11 ">
+                                                            <h6 className='mb-0'>{vehItem?.vehicle_no}</h6>
+                                                        </div>
+                                                        <div className="col-1">
+                                                            {Icons.deleteIcon}
+                                                        </div>
                                                     </div>
-                                                    <div className="col-1">
-                                                        {Icons.deleteIcon}
-                                                    </div>
-                                                </div>
 
-                                                <div className="border d-flex flex-wrap align-items-center rounded-2 mt-2">
-                                                    {vehicleStatus(vehItem, vehInd)}
-                                                </div>
-                                            </Card.Body>
-                                        </Card>
+                                                    <div className="border d-flex flex-wrap align-items-center rounded-2 mt-2">
+                                                        {vehicleStatus(vehItem, vehInd)}
+                                                    </div>
+                                                </Card.Body>
+                                            </Card>
+                                        </div>
+                                    ))
+                                    :
+                                    <div className='w-100 d-inline-flex align-items-center justify-content-center py-5'>
+                                        <div className="col-6 text-center">
+                                            <p className='mb-0'>No vehichle Found</p>
+                                        </div>
                                     </div>
-                                ))}
+                                }
                             </Card.Body>
                         </Card>
                     </section>

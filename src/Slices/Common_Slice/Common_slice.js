@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
-import { updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
-import { getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
-import { buyAndsellGetResponse, driverGetResponse, initializeFilterDetails, loadGetResponse, truckGetResponse } from "Slices/Pages_slice/Services_slice";
+import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogResponse, updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
+import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
+import { buyAndsellGetRequest, buyAndsellGetResponse, driverGetRequest, driverGetResponse, loadGetRequest, loadGetResponse, truckGetRequest, truckGetResponse } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
     name: 'commonSlice',
@@ -294,25 +294,49 @@ const commonSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            //dashboard
+            .addCase(getDashboardRequest, (state, action) => {
+                state.totalCount = 0
+            })
             .addCase(getDashboardResponse, (state, action) => {
                 state.totalCount = action.payload?.row_count
                 state.apply_filter = false
                 state.modalShow = false
             })
-            .addCase(truckGetResponse, (state, action) => {
-                state.totalCount = action.payload?.total_no_of_data
-                state.apply_filter = false
-                state.modalShow = false
+
+            //load
+            .addCase(loadGetRequest, (state, action) => {
+                state.totalCount = 0
             })
             .addCase(loadGetResponse, (state, action) => {
                 state.totalCount = action.payload?.total_no_of_data
                 state.apply_filter = false
                 state.modalShow = false
             })
+
+            //truck
+            .addCase(truckGetRequest, (state, action) => {
+                state.totalCount = 0
+            })
+            .addCase(truckGetResponse, (state, action) => {
+                state.totalCount = action.payload?.total_no_of_data
+                state.apply_filter = false
+                state.modalShow = false
+            })
+            
+            //driver
+            .addCase(driverGetRequest, (state, action) => {
+                state.totalCount = 0
+            })
             .addCase(driverGetResponse, (state, action) => {
                 state.totalCount = action.payload?.total_no_of_data
                 state.apply_filter = false
                 state.modalShow = false
+            })
+
+            //buy and sell
+            .addCase(buyAndsellGetRequest, (state, action) => {
+                state.totalCount = 0
             })
             .addCase(buyAndsellGetResponse, (state, action) => {
                 state.totalCount = action.payload?.total_no_of_data
@@ -321,6 +345,13 @@ const commonSlice = createSlice({
             })
 
             //blog page
+            .addCase(getBlogRequest, (state, action) => {
+                state.totalCount = 0
+            })
+            .addCase(getBlogResponse, (state, action) => {
+                state.totalCount = action.payload?.total_no_of_data
+            })
+            
             .addCase(updateBlogEditData, (state,action)=>{
                 state.validated = false
             })
@@ -333,6 +364,12 @@ const commonSlice = createSlice({
                 state.validated = false
             })
             .addCase(updateDeleteBlog,(state,action)=>{
+                state.modalShow = true 
+            })
+            .addCase(updateAddBlogResponse,(state,action)=>{
+                state.modalShow = false
+            })
+            .addCase(blogDeletionResponse,(state,action)=>{
                 state.modalShow = true 
             })
     }

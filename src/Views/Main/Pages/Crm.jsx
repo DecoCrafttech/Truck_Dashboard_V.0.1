@@ -1,18 +1,18 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import SelectBox from 'Components/Input/SelectBox'
-import Pagination from 'Components/Pagination/Pagination';
 import InputOnly from 'Components/Input/inputOnly';
 import Icons from 'Utils/Icons';
 import JsonData from 'Utils/JsonData';
+import ServiesFooter from 'Components/Panel_compnent/ServiesFooter';
 
 const Crm = () => {
-    const { totalCount, pageSize, currentPage, showing_entries } = useSelector((state) => state.commonState);
+    const { totalCount } = useSelector((state) => state.commonState);
     const Json = JsonData()?.jsonOnly;
 
 
     return (
-        <div className="w-100 h-100 d-inline-flex align-items-center">
+        <div className="w-100 h-100 d-flex flex-wrap align-items-center">
             <div className="w-100 card border-0 rounded-4">
                 <div className="card-header rounded-top-4 bg-transparent border-0 d-flex flex-wrap align-items-center mt-3 px-3">
                     <div className="col-6">
@@ -43,7 +43,7 @@ const Crm = () => {
                         </div>
                     </div>
                 </div>
-                <div className="feedback-table-height p-3 card-body">
+                <div className="feedback-table-height card-body">
                     <div className="table-responsive h-100 overflow-scroll">
                         <table className="table ">
                             <thead>
@@ -71,26 +71,9 @@ const Crm = () => {
                         </table>
                     </div>
                 </div>
-                <div className="card-footer w-100 d-flex flex-wrap justify-content-end border-0 bg-transparent px-4 pb-3">
-                    <div className="col-12 col-md-6">
-                        <div className='col-12 d-inline-flex flex-wrap align-items-center'>
-                            <p className='m-0'>Showing</p>
-                            <div className="select-table-sizer mx-2">
-                                <SelectBox
-                                    selectBoxSize="sm"
-                                    selectOptions={showing_entries}
-                                    className="col"
-                                    disableSelectBox={false}
-                                />
-                            </div>
-                            <p className='m-0'>of 50</p>
-                        </div>
-                    </div>
-                    <div className="col-12 col-md-6 d-inline-flex justify-content-end">
-                        <Pagination totalCount={totalCount} currentPage={currentPage} pageSize={pageSize} />
-                    </div>
-                </div>
             </div>
+
+            { totalCount ? <ServiesFooter /> : null }
         </div>
     )
 }

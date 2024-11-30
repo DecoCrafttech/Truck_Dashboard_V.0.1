@@ -1,32 +1,33 @@
+import React, { Fragment, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { handleResetAlMenus } from 'Actions/Common_actions/Common_action'
 import { handleCreateModal, handleFilterModal, handleGetTruck } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
 import TruckCard from 'Components/Card/TruckCard'
 import { useDispatch } from 'Components/CustomHooks'
 import GoogleLocationInput from 'Components/Input/GoogleLocationInput'
-import Input from 'Components/Input/Input' 
+import Input from 'Components/Input/Input'
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import SelectBox from 'Components/Input/SelectBox'
 import Textbox from 'Components/Input/textbox'
 import ModalComponent from 'Components/Modal/Modal'
 import Pagination from 'Components/Pagination/Pagination'
-import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
 import { SearchComponent } from 'ResuableFunctions/SearchFun'
 import { updateApplyFilterClickedTrue, updateEntriesCount, updateModalShow } from 'Slices/Common_Slice/Common_slice'
 import Icons from 'Utils/Icons'
-import JsonData from 'Utils/JsonData'
+import JsonData from 'Utils/JsonData' 
+import ServiesFooter from 'Components/Panel_compnent/ServiesFooter'
 
 const TruckDetails = () => {
     const { commonState, servicesState } = useSelector((state) => state);
     const dispatch = useDispatch();
     const JsonJsx = JsonData()?.jsxJson;
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(handleResetAlMenus)
-    },[])
-    
+    }, [])
+
     const params = {
         vehicle_number: "",
         contact_no: "",
@@ -60,7 +61,7 @@ const TruckDetails = () => {
         else {
             dispatch(handleGetTruck(params))
         }
-        
+
     }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter])
 
 
@@ -255,7 +256,7 @@ const TruckDetails = () => {
                         <ButtonComponent
                             className="btn-danger w-100 py-2"
                             buttonName="Apply Filter"
-                            clickFunction={()=>dispatch(updateApplyFilterClickedTrue())}
+                            clickFunction={() => dispatch(updateApplyFilterClickedTrue())}
                         />
                     </div>
                 </div>
@@ -270,12 +271,11 @@ const TruckDetails = () => {
             <div className="h-100">
                 <div className="w-100 d-inline-flex flex-wrap align-items-center">
                     <div className="col-6">
-                        <p className='m-0 ps-1'>{`showing ${
-                            commonState?.currentPage * commonState?.pageSize <= commonState?.totalCount ?
+                        <p className='m-0 ps-1'>{`showing ${commonState?.currentPage * commonState?.pageSize <= commonState?.totalCount ?
                                 commonState?.currentPage * commonState?.pageSize
                                 :
                                 (commonState?.currentPage - 1) * commonState?.pageSize + servicesState?.alltrucks_details?.length
-                        } of ${commonState?.totalCount}`}
+                            } of ${commonState?.totalCount}`}
                         </p>
                     </div>
                     <div className="col-6 d-inline-flex justify-content-end align-items-center">
@@ -321,33 +321,10 @@ const TruckDetails = () => {
                             ))
                         }
                     </Card.Body>
-                    {
-                        commonState?.totalCount ?
-                            <Card.Footer className='border-1 bg-transparent d-flex flex-wrap align-items-center px-4'>
-                                <div className="col-12 col-md-6">
-                                    <div className='col-12 d-flex flex-wrap align-items-center'>
-                                        <p className='m-0'>Entries</p>
-                                        <div className="select-table-sizer mx-2">
-                                            <SelectBox
-                                                selectBoxSize="sm"
-                                                selectOptions={commonState?.showing_entries}
-                                                className="col"
-                                                disableSelectBox={false}
-                                                change={(e) => dispatch(updateEntriesCount(e.target.value))}
-                                                value={commonState?.pageSize}
-                                                componentFrom="Entries"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-12 col-md-6 d-inline-flex justify-content-end">
-                                    <Pagination totalCount={commonState?.totalCount} currentPage={commonState?.currentPage} pageSize={commonState?.pageSize} />
-                                </div>
-                            </Card.Footer>
-                            :
-                            null
-                    }
                 </Card>
+
+                { commonState?.totalCount ? <ServiesFooter /> : null }
+
             </div>
 
             <ModalComponent

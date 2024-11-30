@@ -235,7 +235,7 @@
 }
 
 .dashboard-table-height {
-  height: calc(var(--root-height) - 23.5rem);
+  height: calc(var(--root-height) - 24rem);
   width: 100%
 }
 
@@ -262,7 +262,7 @@ th {
 }
 
 .feedback-table-height {
-  height: calc(var(--root-height) - 18.5rem);
+  height: calc(var(--root-height) - 16.7rem);
   width: 100%
 }
 
@@ -341,7 +341,7 @@ th {
 }
 
 .main-content-card-height {
-  height: calc(100% - 3.7rem);
+  height: calc(100% - 7.9rem);
 }
 
 .pac-container {
@@ -441,6 +441,14 @@ th {
 .buyAndSell_model_height{
   height: 45rem !important;
   overflow-y: scroll !important;
+}
+
+.blog-main-content-height{
+  height: 36rem;
+}
+
+.placeholder-blog-image{
+  height: 12rem;
 }
 
 @media (min-width:1500px) {

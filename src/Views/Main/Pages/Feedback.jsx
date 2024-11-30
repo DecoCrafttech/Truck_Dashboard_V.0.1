@@ -4,12 +4,13 @@ import SelectBox from 'Components/Input/SelectBox';
 import Pagination from 'Components/Pagination/Pagination';
 import InputOnly from 'Components/Input/inputOnly';
 import Icons from 'Utils/Icons';
+import ServiesFooter from 'Components/Panel_compnent/ServiesFooter';
 
 const Feedback = () => {
     const { totalCount, pageSize, currentPage, showing_entries } = useSelector((state) => state.commonState);
 
     return (
-        <div className="w-100 h-100 d-inline-flex align-items-center">
+        <div className="w-100 h-100 d-flex flex-wrap align-items-center">
             <div className="w-100 card border-0 rounded-4">
                 <div className="card-header rounded-top-4 bg-transparent border-0 d-flex flex-wrap mt-3 px-3">
                     <div className="col-6">
@@ -60,26 +61,9 @@ const Feedback = () => {
                         </table>
                     </div>
                 </div>
-                <div className="card-footer w-100 d-flex flex-wrap justify-content-end border-0 bg-transparent px-4 pb-3">
-                    <div className="col-12 col-md-6">
-                        <div className='col-12 d-inline-flex flex-wrap align-items-center'>
-                            <p className='m-0'>Showing</p>
-                            <div className="select-table-sizer mx-2">
-                                <SelectBox
-                                    selectBoxSize="sm"
-                                    selectOptions={showing_entries}
-                                    className="col"
-                                    disableSelectBox={false}
-                                />
-                            </div>
-                            <p className='m-0'>of 50</p>
-                        </div>
-                    </div>
-                    <div className="col-12 col-md-6 d-inline-flex justify-content-end">
-                        <Pagination totalCount={totalCount} currentPage={currentPage} pageSize={pageSize} />
-                    </div>
-                </div>
             </div>
+
+            { totalCount ? <ServiesFooter /> : null }
         </div>
     )
 }

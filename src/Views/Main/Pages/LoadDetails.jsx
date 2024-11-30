@@ -4,12 +4,13 @@ import ButtonComponent from 'Components/Button/Button'
 import LoadCard from 'Components/Card/LoadCard'
 import { useDispatch } from 'Components/CustomHooks'
 import GoogleLocationInput from 'Components/Input/GoogleLocationInput'
-import Input from 'Components/Input/Input' 
+import Input from 'Components/Input/Input'
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
 import SelectBox from 'Components/Input/SelectBox'
 import Textbox from 'Components/Input/textbox'
 import ModalComponent from 'Components/Modal/Modal'
 import Pagination from 'Components/Pagination/Pagination'
+import ServiesFooter from 'Components/Panel_compnent/ServiesFooter'
 import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
@@ -313,34 +314,21 @@ const LoadDetails = () => {
                                 <LoadCard placeholder={servicesState?.load_glow} key={placeholderInd} />
                             ))
                             :
-                            servicesState?.allLoads_details.map((loads, loadInd) => (
-                                <LoadCard placeholder={servicesState?.load_glow} load={loads} key={loadInd} />
-                            ))
+                            servicesState?.allLoads_details?.length ?
+                                servicesState?.allLoads_details.map((loads, loadInd) => (
+                                    <LoadCard placeholder={servicesState?.load_glow} load={loads} key={loadInd} />
+                                ))
+                                :
+                                <div className='w-100 blog-main-content-height d-inline-flex align-items-center justify-content-center'>
+                                    <div className="col-6 text-center">
+                                        <h6>No Data Found</h6>
+                                    </div>
+                                </div>
                         }
                     </Card.Body>
-
-                    <Card.Footer className='border-1 bg-transparent d-flex flex-wrap align-items-center px-4'>
-                        <div className="col-12 col-md-6">
-                            <div className='col-12 d-flex flex-wrap align-items-center'>
-                                <p className='m-0'>Entries</p>
-                                <div className="select-table-sizer mx-2">
-                                    <SelectBox
-                                        selectBoxSize="sm"
-                                        selectOptions={commonState?.showing_entries}
-                                        className="col"
-                                        disableSelectBox={false}
-                                        change={(e) => dispatch(updateEntriesCount(e.target.value))}
-                                        value={commonState?.pageSize}
-                                        componentFrom="Entries"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-12 col-md-6 d-inline-flex justify-content-end">
-                            <Pagination totalCount={commonState?.totalCount} currentPage={commonState?.currentPage} pageSize={commonState?.pageSize} />
-                        </div>
-                    </Card.Footer>
                 </Card>
+
+                { commonState?.totalCount ? <ServiesFooter /> : null }
             </div>
 
             <ModalComponent

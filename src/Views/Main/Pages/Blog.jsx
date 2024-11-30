@@ -1,4 +1,5 @@
-import { handleAddBlog, handleBlogInputOnChange, handleCreateBlogModal } from 'Actions/Pages_actions/BlogAction'
+import { handleResetAlMenus } from 'Actions/Common_actions/Common_action'
+import { handleAddBlog, handleBlogInputOnChange, handleCreateBlogModal, handleDeleteBlogApi, handleGetBlog } from 'Actions/Pages_actions/BlogAction'
 import ButtonComponent from 'Components/Button/Button'
 import BlogCard from 'Components/Card/BlogCard'
 import { useDispatch } from 'Components/CustomHooks'
@@ -6,9 +7,11 @@ import Input from 'Components/Input/Input'
 import SelectBox from 'Components/Input/SelectBox'
 import Textbox from 'Components/Input/textbox'
 import ModalComponent from 'Components/Modal/Modal'
+import Pagination from 'Components/Pagination/Pagination'
+import SpinnerComponent from 'Components/Spinner/Spinner'
 import React, { Fragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { updateModalShow } from 'Slices/Common_Slice/Common_slice'
+import { updateEntriesCount, updateModalShow } from 'Slices/Common_Slice/Common_slice'
 import Icons from 'Utils/Icons'
 import JsonData from 'Utils/JsonData'
 
@@ -16,6 +19,18 @@ const Blog = () => {
     const { commonState, blogState } = useSelector((state) => state)
     const dispatch = useDispatch()
     const JsonJsx = JsonData()?.jsxJson;
+    const params = {
+        page_no: commonState?.currentPage,
+        data_limit: commonState?.pageSize
+    }
+
+    useEffect(() => {
+        dispatch(handleResetAlMenus)
+    }, [])
+
+    useEffect(() => {
+        dispatch(handleGetBlog(params))
+    }, [commonState?.pageSize, commonState?.currentPage, blogState?.get_blog_recall])
 
     const DeleteSelectFile = (id) => {
         const result = blogState?.blog_edit_data?.blog_image_show_ui.filter((data) => data.id !== id);
@@ -30,8 +45,6 @@ const Blog = () => {
 
         dispatch(handleBlogInputOnChange({ blog_image_show_ui: result, blog_image_send_api: newImages }));
     };
-
-
 
     function modalHeaderFun() {
         switch (blogState?.blog_modal_type) {
@@ -172,7 +185,7 @@ const Blog = () => {
                                     labelClassName="text-secondary mb-0 fs-14"
                                     mandatory={ipVal?.isMandatory}
                                 />
-                                
+
                                 {ipVal.error ? <p className='fs-14 text-danger mt-2 ps-1 mb-0'>{ipVal.error}</p> : null}
                             </div>
 
@@ -183,7 +196,12 @@ const Blog = () => {
 
 
             case "Delete":
-                return <h6 className='mb-0'>Delete Blog</h6>;
+                return <p className='mb-0 text-center py-5 w-100'>
+                    Do you want to delete
+                    <strong className='fs-16 ps-1'>
+                        {blogState?.blog_deletion_heading}
+                    </strong>
+                </p>;
 
             default:
                 break;
@@ -212,7 +230,13 @@ const Blog = () => {
                     <div className="col-6 p-1 pb-0">
                         <ButtonComponent
                             className="btn-outline-danger w-100 py-2"
-                            buttonName="Delete Blog"
+                            buttonName={
+                                blogState?.blog_modal_spinner ?
+                                    <SpinnerComponent />
+                                    :
+                                    "Delete Blog"
+                            }
+                            clickFunction={() => dispatch(handleDeleteBlogApi(blogState?.blog_delete_id))}
                         />
                     </div>
                 </div>
@@ -221,8 +245,14 @@ const Blog = () => {
                 return <div className='col-12 p-2'>
                     <ButtonComponent
                         className="btn-danger w-100 py-2"
-                        buttonName="Post Blog"
+                        buttonName={
+                            blogState?.blog_modal_spinner ?
+                                <SpinnerComponent />
+                                :
+                                "Post Blog"
+                        }
                         clickFunction={() => dispatch(handleAddBlog(blogState?.blog_edit_data))}
+                        btnDisable={blogState?.blog_modal_spinner}
                     />
                 </div>
 
@@ -233,7 +263,7 @@ const Blog = () => {
 
     return (
         <Fragment>
-            <div className="d-flex flex-wrap h-100">
+            <div className="d-flex flex-wrap h-100 placeholder-glow">
                 <div className="w-100 d-inline-flex justify-content-end">
                     <div className="col-2 text-end">
                         <ButtonComponent
@@ -253,14 +283,55 @@ const Blog = () => {
                     </div>
                 </div>
 
-                <div className="w-100 d-inline-flex flex-wrap overflow-scroll h-100 mt-3 pb-5">
-                    {[...Array(10)].map((v) => (
-                        <div className="col-3 p-1">
-                            <BlogCard />
-                        </div>
-                    ))
-                    }
+                <div className="w-100 blog-main-content-height">
+                    <div className="w-100 d-inline-flex flex-wrap align-items-stretch overflowY mt-3 pb-5">
+                        {blogState?.blog_glow ?
+                            [...Array(6)].map((value, placeholderInd) => (
+                                <div className="col-3 p-1">
+                                    <BlogCard placeholder={blogState?.blog_glow} key={placeholderInd} />
+                                </div>
+                            ))
+                            :
+                            blogState?.blog_datas?.length ?
+                                blogState?.blog_datas?.map((blogData, blogInd) => (
+                                    <div className="col-3 p-1" key={blogInd}>
+                                        <BlogCard placeholder={blogState?.blog_glow} blogData={blogData} />
+                                    </div>
+                                ))
+                                :
+                                <div className='w-100 blog-main-content-height d-inline-flex align-items-center justify-content-center'>
+                                    <div className="col-6 text-center">
+                                        <h6>No Data Found</h6>
+                                    </div>
+                                </div>
+                        }
+                    </div>
                 </div>
+                {blogState?.blog_datas?.length ?
+                    <div className='w-100 d-flex flex-wrap align-items-center px-4'>
+                        <div className="col-12 col-md-6">
+                            <div className='col-12 d-flex flex-wrap align-items-center'>
+                                <p className='m-0'>Entries</p>
+                                <div className="select-table-sizer mx-2">
+                                    <SelectBox
+                                        selectBoxSize="sm"
+                                        selectOptions={commonState?.showing_entries}
+                                        className="col"
+                                        disableSelectBox={false}
+                                        change={(e) => dispatch(updateEntriesCount(e.target.value))}
+                                        value={commonState?.pageSize}
+                                        componentFrom="Entries"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-12 col-md-6 d-inline-flex justify-content-end">
+                            <Pagination totalCount={commonState?.totalCount} currentPage={commonState?.currentPage} pageSize={commonState?.pageSize} />
+                        </div>
+                    </div>
+                    :
+                    null
+                }
             </div>
 
 

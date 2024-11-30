@@ -5,37 +5,43 @@ const servicesSlice = createSlice(({
     initialState: {
         blog_glow: false,
         blog_modal_type: null,
-        blog_edit_id: null,
         blog_edit_data: {},
+        get_blog_recall: false,
 
         blog_delete_id: null,
         blog_datas: [],
-
-        blog_modal_spinner:false
+        blog_modal_spinner: false
     },
     reducers: {
         updateBlogModalType(state, action) {
-            return {
-                ...state,
-                blog_modal_type: action.payload
+            if (action.payload === "Create") {
+                return {
+                    ...state,
+                    blog_modal_type: action.payload,
+                    blog_edit_data: {}
+                }
+            } else {
+                return {
+                    ...state,
+                    blog_modal_type: action.payload
+                }
             }
         },
         updateEditBlog(state, action) {
             return {
                 ...state,
-                blog_edit_id: action.payload?.edit_id,
-                blog_edit_data: action.payload?.edit_data,
+                blog_edit_data: action.payload,
                 blog_modal_type: "Edit"
             }
         },
         updateDeleteBlog(state, action) {
             return {
                 ...state,
-                blog_delete_id: action.payload,
+                blog_delete_id: action.payload?.delete_id,
+                blog_deletion_heading: action.payload?.deletion_blog_heading,
                 blog_modal_type: "Delete"
             }
         },
-
 
         //                                                             blog onchange                                                        //
         //get load api
@@ -50,25 +56,72 @@ const servicesSlice = createSlice(({
         },
 
 
+        //                                                             get blog data                                                       //
+        getBlogRequest(state, action) {
+            return {
+                ...state,
+                blog_glow: true
+            }
+        },
+        getBlogResponse(state, action) {
+            return {
+                ...state,
+                blog_datas: action.payload?.blog_data,
+                blog_glow: false,
+                get_blog_recall: false
+            }
+        },
+        getBlogFailure(state, action) {
+            return {
+                ...state,
+                blog_glow: false,
+                get_blog_recall: false
+            }
+        },
+
         //                                                             blog adding                                                         //
         updateAddBlogRequest(state, action) {
             return {
                 ...state,
-                blog_modal_spinner:true
+                blog_modal_spinner: true
             }
         },
         updateAddBlogResponse(state, action) {
             return {
                 ...state,
-                blog_modal_spinner:false
+                blog_modal_spinner: false,
+                blog_edit_data: {},
+                get_blog_recall: true
             }
         },
         updateAddBlogFailure(state, action) {
             return {
                 ...state,
-                blog_modal_spinner:false
+                blog_modal_spinner: false
             }
         },
+
+        //                                                             blog adding                                                         //
+        blogDeletionRequest(state, action) {
+            return {
+                ...state,
+                blog_modal_spinner: true
+            }
+        },
+        blogDeletionResponse(state, action) {
+            return {
+                ...state,
+                blog_modal_spinner: false,
+                blog_delete_id:null,
+                get_blog_recall:true
+            }
+        },
+        blogDeletionFailure(state, action) {
+            return {
+                ...state,
+                blog_modal_spinner: false
+            }
+        }
     }
 }))
 
@@ -79,9 +132,18 @@ export const {
     updateBlogModalType,
     updateEditBlog,
     updateDeleteBlog,
+
+    getBlogRequest,
+    getBlogResponse,
+    getBlogFailure,
+
     updateAddBlogRequest,
     updateAddBlogResponse,
-    updateAddBlogFailure
+    updateAddBlogFailure,
+
+    blogDeletionRequest,
+    blogDeletionResponse,
+    blogDeletionFailure,
 } = actions;
 
 export default reducer;
