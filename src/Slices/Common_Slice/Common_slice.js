@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
+import { updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
 import { getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
 import { buyAndsellGetResponse, driverGetResponse, initializeFilterDetails, loadGetResponse, truckGetResponse } from "Slices/Pages_slice/Services_slice";
 
@@ -293,7 +294,6 @@ const commonSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-
             .addCase(getDashboardResponse, (state, action) => {
                 state.totalCount = action.payload?.row_count
                 state.apply_filter = false
@@ -318,6 +318,22 @@ const commonSlice = createSlice({
                 state.totalCount = action.payload?.total_no_of_data
                 state.apply_filter = false
                 state.modalShow = false
+            })
+
+            //blog page
+            .addCase(updateBlogEditData, (state,action)=>{
+                state.validated = false
+            })
+            .addCase(updateBlogModalType,(state,action)=>{
+                state.modalShow = true
+                state.validated = false
+            })
+            .addCase(updateEditBlog,(state,action)=>{
+                state.modalShow = true
+                state.validated = false
+            })
+            .addCase(updateDeleteBlog,(state,action)=>{
+                state.modalShow = true 
             })
     }
 })

@@ -1,4 +1,4 @@
-import { handleCreateBlogModal } from 'Actions/Pages_actions/BlogAction'
+import { handleAddBlog, handleBlogInputOnChange, handleCreateBlogModal } from 'Actions/Pages_actions/BlogAction'
 import ButtonComponent from 'Components/Button/Button'
 import BlogCard from 'Components/Card/BlogCard'
 import { useDispatch } from 'Components/CustomHooks'
@@ -16,6 +16,22 @@ const Blog = () => {
     const { commonState, blogState } = useSelector((state) => state)
     const dispatch = useDispatch()
     const JsonJsx = JsonData()?.jsxJson;
+
+    const DeleteSelectFile = (id) => {
+        const result = blogState?.blog_edit_data?.blog_image_show_ui.filter((data) => data.id !== id);
+
+        const overallFile = result.map((data) => data.filename);
+        var newImages = [];
+        for (let i = 0; i < blogState?.blog_edit_data?.blog_image_send_api.length; i++) {
+            if (overallFile.includes(blogState?.blog_edit_data?.blog_image_send_api[i].name)) {
+                newImages[newImages.length] = blogState?.blog_edit_data?.blog_image_send_api[i];
+            }
+        }
+
+        dispatch(handleBlogInputOnChange({ blog_image_show_ui: result, blog_image_send_api: newImages }));
+    };
+
+
 
     function modalHeaderFun() {
         switch (blogState?.blog_modal_type) {
@@ -49,36 +65,96 @@ const Blog = () => {
                                     labelClassName="text-secondary mb-0 fs-14"
                                     mandatory={ipVal?.isMandatory}
                                 />
+
+                                {ipVal.error ? <p className='fs-14 text-danger mt-2 ps-1 mb-0'>{ipVal.error}</p> : null}
                             </div>
 
                         case "input":
                             return <div className={`${iPInd === JsonJsx?.blogInputs?.length - 1 ? "col-12" : "col-6"} p-1 mt-2`}>
                                 {
                                     ipVal?.type === "file" ?
-                                        <div className='cursor-pointer' onClick={() => document.getElementById('file_upload').click()}>
+                                        <Fragment>
+                                            {ipVal?.value?.length ?
+                                                null
+                                                :
+                                                <div className='cursor-pointer' onClick={() => document.getElementById('file_upload').click()}>
+                                                    <Input
+                                                        type={ipVal?.type}
+                                                        change={ipVal?.change}
+                                                        label={ipVal?.name}
+                                                        labelClassName="text-secondary mb-0 fs-14"
+                                                        mandatory={ipVal?.isMandatory}
+                                                        className="d-none"
+                                                        htmlFor="file_upload"
+                                                    />
+                                                    <div className='border py-2 rounded-2 col-12 text-center'>
+                                                        <span className='me-2'>{Icons.fileUploadIcon}</span>
+                                                        <span className='text-secondary fs-15'>Click here to choose image</span>
+                                                    </div>
+
+                                                    {ipVal.error ? <p className='fs-14 text-danger mt-2 ps-1 mb-0'>{ipVal.error}</p> : null}
+                                                </div>
+                                            }
+
+                                            <div className="mt-4 w-100">
+                                                {ipVal?.value?.map((data, index) => {
+                                                    const {
+                                                        id,
+                                                        filename,
+                                                        fileimage,
+                                                        datetime,
+                                                        filesize,
+                                                    } = data;
+                                                    return (
+                                                        <div className="file-atc-box w-100" key={id}>
+                                                            {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ? (
+                                                                <div className="file-image">
+                                                                    {" "}
+                                                                    <img src={fileimage} alt="" />
+                                                                </div>
+                                                            ) : (
+                                                                <div className="file-image">
+                                                                    <i className="far fa-file-alt"></i>
+                                                                </div>
+                                                            )}
+                                                            <div className="file-detail row">
+                                                                <h6>{filename}</h6>
+                                                                <div className="col-9">
+                                                                    <p>
+                                                                        <span>Size : {filesize}</span>,
+                                                                        <span className="ps-1 ml-2">
+                                                                            Modified Time : {datetime}
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                                <div className="file-actions col-3">
+                                                                    <button
+                                                                        type="button"
+                                                                        className="file-action-btn"
+                                                                        onClick={() => DeleteSelectFile(id)}
+                                                                    >
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </Fragment>
+                                        :
+                                        <Fragment>
                                             <Input
                                                 type={ipVal?.type}
+                                                value={ipVal?.value}
                                                 change={ipVal?.change}
                                                 label={ipVal?.name}
                                                 labelClassName="text-secondary mb-0 fs-14"
                                                 mandatory={ipVal?.isMandatory}
-                                                className="d-none"
-                                                htmlFor="file_upload"
                                             />
-                                            <div className='border py-2 rounded-2 col-12 text-center'>
-                                                <span className='me-2'>{Icons.fileUploadIcon}</span>
-                                                <span className='text-secondary fs-15'>Click here to choose image</span>
-                                            </div>
-                                        </div>
-                                        :
-                                        <Input
-                                            type={ipVal?.type}
-                                            value={ipVal?.value}
-                                            change={ipVal?.change}
-                                            label={ipVal?.name}
-                                            labelClassName="text-secondary mb-0 fs-14"
-                                            mandatory={ipVal?.isMandatory}
-                                        />
+
+                                            {ipVal.error ? <p className='fs-14 text-danger mt-2 ps-1 mb-0'>{ipVal.error}</p> : null}
+                                        </Fragment>
 
                                 }
 
@@ -96,6 +172,8 @@ const Blog = () => {
                                     labelClassName="text-secondary mb-0 fs-14"
                                     mandatory={ipVal?.isMandatory}
                                 />
+                                
+                                {ipVal.error ? <p className='fs-14 text-danger mt-2 ps-1 mb-0'>{ipVal.error}</p> : null}
                             </div>
 
                         default:
@@ -144,6 +222,7 @@ const Blog = () => {
                     <ButtonComponent
                         className="btn-danger w-100 py-2"
                         buttonName="Post Blog"
+                        clickFunction={() => dispatch(handleAddBlog(blogState?.blog_edit_data))}
                     />
                 </div>
 
@@ -151,7 +230,7 @@ const Blog = () => {
                 break;
         }
     }
-    
+
     return (
         <Fragment>
             <div className="d-flex flex-wrap h-100">

@@ -8,6 +8,7 @@ import { handleGetDashboard } from 'Actions/Pages_actions/dashboardAction';
 import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import { updateEntriesCount} from 'Slices/Common_Slice/Common_slice';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
+import Img from 'Components/Img/Img';
 
 
 const Dashboard = () => {
@@ -58,7 +59,7 @@ const Dashboard = () => {
                             <table className="table ">
                                 <thead>
                                     <tr>
-                                        <th scope="table-head">Profile</th>
+                                        <th scope="table-head" className='text-center'>Profile</th>
                                         <th scope="table-head">Name</th>
                                         <th scope="table-head">Phone Number</th>
                                         <th scope="table-head" >Category</th>
@@ -71,7 +72,16 @@ const Dashboard = () => {
                                     {
                                         dashboardState?.dashboard_data?.profile?.map((dashboardItem, dashboardIndex) => (
                                             <tr key={dashboardIndex}>
-                                                <th>{(commonState?.currentPage - 1) * commonState?.pageSize + (dashboardIndex + 1)}</th>
+                                                {/* <th>{(commonState?.currentPage - 1) * commonState?.pageSize + (dashboardIndex + 1)}</th> */}
+                                                <td className='text-center'>
+                                                    <Img
+                                                        src={dashboardItem?.profile_image_name}
+                                                        alt={dashboardItem?.first_name + "profile image"}
+                                                        width="35rem"
+                                                        height="35rem"
+                                                        className="rounded-circle"
+                                                    />
+                                                </td>
                                                 <td>{dashboardItem?.first_name}</td>
                                                 <td>{dashboardItem?.phone_number}</td>
                                                 <td >{dashboardItem?.category}</td>

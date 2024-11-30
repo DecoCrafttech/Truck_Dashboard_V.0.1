@@ -77,7 +77,7 @@ const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
     const state = store.getState();
-    const { dashboardState,servicesState } = useSelector((state) => state);
+    const { dashboardState, servicesState, blogState, commonState } = useSelector((state) => state);
 
     const jsonOnly = {
         sidebarMenus: [
@@ -333,7 +333,8 @@ const JsonData = () => {
                 value: state?.blogState?.blog_edit_data?.langugae,
                 options: jsonOnly.blogLanguages,
                 change: (e) => dispatch(handleBlogInputOnChange({ langugae: e.target.value })),
-                isMandatory: true
+                isMandatory: true,
+                error: commonState?.validated && !blogState?.blog_edit_data?.langugae ? "Language required" : null
             },
             {
                 name: "Catergory",
@@ -343,6 +344,7 @@ const JsonData = () => {
                 value: state?.blogState?.blog_edit_data?.blogCategory,
                 options: jsonOnly.services,
                 change: (e) => dispatch(handleBlogInputOnChange({ blogCategory: e.target.value })),
+                error: commonState?.validated && !blogState?.blog_edit_data?.blogCategory ? "Category required" : null,
                 isMandatory: true
             },
             {
@@ -352,6 +354,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.blogState?.blog_edit_data?.heading,
                 change: (e) => dispatch(handleBlogInputOnChange({ heading: e.target.value })),
+                error: commonState?.validated && !blogState?.blog_edit_data?.heading ? "Heading required" : null,
                 isMandatory: true
             },
             {
@@ -361,6 +364,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.blogState?.blog_edit_data?.sub_heading,
                 change: (e) => dispatch(handleBlogInputOnChange({ sub_heading: e.target.value })),
+                error: commonState?.validated && !blogState?.blog_edit_data?.sub_heading ? "Sub-Heading required" : null,
                 isMandatory: true
             },
             {
@@ -370,6 +374,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.blogState?.blog_edit_data?.blog_content,
                 change: (e) => dispatch(handleBlogInputOnChange({ blog_content: e.target.value })),
+                error: commonState?.validated && !blogState?.blog_edit_data?.blog_content ? "Blog content required" : null,
                 isMandatory: true
             },
             {
@@ -377,8 +382,29 @@ const JsonData = () => {
                 type: "file",
                 category: "input",
                 placeholder: "",
-                value: state?.blogState?.blog_edit_data?.blog_image,
-                change: (e) => dispatch(handleBlogInputOnChange({ blog_image: e.target.files[0] })),
+                value: state?.blogState?.blog_edit_data?.blog_image_show_ui || [],
+                change: (e) => {
+                    // -- For Multiple File Input
+                    let myImages = state?.blogState?.blog_edit_data?.blog_image_show_ui;
+                    let makeImagesList = [];
+
+                    // Use `Promise.all` to handle async file reading
+                    Promise.all(
+                        Array.from(e.target.files).map((file) => readFile(file))
+                    )
+                        .then((results) => {
+                            makeImagesList = results;
+                            if (myImages) {
+                                makeImagesList = [...myImages, ...makeImagesList];
+                            }
+                            dispatch(handleBlogInputOnChange({ blog_image_show_ui: makeImagesList, blog_image_send_api: e.target.files }))
+                            // dispatch(handleBuyAndSellInputOnChange({ blog_image_show_ui: makeImagesList, blog_image_send_api: e.target.files }));
+                        })
+                        .catch((error) => console.error('Error reading files:', error));
+
+
+                },
+                error: commonState?.validated && !blogState?.blog_edit_data?.blog_image_show_ui ? "Blog Image required" : null,
                 isMandatory: true
             }
         ],

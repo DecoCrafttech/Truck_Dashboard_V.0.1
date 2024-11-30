@@ -9,22 +9,11 @@ const servicesSlice = createSlice(({
         blog_edit_data: {},
 
         blog_delete_id: null,
-        blog_datas: []
+        blog_datas: [],
+
+        blog_modal_spinner:false
     },
     reducers: {
-        //                                                             load api's                                                         //
-        //get load api
-        updateBlogEditData(state, action) {
-            return {
-                ...state,
-                blog_edit_data: {
-                    ...state.blog_edit_data,
-                    ...action.payload
-                }
-            }
-        },
-
-
         updateBlogModalType(state, action) {
             return {
                 ...state,
@@ -45,7 +34,41 @@ const servicesSlice = createSlice(({
                 blog_delete_id: action.payload,
                 blog_modal_type: "Delete"
             }
-        }
+        },
+
+
+        //                                                             blog onchange                                                        //
+        //get load api
+        updateBlogEditData(state, action) {
+            return {
+                ...state,
+                blog_edit_data: {
+                    ...state.blog_edit_data,
+                    ...action.payload
+                }
+            }
+        },
+
+
+        //                                                             blog adding                                                         //
+        updateAddBlogRequest(state, action) {
+            return {
+                ...state,
+                blog_modal_spinner:true
+            }
+        },
+        updateAddBlogResponse(state, action) {
+            return {
+                ...state,
+                blog_modal_spinner:false
+            }
+        },
+        updateAddBlogFailure(state, action) {
+            return {
+                ...state,
+                blog_modal_spinner:false
+            }
+        },
     }
 }))
 
@@ -55,7 +78,10 @@ export const {
     updateBlogEditData,
     updateBlogModalType,
     updateEditBlog,
-    updateDeleteBlog
+    updateDeleteBlog,
+    updateAddBlogRequest,
+    updateAddBlogResponse,
+    updateAddBlogFailure
 } = actions;
 
 export default reducer;

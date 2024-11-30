@@ -74,37 +74,50 @@ const UserProfileDetails = () => {
             ))
     }
 
-    function vehicleDynamicDateStatus(date) {
-        const today = new Date();
-        const target = new Date(date);
-
-        if (target < today) {
-            return <div className="red-circle">
-                <p className='d-none'>red</p>
-            </div>
-        }
-        else if (target <= new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000)) {
-            return <div className="yellow-circle">
-                <p className='d-none'>yellow</p>
-            </div>
+    function vehicleDynamicDateStatus(date, title, data) {
+        if (title === "RC Status") {
+            if (data?.date?.toLowerCase() === "active") {
+                return <div className="green-circle">
+                    <p className='d-none'>green</p>
+                </div>
+            } else {
+                return <div className="red-circle">
+                    <p className='d-none'>red</p>
+                </div>
+            }
         }
         else {
-            return <div className="green-circle">
-                <p className='d-none'>green</p>
-            </div>
+            const today = new Date();
+            const target = new Date(date);
+
+            if (target < today) {
+                return <div className="red-circle">
+                    <p className='d-none'>red</p>
+                </div>
+            }
+            else if (target <= new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000)) {
+                return <div className="yellow-circle">
+                    <p className='d-none'>yellow</p>
+                </div>
+            }
+            else {
+                return <div className="green-circle">
+                    <p className='d-none'>green</p>
+                </div>
+            }
         }
     }
 
-    function vehicleStatus(status) {
-        return [{ title: "Fitness UpTo", date: "2024-10-1" }, { title: "Insurance", date: "2024-12-22" }, { title: "PUCC", date: "2024-12-21" }, { title: "Road Tax", date: "2023-1-1" }, { title: "RC Status", date: "2024-12-21" }]
+    function vehicleStatus(vehData, vehInd) {
+        return [{ title: "Fitness UpTo", date: vehData?.fit_up_to }, { title: "Insurance", date: vehData?.insurance_upto }, { title: "PUCC", date: vehData?.pucc_upto }, { title: "Road Tax", date: vehData?.fit_up_to }, { title: "RC Status", date: vehData?.rc_status }]
             .map((sts, stsInd) => (
-                <div className="col-12 d-inline-flex p-2 border-bottom" key={stsInd}>
+                <div className="col-12 d-inline-flex p-2 border-bottom" key={vehInd + stsInd}>
                     <div className="col-10">
                         <h6 className='mb-1'>{sts.title}</h6>
-                        <p className='mb-1 text-secondary fs-13'>{sts.date}</p>
+                        <p className='mb-1 text-secondary fs-13'>{sts.date ? sts.date : "Null"}</p>
                     </div>
                     <div className="col-2">
-                        {vehicleDynamicDateStatus(sts.date)}
+                        {vehicleDynamicDateStatus(sts.date, sts.title, sts)}
                     </div>
                 </div>
             ))
@@ -192,30 +205,29 @@ const UserProfileDetails = () => {
                         </div>
                     </section>
 
-                    <section className="w-100 mt-4 p-1">
-                        <Card className='rounded-1'>
-                            <Card.Body>
-
-                                <div className='col-4'>
-                                    <Card className='rounded-2'>
-                                        <Card.Body>
-                                            <div className="d-flex flex-wrap align-items-center">
-                                                <div className="col-11 ">
-                                                    <h6 className='mb-0'>TN67AN1212</h6>
+                    <section className="w-100 mt-4 p-1 ">
+                        <Card className='rounded-1 w-100'>
+                            <Card.Body className='d-flex flex-wrap'>
+                                {dashboardState?.dashboard_profile_data?.vehicle_data?.map((vehItem, vehInd) => (
+                                    <div className='col-6 col-lg-4 p-1' key={vehInd}>
+                                        <Card className='rounded-2'>
+                                            <Card.Body>
+                                                <div className="d-flex flex-wrap align-items-center">
+                                                    <div className="col-11 ">
+                                                        <h6 className='mb-0'>{vehItem?.vehicle_no}</h6>
+                                                    </div>
+                                                    <div className="col-1">
+                                                        {Icons.deleteIcon}
+                                                    </div>
                                                 </div>
-                                                <div className="col-1">
-                                                    {Icons.deleteIcon}
+
+                                                <div className="border d-flex flex-wrap align-items-center rounded-2 mt-2">
+                                                    {vehicleStatus(vehItem, vehInd)}
                                                 </div>
-                                            </div>
-
-                                            <div className="border d-flex flex-wrap align-items-center rounded-2 mt-2">
-                                                {vehicleStatus()}
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </div>
-
-
+                                            </Card.Body>
+                                        </Card>
+                                    </div>
+                                ))}
                             </Card.Body>
                         </Card>
                     </section>
@@ -300,8 +312,8 @@ const UserProfileDetails = () => {
                         </div>
                     </section>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 
