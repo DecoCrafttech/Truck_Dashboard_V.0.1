@@ -4,13 +4,16 @@ const dashboardSlice = createSlice({
     name: "dashboard_slice",
     initialState: {
         initialGlow: false,
-        recall_dashboard_again: false,
+
         dashboard_data: {},
 
         profileGlow: false,
         dashboard_profile_data: {},
-        add_new_vehicle: null,
-        add_vehicle_glow: false
+
+        add_new_vehicle: '',
+        add_vehicle_glow: false,
+
+        delete_vehicle_number: null
     },
     reducers: {
         //get all profile
@@ -49,7 +52,6 @@ const dashboardSlice = createSlice({
             return {
                 ...state,
                 profileGlow: false,
-                add_vehicle_glow:false,
                 dashboard_profile_data: action.payload,
                 profile_data: action.payload?.profile_data?.length ? action.payload?.profile_data[0] : {}
             }
@@ -61,6 +63,7 @@ const dashboardSlice = createSlice({
             }
         },
 
+
         //update new vehicle details
         updateNewVehicle(state, action) {
             return {
@@ -69,6 +72,8 @@ const dashboardSlice = createSlice({
             }
         },
 
+
+        //update new vehicle details
         addVehicleRequest(state, action) {
             return {
                 ...state,
@@ -76,10 +81,14 @@ const dashboardSlice = createSlice({
             }
         },
         addVehicleResponse(state, action) {
+            let updateVehicleNewList = { ...state?.dashboard_profile_data }
+            updateVehicleNewList.vehicle_data = updateVehicleNewList?.vehicle_data.concat(action.payload?.vehicle_data)
+
             return {
                 ...state,
                 add_vehicle_glow: false,
-                recall_dashboard_again: true
+                dashboard_profile_data: updateVehicleNewList,
+                add_new_vehicle: ''
             }
         },
         addVehicleFailure(state, action) {
@@ -88,6 +97,32 @@ const dashboardSlice = createSlice({
                 add_vehicle_glow: false
             }
         },
+
+
+        //update new vehicle details
+        removeVehicleRequest(state, action) {
+            return {
+                ...state,
+                delete_vehicle_number: action.payload?.vehicle_no
+            }
+        },
+        removeVehicleResponse(state, action) {
+            const removedVehicleNewList = state?.dashboard_profile_data?.vehicle_data?.filter((val) => val?.vehicle_no !== action.payload?.vehicle_no)
+
+            let updateVehicleNewList = { ...state?.dashboard_profile_data }
+            updateVehicleNewList.vehicle_data = removedVehicleNewList
+            return {
+                ...state,
+                delete_vehicle_number: null,
+                dashboard_profile_data: updateVehicleNewList,
+            }
+        },
+        removeVehicleFailure(state, action) {
+            return {
+                ...state,
+                delete_vehicle_number: null
+            }
+        }
     }
 })
 
@@ -97,7 +132,7 @@ export const {
     getDashboardRequest,
     getDashboardResponse,
     getDashboardFailure,
-    
+
     getDashboardProfileRequest,
     getDashboardProfileResponse,
     getDashboardProfileFailure,
@@ -106,6 +141,11 @@ export const {
     addVehicleRequest,
     addVehicleResponse,
     addVehicleFailure,
+
+    removeVehicleRequest,
+    removeVehicleResponse,
+    removeVehicleFailure
+
 
 } = actions;
 

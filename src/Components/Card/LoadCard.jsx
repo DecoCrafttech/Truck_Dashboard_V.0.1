@@ -108,14 +108,14 @@ const LoadCard = ({
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                             buttonName={placeholder ? "" : 'Delete'}
-                            clickFunction={() => dispatch(handleDeleteModal({ type: "Load", data: load }))}
+                            clickFunction={() => dispatch(handleDeleteModal({ from: "Load", type: "Delete", data: load }))}
                         />
                     </div>
                     <div className="col px-1">
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                             buttonName={placeholder ? "" : 'Edit'}
-                            clickFunction={() => dispatch(handleEditModal({ type: "Load", data: load }))}
+                            clickFunction={() => dispatch(handleEditModal({ from: "Load", type: "Edit", data: load }))}
                         />
                     </div>
                 </Card.Footer>

@@ -7,9 +7,13 @@ import ButtonComponent from 'Components/Button/Button'
 import InputOnly from 'Components/Input/inputOnly'
 import { isValidBase64 } from 'ResuableFunctions/ValidateBAseString'
 import { updateToast } from 'Slices/Common_Slice/Common_slice'
-import { handleGetDashboardProfile } from 'Actions/Pages_actions/dashboardAction'
+import { handleDeleteVehicle, handleGetDashboardProfile } from 'Actions/Pages_actions/dashboardAction'
 import { useSelector } from 'react-redux'
 import { HandleAddvehicleOnChange } from 'ResuableFunctions/ValidVehicleNumber'
+import SpinnerComponent from 'Components/Spinner/Spinner'
+import LoadCard from 'Components/Card/LoadCard'
+import BuyandSellCard from 'Components/Card/BuyandSellCard'
+import TruckCard from 'Components/Card/TruckCard'
 
 const UserProfileDetails = () => {
     const { dashboardState } = useSelector((state) => state)
@@ -17,7 +21,6 @@ const UserProfileDetails = () => {
     const dispatch = useDispatch()
     const queryParams = new URLSearchParams(window.location.search);
     const userId = queryParams.get('id');
-
 
     useEffect(() => {
         if (isValidBase64(userId)) {
@@ -50,14 +53,14 @@ const UserProfileDetails = () => {
     }
 
     function userDetailsTwo() {
-        return [{ key: "Mail ID", value: dashboardState?.profile_data?.mail_id }, { key: "State", value: dashboardState?.profile_data?.state }, { key: "Category", value: dashboardState?.profile_data?.category }]
+        return [{ key: "Mail ID", value: dashboardState?.profile_data?.email }, { key: "State", value: dashboardState?.profile_data?.state }, { key: "Category", value: dashboardState?.profile_data?.category }]
             .map((value, index) => (
                 <div className='col-12 d-inline-flex mb-2' key={index}>
                     <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
                         <h6 className='text-secondary fw-bold'>{value.key}</h6>
                     </div>
                     <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
-                        <h6 className='text-secondary'>: {value.value}</h6>
+                        <h6 className='text-secondary'>{value.value}</h6>
                     </div>
                 </div>
             ))
@@ -124,6 +127,35 @@ const UserProfileDetails = () => {
             ))
     }
 
+    function cardHeader(title, inputChange, inputKeyDown, searchOnClick) {
+        return <Card.Header className='py-3'>
+            <div className="col-12 d-inline-flex flex-wrap align-items-center">
+                <div className="col-4">
+                    <h5 className=''>{title}</h5>
+                </div>
+                <div className="col-8 d-inline-flex flex-wrap justify-content-end pe-4">
+                    <div className="col-6">
+                        <InputOnly
+                            type="text"
+                            className="search-input-padding border"
+                            placeholder="Search Here"
+                            change={inputChange}
+                            keyDown={inputKeyDown}
+                        />
+                    </div>
+                    <div className="col-1">
+                        <ButtonComponent
+                            className="custom-success fs-15 ms-2"
+                            buttonName="Search"
+                            title="Search"
+                            clickFunction={searchOnClick}
+                        />
+                    </div>
+                </div>
+            </div>
+        </Card.Header>
+    }
+
     return (
         <div className='container-fluid h-100'>
             <div className="w-100 col-12 d-flex flex-wrap">
@@ -153,7 +185,8 @@ const UserProfileDetails = () => {
 
             <div className="card mt-4 border-0 h-100 overflow-scroll pb-5">
                 <div className="card-body p-5 ">
-                    <div className="w-100 d-flex flex-wrap align-items-center justify-content-center">
+                    {/* profile data  */}
+                    <section className="w-100 d-flex flex-wrap align-items-center justify-content-center">
                         <div className="profile-image-width text-center">
                             <Img
                                 src={dashboardState?.profile_data?.profile_image_name}
@@ -169,127 +202,181 @@ const UserProfileDetails = () => {
                         <div className="col-12 col-sm col-lg-4 profile-main-data mt-3 mt-lg-0">
                             {userDetailsTwo()}
                         </div>
-                    </div>
+                    </section>
 
+                    {/* aadhar status  */}
                     <section className="w-100 d-flex flex-wrap align-items-center bg-light mt-4 p-3 rounded">
                         <div className="col-6">
-                            <h6 className='mb-0'>Aadhar - 1232 1233 1231 1231</h6>
+                            <h6 className='mb-0'>{dashboardState?.profile_data?.aadhar_no}</h6>
                         </div>
                         <div className="col-6 text-end">
-                            <p className='m-0 me-4 verified-bg d-inline-block'>Verified</p>
+                            {dashboardState?.profile_data?.is_aadhar_verified === "1" ?
+                                <p className='m-0 me-4 verified-bg d-inline-block'>Verified</p>
+                                :
+                                <p className='m-0 me-4 verified-bg bg-danger d-inline-block'>Not Verified</p>
+                            }
                         </div>
                     </section>
 
+                    {/* post cards  */}
                     <section className="w-100 d-flex flex-wrap align-items-center mt-4 p-1">
                         {postDetails()}
                     </section>
 
-                    <section className="w-100 d-flex flex-wrap align-items-center mt-4 p-1">
-                        <HandleAddvehicleOnChange parentDiv="col-12 col-md-8 col-lg-7 col-xxl-5 d-inline-flex flex-wrap" divOneCls="col-8" divTwoCls="col-4" />
+                    {/* vehicle card  */}
+                    <section className="w-100 mt-4 p-1">
+                        <div className="w-100 mt-4 p-1 ">
+                            <Card className='rounded-1 w-100'>
+                                <Card.Header className='d-flex flex-wrap align-items-center ps-2 py-3'>
+                                    <HandleAddvehicleOnChange parentDiv="col-12 col-md-8 col-lg-7 col-xxl-5 d-inline-flex flex-wrap" divOneCls="col-8" divTwoCls="col-4" />
+                                </Card.Header>
+                                
+                                <Card.Body className='d-flex flex-wrap'>
+                                    {dashboardState?.dashboard_profile_data?.vehicle_data?.length ?
+                                        dashboardState?.dashboard_profile_data?.vehicle_data?.map((vehItem, vehInd) => (
+                                            <div className='col-6 col-lg-4 p-1' key={vehInd}>
+                                                <Card className='rounded-2'>
+                                                    <Card.Body>
+                                                        <div className="d-flex flex-wrap align-items-center">
+                                                            <div className="col-10 ">
+                                                                <h6 className='mb-0'>{vehItem?.vehicle_no}</h6>
+                                                            </div>
+                                                            <div className="col-2 text-center">
+                                                                <span className={`${dashboardState?.delete_vehicle_number ? 'pe-none' : ''} cursor-pointer`} onClick={() => dispatch(handleDeleteVehicle({ user_id: window.atob(userId), vehicle_no: vehItem?.vehicle_no }))}>
+                                                                    {
+                                                                        dashboardState?.delete_vehicle_number === vehItem?.vehicle_no ?
+                                                                            <SpinnerComponent variant="danger" />
+                                                                            :
+                                                                            Icons.deleteIcon
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="border d-flex flex-wrap align-items-center rounded-2 mt-2">
+                                                            {vehicleStatus(vehItem, vehInd)}
+                                                        </div>
+                                                    </Card.Body>
+                                                </Card>
+                                            </div>
+                                        ))
+                                        :
+                                        <div className='w-100 d-inline-flex align-items-center justify-content-center py-5'>
+                                            <div className="col-6 text-center">
+                                                <p className='mb-0'>No vehichle Found</p>
+                                            </div>
+                                        </div>
+                                    }
+                                </Card.Body>
+                            </Card>
+                        </div>
                     </section>
 
-                    <section className="w-100 mt-4 p-1 ">
-                        <Card className='rounded-1 w-100'>
-                            <Card.Body className='d-flex flex-wrap'>
-                                {dashboardState?.dashboard_profile_data?.vehicle_data?.length ?
-                                    dashboardState?.dashboard_profile_data?.vehicle_data?.map((vehItem, vehInd) => (
-                                        <div className='col-6 col-lg-4 p-1' key={vehInd}>
-                                            <Card className='rounded-2'>
-                                                <Card.Body>
-                                                    <div className="d-flex flex-wrap align-items-center">
-                                                        <div className="col-11 ">
-                                                            <h6 className='mb-0'>{vehItem?.vehicle_no}</h6>
-                                                        </div>
-                                                        <div className="col-1">
-                                                            {Icons.deleteIcon}
-                                                        </div>
-                                                    </div>
+                    {/* load cards  */}
+                    <section className="w-100 mt-4 p-1">
+                        <Card className='rounded-1'>
+                            {cardHeader('Load Post', (e) => console.log(e.target.value), (e) => console.log(e.code), (e) => console.log(e.code))}
 
-                                                    <div className="border d-flex flex-wrap align-items-center rounded-2 mt-2">
-                                                        {vehicleStatus(vehItem, vehInd)}
-                                                    </div>
-                                                </Card.Body>
-                                            </Card>
-                                        </div>
+                            <Card.Body>
+                                {dashboardState?.profileGlow ?
+                                    [...Array(6)].map((value, placeholderInd) => (
+                                        <LoadCard placeholder={dashboardState?.profileGlow} key={placeholderInd} />
                                     ))
                                     :
-                                    <div className='w-100 d-inline-flex align-items-center justify-content-center py-5'>
-                                        <div className="col-6 text-center">
-                                            <p className='mb-0'>No vehichle Found</p>
+                                    dashboardState?.dashboard_profile_data?.load_data && dashboardState?.dashboard_profile_data?.load_data?.length ?
+                                        dashboardState?.dashboard_profile_data?.load_data?.map((loadVal, loadInd) => (
+                                            <LoadCard placeholder={dashboardState?.profileGlow} load={loadVal} key={loadInd} />
+                                        ))
+                                        :
+                                        <div className='w-100 py-5 d-inline-flex align-items-center justify-content-center'>
+                                            <div className="col-6 text-center">
+                                                <h6>No Data Found</h6>
+                                            </div>
                                         </div>
-                                    </div>
                                 }
                             </Card.Body>
                         </Card>
                     </section>
 
-
+                    {/* truck cards  */}
                     <section className="w-100 mt-4 p-1">
                         <Card className='rounded-1'>
-                            <Card.Header className='py-3 bg-transparent border-0'>
-                                <div className="col-12 d-inline-flex flex-wrap align-items-center">
-                                    <div className="col-4">
-                                        <h5 className=''>Load Post</h5>
-                                    </div>
-                                    <div className="col-8 d-inline-flex flex-wrap justify-content-end pe-4">
-                                        <div className="col-6">
-                                            <InputOnly
-                                                type="text"
-                                                className="search-input-padding border"
-                                                placeholder="Search Here"
-                                                change={(e) => console.log(e.target.value)}
-                                                keyDown={(e) => console.log(e.code)}
-                                            />
-                                        </div>
-                                        <div className="col-1">
-                                            <ButtonComponent
-                                                className="custom-success fs-15 ms-2"
-                                                buttonName="Search"
-                                                title="Search"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </Card.Header>
-                            <Card.Body>
+                            {cardHeader('Truck Post', (e) => console.log(e.target.value), (e) => console.log(e.code), (e) => console.log(e.code))}
 
+                            <Card.Body>
+                                {dashboardState?.profileGlow ?
+                                    [...Array(6)].map((value, placeholderInd) => (
+                                        <TruckCard placeholder={dashboardState?.profileGlow} key={placeholderInd} />
+                                    ))
+                                    :
+                                    dashboardState?.dashboard_profile_data?.truck_data && dashboardState?.dashboard_profile_data?.truck_data?.length ?
+                                        dashboardState?.dashboard_profile_data?.truck_data?.map((truckData, truckInd) => (
+                                            <TruckCard placeholder={dashboardState?.profileGlow} truck_data={truckData} key={truckInd} />
+                                        ))
+                                        :
+                                        <div className='w-100 py-5 d-inline-flex align-items-center justify-content-center'>
+                                            <div className="col-6 text-center">
+                                                <h6>No Data Found</h6>
+                                            </div>
+                                        </div>
+                                }
                             </Card.Body>
                         </Card>
                     </section>
 
+                    {/* driver cards  */}
                     <section className="w-100 mt-4 p-1">
                         <Card className='rounded-1'>
-                            <Card.Header className='py-3 bg-transparent border-0'>
-                                <div className="col-12 d-inline-flex flex-wrap align-items-center">
-                                    <div className="col-4">
-                                        <h5 className=''>Buy & Sell Post</h5>
-                                    </div>
-                                    <div className="col-8 d-inline-flex flex-wrap justify-content-end pe-4">
-                                        <div className="col-6">
-                                            <InputOnly
-                                                type="text"
-                                                className="search-input-padding border"
-                                                placeholder="Search Here"
-                                                change={(e) => console.log(e.target.value)}
-                                                keyDown={(e) => console.log(e.code)}
-                                            />
-                                        </div>
-                                        <div className="col-1">
-                                            <ButtonComponent
-                                                className="custom-success fs-15 ms-2"
-                                                buttonName="Search"
-                                                title="Search"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </Card.Header>
-                            <Card.Body>
+                            {cardHeader('Driver Post', (e) => console.log(e.target.value), (e) => console.log(e.code), (e) => console.log(e.code))}
 
+                            <Card.Body>
+                                {dashboardState?.profileGlow ?
+                                    [...Array(6)].map((value, placeholderInd) => (
+                                        <LoadCard placeholder={dashboardState?.profileGlow} key={placeholderInd} />
+                                    ))
+                                    :
+                                    dashboardState?.dashboard_profile_data?.driver_data && dashboardState?.dashboard_profile_data?.driver_data?.length ?
+                                        dashboardState?.dashboard_profile_data?.driver_data?.map((loadVal, loadInd) => (
+                                            <LoadCard placeholder={dashboardState?.profileGlow} load={loadVal} key={loadInd} />
+                                        ))
+                                        :
+                                        <div className='w-100 py-5 d-inline-flex align-items-center justify-content-center'>
+                                            <div className="col-6 text-center">
+                                                <h6>No Data Found</h6>
+                                            </div>
+                                        </div>
+                                }
                             </Card.Body>
                         </Card>
                     </section>
 
+                    {/* buy and sell  */}
+                    <section className="w-100 mt-4 p-1">
+                        <Card className='rounded-1'>
+                            {cardHeader('Buy & Sell Post', (e) => console.log(e.target.value), (e) => console.log(e.code), (e) => console.log(e.code))}
+
+                            <Card.Body>
+                                {dashboardState?.profileGlow ?
+                                    [...Array(6)].map((value, placeholderInd) => (
+                                        <BuyandSellCard placeholder={dashboardState?.profileGlow} key={placeholderInd} />
+                                    ))
+                                    :
+                                    dashboardState?.dashboard_profile_data?.buy_sell_data && dashboardState?.dashboard_profile_data?.buy_sell_data?.length ?
+                                        dashboardState?.dashboard_profile_data?.buy_sell_data?.map((buyAndSellData, buyAndSellInd) => (
+                                            <BuyandSellCard placeholder={dashboardState?.profileGlow} buy_sell_data={buyAndSellData} key={buyAndSellInd} />
+                                        ))
+                                        :
+                                        <div className='w-100 py-5 d-inline-flex align-items-center justify-content-center'>
+                                            <div className="col-6 text-center">
+                                                <h6>No Data Found</h6>
+                                            </div>
+                                        </div>
+                                }
+                            </Card.Body>
+                        </Card>
+                    </section>
+
+                    {/* delete or deactivate account  */}
                     <section className="w-100 d-flex flex-wrap align-items-center bg-light mt-4 p-3 rounded">
                         <div className="col-6">
                             <h6 className='mb-0'>Delete This Account</h6>

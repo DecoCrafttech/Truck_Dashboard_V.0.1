@@ -26,7 +26,7 @@ const TruckCard = ({
     function cardDetails(data) {
         return <Fragment>
             {[{ icon: Icons.materialIcon, value: `${data?.tone} Tone` }, { icon: Icons.numberPlateIcon, value: data?.vehicle_number }, { icon: Icons.wheelIcon, value: `${data?.no_of_tyres} Wheels` },
-            { icon: Icons.containerIcon, value: data?.truck_body_type },{ icon: Icons.truckNumberPlateIcon  , value: data?.truck_name },{ icon: Icons.blueCardCompanyIcon, value: data?.company_name }]
+            { icon: Icons.containerIcon, value: data?.truck_body_type }, { icon: Icons.truckNumberPlateIcon, value: data?.truck_name }, { icon: Icons.blueCardCompanyIcon, value: data?.company_name }]
                 .map((val, ind) => (
                     <div className={'col-6'} key={ind}>
                         <p className={`${placeholder ? 'placeholder pt-2 pb-3 rounded-1 col-11' : ''} mb-2 fs-13 text-secondary`}>
@@ -94,13 +94,13 @@ const TruckCard = ({
 
                     <p className={`${placeholder ? 'placeholder py-1 rounded-1 col-7 mb-1' : 'ms-2 mt-2'} fs-12 text-secondary fw-bold  `}>Posted on : {truck_data?.updt?.slice(5, 25)}</p>
 
-                    <hr className={placeholder ? 'm-1 d-none' : ''}/>
+                    <hr className={placeholder ? 'm-1 d-none' : ''} />
 
                     <div className="col-12 d-flex flex-wrap">
                         {cardDetails(truck_data)}
                     </div>
 
-                    <hr className={placeholder ? 'm-1 d-none' : ''}/>
+                    <hr className={placeholder ? 'm-1 d-none' : ''} />
                 </Card.Body>
 
                 <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-1">
@@ -108,14 +108,14 @@ const TruckCard = ({
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                             buttonName={placeholder ? "" : 'Delete'}
-                            clickFunction={() => dispatch(handleDeleteModal({ type: "Truck", data: truck_data }))}
+                            clickFunction={() => dispatch(handleDeleteModal({ from: "Truck", type: "Delete", data: truck_data }))}
                         />
                     </div>
                     <div className="col px-1">
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                             buttonName={placeholder ? "" : 'Edit'}
-                            clickFunction={() => dispatch(handleEditModal({ type: "Truck", data: truck_data }))}
+                            clickFunction={() => dispatch(handleEditModal({ from: "Truck", type: "Edit", data: truck_data }))}
                         />
                     </div>
                 </Card.Footer>

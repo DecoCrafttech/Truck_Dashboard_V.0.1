@@ -45,8 +45,8 @@ import {
 
 } from 'Slices/Pages_slice/Services_slice';
 
-export const handleCreateModal = dispatch => {
-    dispatch(updateServiceModalType("Create"))
+export const handleCreateModal = (from, type) => dispatch => {
+    dispatch(updateServiceModalType({ from, type }))
     dispatch(updateModalShow())
 }
 
@@ -60,8 +60,8 @@ export const handleEditModal = editData => dispatch => {
     dispatch(updateModalShow())
 }
 
-export const handleFilterModal = dispatch => {
-    dispatch(initializeFilterDetails())
+export const handleFilterModal = (from, type) => dispatch => {
+    dispatch(initializeFilterDetails({ from, type }))
     dispatch(updateModalShow())
 }
 
@@ -129,7 +129,7 @@ export const handleGetTruck = (params) => async (dispatch) => {
             dispatch(truckGetResponse(data?.data))
         } else {
             dispatch(truckGetFailure())
-            dispatch(updateToast({ message: data?.message, type: "error" })) 
+            dispatch(updateToast({ message: data?.message, type: "error" }))
         }
     } catch (err) {
         dispatch(updateToast({ message: err?.message, type: "error" }))
@@ -164,7 +164,7 @@ export const handleGetDriver = (params) => async (dispatch) => {
         if (data?.error_code === 0) {
             dispatch(driverGetResponse(data?.data))
         } else {
-            dispatch(driverGetFailure()) 
+            dispatch(driverGetFailure())
             dispatch(updateToast({ message: data?.message, type: "error" }))
         }
     } catch (err) {
@@ -198,7 +198,7 @@ export const handleGetBuyandSell = (params) => async (dispatch) => {
         if (data?.error_code === 0) {
             dispatch(buyAndsellGetResponse(data?.data))
         } else {
-            dispatch(buyAndsellGetFailure()) 
+            dispatch(buyAndsellGetFailure())
             dispatch(updateToast({ message: data?.message, type: "error" }))
         }
     } catch (err) {

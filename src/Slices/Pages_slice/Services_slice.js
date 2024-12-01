@@ -3,9 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const servicesSlice = createSlice(({
     name: "service_slice",
     initialState: {
+        modal_from: "",
         modal_type: "",
         mobile_number: null,
-        is_mobile_num_verified: false,
+        is_mobile_num_verified: true,
 
         load_glow: false,
         allLoads_details: [],
@@ -37,36 +38,41 @@ const servicesSlice = createSlice(({
         updateServiceModalType(state, action) {
             return {
                 ...state,
-                modal_type: action.payload
+                modal_from: action.payload?.from,
+                modal_type: action.payload?.type
             }
         },
         updateEditDetails(state, action) {
-            switch (action.payload?.type) {
+            switch (action.payload?.from) {
                 case "Load":
                     return {
                         ...state,
-                        modal_type: 'Edit',
-                        new_edit_load_card:action.payload?.data
+                        modal_from: action.payload?.from,
+                        modal_type: action.payload?.type,
+                        new_edit_load_card: action.payload?.data
                     }
                 case "Truck":
                     return {
                         ...state,
-                        modal_type: 'Edit',
-                        new_edit_truck_card:action.payload?.data
+                        modal_from: action.payload?.from,
+                        modal_type: action.payload?.type,
+                        new_edit_truck_card: action.payload?.data
                     }
 
                 case "Driver":
                     return {
                         ...state,
-                        modal_type: 'Edit',
-                        new_edit_driver_card:action.payload?.data
+                        modal_from: action.payload?.from,
+                        modal_type: action.payload?.type,
+                        new_edit_driver_card: action.payload?.data
                     }
 
                 case "BuyAndSell":
                     return {
                         ...state,
-                        modal_type: 'Edit',
-                        new_edit_buyAndsell_card:action.payload?.data
+                        modal_from: action.payload?.from,
+                        modal_type: action.payload?.type,
+                        new_edit_buyAndsell_card: action.payload?.data
                     }
 
                 default:
@@ -74,31 +80,35 @@ const servicesSlice = createSlice(({
             }
         },
         updateDeleteDetails(state, action) {
-            switch (action.payload?.type) {
+            switch (action.payload?.from) {
                 case "Load":
                     return {
                         ...state,
-                        modal_type: 'Delete',
+                        modal_from: action.payload?.from,
+                        modal_type: action.payload?.type,
                         // new_edit_load_card:action.payload?.data
                     }
                 case "Truck":
                     return {
                         ...state,
-                        modal_type: 'Delete',
+                        modal_from: action.payload?.from,
+                        modal_type: action.payload?.type
                         // new_edit_truck_card:action.payload?.data
                     }
 
                 case "Driver":
                     return {
                         ...state,
-                        modal_type: 'Delete',
+                        modal_from: action.payload?.from,
+                        modal_type: action.payload?.type
                         // new_edit_driver_card:action.payload?.data
                     }
 
                 case "BuyAndSell":
                     return {
                         ...state,
-                        modal_type: 'Delete',
+                        modal_from: action.payload?.from,
+                        modal_type: action.payload?.type
                         // new_edit_buyAndsell_card:action.payload?.data
                     }
 
@@ -109,7 +119,8 @@ const servicesSlice = createSlice(({
         initializeFilterDetails(state, action) {
             return {
                 ...state,
-                modal_type: 'Filter'
+                modal_from: action.payload?.from,
+                modal_type: action.payload?.type
             }
         },
 

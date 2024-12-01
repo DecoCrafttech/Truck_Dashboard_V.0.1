@@ -2,6 +2,7 @@ import { handleAddNewVehicle } from "Actions/Pages_actions/dashboardAction";
 import ButtonComponent from "Components/Button/Button";
 import { useDispatch } from "Components/CustomHooks";
 import InputOnly from "Components/Input/inputOnly";
+import SpinnerComponent from "Components/Spinner/Spinner";
 import { useSelector } from "react-redux";
 import { updateToast } from "Slices/Common_Slice/Common_slice";
 import { updateNewVehicle } from "Slices/Pages_slice/dashboard_slice";
@@ -58,6 +59,7 @@ export const HandleAddvehicleOnChange = ({ parentDiv, divOneCls, divTwoCls }) =>
                     type="text"
                     className="search-input-padding border px-3"
                     placeholder="Enter Vehicle Number ex: TN 00 AA 0000"
+                    value={dashboardState?.add_new_vehicle}
                     change={onChangeVehicleDetails}
                     keyDown={onKeyDownVehicleDetails}
                 />
@@ -65,10 +67,16 @@ export const HandleAddvehicleOnChange = ({ parentDiv, divOneCls, divTwoCls }) =>
 
             <div className={divTwoCls}>
                 <ButtonComponent
-                    className="custom-success fs-15 ms-2"
-                    buttonName="Add Vehicle"
+                    className={dashboardState?.add_vehicle_glow ? "custom-success fs-15 ms-2 py-1 px-5" : "custom-success fs-15 ms-2"}
+                    buttonName={
+                        dashboardState?.add_vehicle_glow ?
+                            <SpinnerComponent />
+                            :
+                            "Add Vehicle"
+                    }
                     title="Add Vehicle"
                     clickFunction={addNewVehicle}
+                    btnDisable={dashboardState?.add_vehicle_glow}
                 />
             </div>
         </div>

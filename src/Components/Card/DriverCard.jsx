@@ -94,13 +94,13 @@ const DriverCard = ({
 
                     <p className={`${placeholder ? 'placeholder py-1 rounded-1 col-7 mb-1' : 'ms-2 mt-2'} fs-12 text-secondary fw-bold  `}>Posted on : {driver_data?.updt?.slice(5, 25)}</p>
 
-                    <hr className={placeholder ? 'm-1 d-none' : ''}/>
+                    <hr className={placeholder ? 'm-1 d-none' : ''} />
 
                     <div className="col-12 d-flex flex-wrap">
                         {cardDetails(driver_data)}
                     </div>
 
-                    <hr className={placeholder ? 'm-1 d-none' : ''}/>
+                    <hr className={placeholder ? 'm-1 d-none' : ''} />
                 </Card.Body>
 
                 <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-1">
@@ -108,14 +108,14 @@ const DriverCard = ({
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                             buttonName={placeholder ? "" : 'Delete'}
-                            clickFunction={() => dispatch(handleDeleteModal({ type: "Driver", data: driver_data }))}
+                            clickFunction={() => dispatch(handleDeleteModal({ from: "Driver", type: "Delete", data: driver_data }))}
                         />
                     </div>
                     <div className="col px-1">
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                             buttonName={placeholder ? "" : 'Edit'}
-                            clickFunction={() => dispatch(handleEditModal({ type: "Driver", data: driver_data }))}
+                            clickFunction={() => dispatch(handleEditModal({ from: "Driver", type: "Edit", data: driver_data }))}
                         />
                     </div>
                 </Card.Footer>

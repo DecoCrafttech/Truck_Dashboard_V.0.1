@@ -278,7 +278,7 @@ const Blog = () => {
                                     </span>
                                 </span>
                             }
-                            clickFunction={() => dispatch(handleCreateBlogModal("Create"))}
+                            clickFunction={() => dispatch(handleCreateBlogModal("Blog", "Create"))}
                         />
                     </div>
                 </div>
@@ -335,7 +335,7 @@ const Blog = () => {
             </div>
 
 
-            <ModalComponent
+            {/* <ModalComponent
                 show={commonState?.modalShow}
                 modalSize={["Edit", "Create"].includes(blogState?.blog_modal_type) ? "lg" : "md"}
                 modalCentered={true}
@@ -348,7 +348,7 @@ const Blog = () => {
                 showModalFooter={true}
                 modalFooterClassname="border-0"
                 modalFooter={modalFooterFun()}
-            />
+            /> */}
         </Fragment>
     )
 }

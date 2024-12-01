@@ -17,7 +17,8 @@ import Dashboard from "Views/Main/Pages/Dashboard";
 import Crm from "Views/Main/Pages/Crm";
 import Feedback from "Views/Main/Pages/Feedback";
 import UserProfileDetails from "Views/Main/Pages/UserProfileDetails";
-import Blog from "Views/Main/Pages/Blog"; 
+import Blog from "Views/Main/Pages/Blog";
+import { OverallModel } from "Views/Common/OverallModal";
 
 
 const App = () => {
@@ -66,11 +67,13 @@ const App = () => {
       <ToastContainer theme='light' />
       <Routes>
 
+        
+
         {/* <Route index> */}
         <Route path="/dashboard" element={<Layout />}>
           <Route path="home">
-            <Route index element={<Dashboard/>}/>
-            <Route path="profile" element={<UserProfileDetails/>}/>
+            <Route index element={<Dashboard />} />
+            <Route path="profile" element={<UserProfileDetails />} />
           </Route>
           <Route path="analytics" element={<p>analytics</p>} />
 
@@ -78,7 +81,7 @@ const App = () => {
             <Route path="load_details" element={<LoadDetails />} />
             <Route path="truck_details" element={<TruckDetails />} />
             <Route path="driver_details" element={<DriverDetails />} />
-            <Route path="buy_sell_details" element={<BuySellDetails/>} />
+            <Route path="buy_sell_details" element={<BuySellDetails />} />
             <Route path="insurance" element={<p>hi</p>} />
             <Route path="fast_tag" element={<p>hi</p>} />
           </Route>
@@ -86,8 +89,9 @@ const App = () => {
           <Route path="blog" element={<Blog />} />
           <Route path="feedback_complaints" element={<Feedback />} />
           <Route path="crm" element={<Crm />} />
-        </Route>
-        {/* </Route> */}
+        </Route> 
+
+
 
         {/* not found  */}
         <Route path="*" element={<h1>Not found</h1>} />

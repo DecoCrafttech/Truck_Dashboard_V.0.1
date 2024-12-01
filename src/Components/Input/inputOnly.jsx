@@ -7,8 +7,7 @@ const InputOnly = ({
     value,
     change, 
     keyDown,
-    className,
-    InputGroupClassName,
+    className, 
     type
 }) => {
     return (

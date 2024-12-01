@@ -18,7 +18,7 @@ const BuyandSellCard = ({
     function cardDetails(data) {
         return <Fragment>
             {[{ icon: Icons.ownerIcon, value: `${data?.owner_name}` }, { icon: Icons.buySellTruckIcon, value: data?.vehicle_number },
-            { icon: Icons.truckModelIcon, value: data?.model }, { icon: Icons.kmsDrivernIcon, value:  `${data?.kms_driven} kms` }]
+            { icon: Icons.truckModelIcon, value: data?.model }, { icon: Icons.kmsDrivernIcon, value: `${data?.kms_driven} kms` }]
                 .map((val, ind) => (
                     <div className={'col-6'} key={ind}>
                         <p className={`${placeholder ? 'placeholder pt-2 pb-3 rounded-1 col-11' : ''} mb-2 fs-13 text-secondary`}>
@@ -39,7 +39,7 @@ const BuyandSellCard = ({
                         </h6>
                     </div>
                     <div className="col-6 text-end">
-                        <LinkComponent to="/" title="View details" className="text-decoration-none me-4"/>
+                        <LinkComponent to="/" title="View details" className="text-decoration-none me-4" />
                     </div>
                 </div>
             }
@@ -102,13 +102,13 @@ const BuyandSellCard = ({
 
                     <p className={`${placeholder ? 'placeholder py-1 rounded-1 col-7 mb-1' : 'ms-2'} fs-12 text-secondary fw-bold`}>Posted on : {buy_sell_data?.updt?.slice(5, 25)}</p>
 
-                    <hr className={placeholder ? 'm-1 d-none' : ''}/>
+                    <hr className={placeholder ? 'm-1 d-none' : ''} />
 
                     <div className="col-12 d-flex flex-wrap">
                         {cardDetails(buy_sell_data)}
                     </div>
 
-                    <hr className={placeholder ? 'm-1 d-none' : ''}/>
+                    <hr className={placeholder ? 'm-1 d-none' : ''} />
                 </Card.Body>
 
                 <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-1">
@@ -116,14 +116,14 @@ const BuyandSellCard = ({
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                             buttonName={placeholder ? "" : 'Delete'}
-                            clickFunction={() => dispatch(handleDeleteModal({ type: "BuyAndSell", data: buy_sell_data }))}
+                            clickFunction={() => dispatch(handleDeleteModal({ from: "BuyAndSell", type: "Delete", data: buy_sell_data }))}
                         />
                     </div>
                     <div className="col px-1">
                         <ButtonComponent
                             className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                             buttonName={placeholder ? "" : 'Edit'}
-                            clickFunction={() => dispatch(handleEditModal({ type: "BuyAndSell", data: buy_sell_data }))}
+                            clickFunction={() => dispatch(handleEditModal({ from: "BuyAndSell", type: "Edit", data: buy_sell_data }))}
                         />
                     </div>
                 </Card.Footer>
