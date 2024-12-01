@@ -4,10 +4,14 @@ import {
     getDashboardRequest,
     getDashboardResponse,
     getDashboardFailure,
+
     getDashboardProfileRequest,
     getDashboardProfileResponse,
-    getDashboardProfileFailure
+    getDashboardProfileFailure,
 
+    addVehicleRequest,
+    addVehicleResponse,
+    addVehicleFailure,
 } from "Slices/Pages_slice/dashboard_slice";
 
 //get dashboard all user details
@@ -44,6 +48,25 @@ export const handleGetDashboardProfile = (params) => async (dispatch) => {
         }
     } catch (Err) {
         dispatch(getDashboardProfileFailure())
+        dispatch(updateToast(Err?.message, "error"))
+    }
+}
+
+
+//get single profile
+export const handleAddNewVehicle = (params) => async (dispatch) => {
+    try {
+        dispatch(addVehicleRequest())
+        const { data } = await axiosInstance.post("/add_user_vehicle_details ", params);
+
+        if (data.error_code === 0) { 
+            dispatch(addVehicleResponse(data.data[0]))
+        } else {
+            dispatch(addVehicleFailure())
+            dispatch(updateToast(data?.message, "error"))
+        }
+    } catch (Err) {
+        dispatch(addVehicleFailure())
         dispatch(updateToast(Err?.message, "error"))
     }
 }

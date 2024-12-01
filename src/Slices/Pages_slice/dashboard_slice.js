@@ -4,10 +4,13 @@ const dashboardSlice = createSlice({
     name: "dashboard_slice",
     initialState: {
         initialGlow: false,
+        recall_dashboard_again: false,
         dashboard_data: {},
 
         profileGlow: false,
         dashboard_profile_data: {},
+        add_new_vehicle: null,
+        add_vehicle_glow: false
     },
     reducers: {
         //get all profile
@@ -17,7 +20,7 @@ const dashboardSlice = createSlice({
                 initialGlow: true,
                 dashboard_data: {},
                 dashboard_profile_data: {},
-                profile_data:{}
+                profile_data: {}
             }
         },
         getDashboardResponse(state, action) {
@@ -46,8 +49,9 @@ const dashboardSlice = createSlice({
             return {
                 ...state,
                 profileGlow: false,
+                add_vehicle_glow:false,
                 dashboard_profile_data: action.payload,
-                profile_data:action.payload?.profile_data?.length ? action.payload?.profile_data[0] : {}
+                profile_data: action.payload?.profile_data?.length ? action.payload?.profile_data[0] : {}
             }
         },
         getDashboardFailureResponse(state, action) {
@@ -55,7 +59,35 @@ const dashboardSlice = createSlice({
                 ...state,
                 profileGlow: false
             }
-        }
+        },
+
+        //update new vehicle details
+        updateNewVehicle(state, action) {
+            return {
+                ...state,
+                add_new_vehicle: action.payload
+            }
+        },
+
+        addVehicleRequest(state, action) {
+            return {
+                ...state,
+                add_vehicle_glow: true
+            }
+        },
+        addVehicleResponse(state, action) {
+            return {
+                ...state,
+                add_vehicle_glow: false,
+                recall_dashboard_again: true
+            }
+        },
+        addVehicleFailure(state, action) {
+            return {
+                ...state,
+                add_vehicle_glow: false
+            }
+        },
     }
 })
 
@@ -65,9 +97,15 @@ export const {
     getDashboardRequest,
     getDashboardResponse,
     getDashboardFailure,
+    
     getDashboardProfileRequest,
     getDashboardProfileResponse,
-    getDashboardProfileFailure
+    getDashboardProfileFailure,
+
+    updateNewVehicle,
+    addVehicleRequest,
+    addVehicleResponse,
+    addVehicleFailure,
 
 } = actions;
 

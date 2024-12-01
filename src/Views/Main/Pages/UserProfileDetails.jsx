@@ -9,6 +9,7 @@ import { isValidBase64 } from 'ResuableFunctions/ValidateBAseString'
 import { updateToast } from 'Slices/Common_Slice/Common_slice'
 import { handleGetDashboardProfile } from 'Actions/Pages_actions/dashboardAction'
 import { useSelector } from 'react-redux'
+import { HandleAddvehicleOnChange } from 'ResuableFunctions/ValidVehicleNumber'
 
 const UserProfileDetails = () => {
     const { dashboardState } = useSelector((state) => state)
@@ -31,7 +32,7 @@ const UserProfileDetails = () => {
             navigate("/dashboard/home")
             dispatch(updateToast({ message: "Invalid id", type: "error" }))
         }
-    }, [])
+    }, [dashboardState?.recall_dashboard_again])
 
 
     function userDetailsOne() {
@@ -184,25 +185,7 @@ const UserProfileDetails = () => {
                     </section>
 
                     <section className="w-100 d-flex flex-wrap align-items-center mt-4 p-1">
-                        <div className="col-12 col-md-8 col-lg-7 col-xxl-5 d-inline-flex flex-wrap">
-                            <div className="col-8">
-                                <InputOnly
-                                    type="text"
-                                    className="search-input-padding border"
-                                    placeholder="Enter Vehicle Number"
-                                    change={(e) => console.log(e.target.value)}
-                                    keyDown={(e) => console.log(e.code)}
-                                />
-                            </div>
-
-                            <div className="col-4">
-                                <ButtonComponent
-                                    className="custom-success fs-15 ms-2"
-                                    buttonName="Add Vehicle"
-                                    title="Add Vehicle"
-                                />
-                            </div>
-                        </div>
+                        <HandleAddvehicleOnChange parentDiv="col-12 col-md-8 col-lg-7 col-xxl-5 d-inline-flex flex-wrap" divOneCls="col-8" divTwoCls="col-4" />
                     </section>
 
                     <section className="w-100 mt-4 p-1 ">

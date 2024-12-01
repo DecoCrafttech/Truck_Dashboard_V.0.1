@@ -3,9 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const servicesSlice = createSlice(({
     name: "service_slice",
     initialState: {
-        modal_type: "Create",
+        modal_type: "",
         mobile_number: null,
-        is_mobile_num_verified: true,
+        is_mobile_num_verified: false,
 
         load_glow: false,
         allLoads_details: [],
