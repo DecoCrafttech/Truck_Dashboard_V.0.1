@@ -1,5 +1,5 @@
 import { handleAddBlog, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
-import { handleBuyAndSellInputOnChange } from "Actions/Pages_actions/ServicesActions";
+import { handleBuyAndSellInputOnChange, handlePostLoadsVerification } from "Actions/Pages_actions/ServicesActions";
 import ButtonComponent from "Components/Button/Button";
 import { useDispatch } from "Components/CustomHooks";
 import GoogleLocationInput from "Components/Input/GoogleLocationInput";
@@ -42,6 +42,7 @@ export function OverallModel() {
             case "Truck":
             case "Driver":
             case "BuyAndSell":
+            case "Blog":
                 switch (servicesState?.modal_type) {
                     case "Edit":
                         return <h6 className='mb-0'>Edit {servicesState?.modal_from === "BuyAndSell" ? "Buy and sell" : servicesState?.modal_from}</h6>;
@@ -71,13 +72,16 @@ export function OverallModel() {
         if (servicesState?.modal_from === "Load") {
             funByNum = JsonJsx?.loadVerifyInputs
         }
-        else if (servicesState?.modal_from === "Truck") {
+
+        if (servicesState?.modal_from === "Truck") {
             funByNum = JsonJsx?.loadVerifyInputs
         }
-        else if (servicesState?.modal_from === "Driver") {
+
+        if (servicesState?.modal_from === "Driver") {
             funByNum = JsonJsx?.loadVerifyInputs
         }
-        else if (servicesState?.modal_from === "BuyAndSell") {
+
+        if (servicesState?.modal_from === "BuyAndSell") {
             funByNum = JsonJsx?.loadVerifyInputs
         }
 
@@ -106,26 +110,33 @@ export function OverallModel() {
                 funBy = JsonJsx?.loadFilterInputs
             }
         }
-        else if (servicesState?.modal_from === "Truck") {
+
+        if (servicesState?.modal_from === "Truck") {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
                 funBy = JsonJsx?.truckAddEditInputs
             } else {
                 funBy = JsonJsx?.truckFilterInputs
             }
         }
-        else if (servicesState?.modal_from === "Driver") {
+
+        if (servicesState?.modal_from === "Driver") {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
                 funBy = JsonJsx?.driverAddEditInputs
             } else {
                 funBy = JsonJsx?.driverFilterInputs
             }
         }
-        else if (servicesState?.modal_from === "BuyAndSell") {
+
+        if (servicesState?.modal_from === "BuyAndSell") {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
                 funBy = JsonJsx?.buyAndSellAddEdit
             } else {
                 funBy = JsonJsx?.buyAndSellFilterInputs
             }
+        }
+
+        if (servicesState?.modal_from === "Blog") {
+            funBy = JsonJsx?.blogInputs
         }
 
         return funBy?.map((ipVal, iPInd) => {
@@ -274,11 +285,12 @@ export function OverallModel() {
             case "Truck":
             case "Driver":
             case "BuyAndSell":
+            case "Blog":
                 switch (servicesState?.modal_type) {
-                    case "Edit":
                     case "Create":
                     case "Filter":
-                        return servicesState?.modal_type === "Create" ?
+                    case "Edit":
+                        return servicesState?.modal_type === "Create" && servicesState?.modal_from !== "Blog" ?
                             servicesState?.is_mobile_num_verified ?
                                 dynamicInput()
                                 :
@@ -306,6 +318,7 @@ export function OverallModel() {
             case "Truck":
             case "Driver":
             case "BuyAndSell":
+                // case "Blog":
                 switch (servicesState?.modal_type) {
                     case "Edit":
                         return <div className='col-12 p-2 px-3'>
@@ -344,7 +357,14 @@ export function OverallModel() {
                             <div className='col-12 p-2 px-3'>
                                 <ButtonComponent
                                     className="btn-danger w-100 py-2"
-                                    buttonName="Verify Mobile Number"
+                                    buttonName={
+                                        servicesState?.spinner_glow ?
+                                            <SpinnerComponent />
+                                            :
+                                            "Verify Mobile Number"
+                                    }
+                                    clickFunction={() => dispatch(handlePostLoadsVerification(servicesState?.phone_number))}
+                                    btnDisable={servicesState?.spinner_glow}
                                 />
                             </div>
 
@@ -373,7 +393,7 @@ export function OverallModel() {
                 break;
 
             case "Blog":
-                switch (blogState?.blog_modal_type) {
+                switch (servicesState?.modal_type) {
                     case "Edit":
                         return <div className='col-12 p-2'>
                             <ButtonComponent

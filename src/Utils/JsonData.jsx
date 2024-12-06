@@ -417,7 +417,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.servicesState?.mobile_number || '',
+                value: state?.servicesState?.phone_number || '',
                 change: (e) => {
                     if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
                         dispatch(handleOnchangeLoadVerify(e.target.value))
@@ -442,10 +442,10 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_load_card?.contact_number || '',
+                value: state?.servicesState?.new_edit_load_card?.contact_no || '',
                 change: (e) => {
                     if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
-                        dispatch(handleLoadInputOnChange({ contact_number: e.target.value }))
+                        dispatch(handleLoadInputOnChange({ contact_no: e.target.value }))
                     }
                 },
                 isMandatory: true
@@ -484,10 +484,10 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_load_card?.ton || '',
+                value: state?.servicesState?.new_edit_load_card?.tone || '',
                 change: (e) => {
                     if (/^\d*$/.test(e.target.value)) {
-                        dispatch(handleLoadInputOnChange({ ton: e.target.value }))
+                        dispatch(handleLoadInputOnChange({ tone: e.target.value }))
                     }
                 },
                 isMandatory: true
@@ -539,7 +539,7 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: jsonOnly.states,
-                value: state?.servicesState?.load_filter_card?.to_location || '',
+                value: state?.servicesState?.load_filter_card?.to_location || [],
                 change: (value) => dispatch(handleOnchangeLoadFilter({ to_location: value })),
                 isMandatory: true
             },
@@ -592,7 +592,7 @@ const JsonData = () => {
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.servicesState?.mobile_number || '',
+                value: state?.servicesState?.phone_number || '',
                 change: (e) => {
                     if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
                         dispatch(handleOnchangeTruckVerify(e.target.value))
@@ -682,7 +682,7 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_truck_card?.to_location || '',
+                value: state?.servicesState?.new_edit_truck_card?.to_location || [],
                 change: (e) => dispatch(handleTruckInputOnChange({ to_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleTruckInputOnChange({ to_location: slectedLoc })),
                 isMandatory: true
@@ -735,7 +735,7 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: jsonOnly.states,
-                value: servicesState?.truck_filter_card?.to_location || '',
+                value: servicesState?.truck_filter_card?.to_location || [],
                 change: (value) => dispatch(handleOnchangeTruckFilter({ to_location: value })),
                 isMandatory: true
             },
@@ -782,14 +782,14 @@ const JsonData = () => {
         ],
 
 
-        //                                                              truck                                                                  //
+        //                                                                             truck                                                                  //
         driverVerifyInputs: [
             {
                 name: "Mobile number",
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.servicesState?.mobile_number || '',
+                value: state?.servicesState?.phone_number || '',
                 change: (e) => {
                     if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
                         dispatch(handleOnchangeDriverVerify(e.target.value))
@@ -909,7 +909,7 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: jsonOnly.states,
-                value: state?.servicesState?.driver_filter_card?.to_location || '',
+                value: state?.servicesState?.driver_filter_card?.to_location || [],
                 change: (value) => dispatch(handleOnchangeDriverFilter({ to_location: value })),
                 isMandatory: true
             },
@@ -936,14 +936,14 @@ const JsonData = () => {
         ],
 
 
-        //                                                              buy and sell                                                          //
+        //                                                                             buy and sell                                                          //
         buyAndSellVerifyInputs: [
             {
                 name: "Mobile number",
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.servicesState?.mobile_number || '',
+                value: state?.servicesState?.phone_number || '',
                 change: (e) => {
                     if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
                         dispatch(handleOnchangeBuyAndSellVerify(e.target.value))

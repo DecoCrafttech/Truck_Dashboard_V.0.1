@@ -37,9 +37,11 @@ const DriverDetails = () => {
             dispatch(handleGetDriver(params))
         }
         else if (commonState?.apply_filter_clicked) {
+            const filteredToLoc = servicesState?.driver_filter_card?.to_location?.map((v) => v?.label)
+
             const newParams = { ...params }
             newParams.from_location = servicesState?.driver_filter_card?.from_location || ''
-            newParams.to_location = servicesState?.driver_filter_card?.to_location ? [servicesState?.driver_filter_card?.to_location] : [] || []
+            newParams.to_location = servicesState?.driver_filter_card?.to_location ? filteredToLoc : [] || []
             newParams.truck_body_type = servicesState?.driver_filter_card?.truck_body_type || ''
             newParams.no_of_tyres = servicesState?.driver_filter_card?.no_of_tyres || ''
 

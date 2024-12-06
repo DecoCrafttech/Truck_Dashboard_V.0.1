@@ -13,6 +13,8 @@ const ReactDropdownSelect = ({
     valueField,
     className
 }) => {
+    console.log(options)
+    
     return (
         <Fragment>
             <h6 className="text-secondary mt-2 mb-0 fs-14">

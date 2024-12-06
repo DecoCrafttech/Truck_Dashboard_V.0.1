@@ -3,17 +3,18 @@ import { updateModalShow, updateToast } from 'Slices/Common_Slice/Common_slice';
 import {
     updateEditDetails,
     updateDeleteDetails,
-    updateServiceModalType,
+    updateCreateModalDetails,
     initializeFilterDetails,
 
     loadGetRequest,
     loadGetResponse,
     loadGetFaliure,
-    LoadsVerificationRequest,
-    LoadsVerificationResponse,
     updateLoadVerifyData,
     updateLoadEditData,
     updateLoadFilterData,
+    LoadMobileNumVerificationRequest,
+    LoadMobileNumVerificationResponse,
+    LoadMobileNumVerificationFailure,
 
     truckGetRequest,
     truckGetResponse,
@@ -46,7 +47,7 @@ import {
 } from 'Slices/Pages_slice/Services_slice';
 
 export const handleCreateModal = (from, type) => dispatch => {
-    dispatch(updateServiceModalType({ from, type }))
+    dispatch(updateCreateModalDetails({ from, type }))
     dispatch(updateModalShow())
 }
 
@@ -87,18 +88,29 @@ export const handleGetLoads = (params) => async (dispatch) => {
 }
 
 //load post mobile number verification
-export const handlePostLoadsVerification = async (dispatch) => {
-    try {
-        dispatch(LoadsVerificationRequest())
-        const { data } = await axiosInstance.get("/all_load_details")
+export const handlePostLoadsVerification = (phone_number) => async (dispatch) => {
+    if (phone_number) {
+        if (phone_number?.length === 10) {
+            try {
+                dispatch(LoadMobileNumVerificationRequest())
+                const { data } = await axiosInstance.post("/get_user_details", { phone_number })
 
-        if (data?.error_code === 0) {
-            dispatch(LoadsVerificationResponse(data?.data))
+                if (data?.error_code === 0) {
+                    dispatch(LoadMobileNumVerificationResponse(data?.data))
+                } else {
+                    dispatch(LoadMobileNumVerificationFailure())
+                    dispatch(updateToast({ message: data?.message, type: "error" }))
+                }
+
+            } catch (err) {
+                dispatch(LoadMobileNumVerificationFailure())
+                dispatch(updateToast({ message: err?.message, type: "error" }))
+            }
         } else {
-            dispatch(updateToast({ message: data?.message, type: "error" }))
+            dispatch(updateToast({ message: "Invalid Mobile number ", type: "error" }))
         }
-    } catch (err) {
-        dispatch(updateToast({ message: err?.message, type: "error" }))
+    } else {
+        dispatch(updateToast({ message: "Mobile number required ", type: "error" }))
     }
 }
 

@@ -39,9 +39,11 @@ const TruckDetails = () => {
         }
         else if (commonState?.apply_filter_clicked) {
             const newParams = { ...params }
+            const filteredToLoc = servicesState?.truck_filter_card?.to_location?.map((v) => v?.label)
+
             newParams.truck_name = servicesState?.truck_filter_card?.truck_name || ''
             newParams.from_location = servicesState?.truck_filter_card?.from_location || ''
-            newParams.to_location = servicesState?.truck_filter_card?.to_location ? [servicesState?.truck_filter_card?.to_location] : [] || []
+            newParams.to_location = servicesState?.truck_filter_card?.to_location ? filteredToLoc : [] || []
             newParams.tone = servicesState?.truck_filter_card?.tone || ''
             newParams.truck_body_type = servicesState?.truck_filter_card?.truck_body_type || ''
             newParams.no_of_tyres = servicesState?.truck_filter_card?.no_of_tyres || ''

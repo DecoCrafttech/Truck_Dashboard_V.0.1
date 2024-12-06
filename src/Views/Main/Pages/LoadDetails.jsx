@@ -37,8 +37,12 @@ const LoadDetails = () => {
         }
         else if (commonState?.apply_filter_clicked) {
             const newParams = { ...params }
+            console.log(servicesState?.load_filter_card,"servicesState?.load_filter_card?")
+            const filteredToLoc = servicesState?.load_filter_card?.to_location?.map((v) => v?.label)
+            console.log(filteredToLoc,"filteredToLoc")
+
             newParams.from_location = servicesState?.load_filter_card?.from_location || ''
-            newParams.to_location = servicesState?.load_filter_card?.to_location ? [servicesState?.load_filter_card?.to_location] : [] || []
+            newParams.to_location = servicesState?.load_filter_card?.to_location ? filteredToLoc : [] || []
             newParams.truck_body_type = servicesState?.load_filter_card?.truck_body_type || ''
             newParams.no_of_tyres = servicesState?.load_filter_card?.no_of_tyres || ''
             newParams.tone = servicesState?.load_filter_card?.tone || ''

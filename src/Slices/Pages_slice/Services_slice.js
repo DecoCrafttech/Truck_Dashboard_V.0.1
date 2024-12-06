@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { updateBlogModalType, updateDeleteBlog, updateEditBlog } from "./Blog_slice";
 
 const servicesSlice = createSlice(({
     name: "service_slice",
     initialState: {
         modal_from: "",
         modal_type: "",
-        mobile_number: null,
-        is_mobile_num_verified: true,
+        phone_number: null,
+        is_mobile_num_verified: false,
+        spinner_glow: false,
 
         load_glow: false,
         allLoads_details: [],
@@ -35,7 +37,7 @@ const servicesSlice = createSlice(({
         buyAndsell_filter_card: {},
     },
     reducers: {
-        updateServiceModalType(state, action) {
+        updateCreateModalDetails(state, action) {
             return {
                 ...state,
                 modal_from: action.payload?.from,
@@ -130,7 +132,8 @@ const servicesSlice = createSlice(({
         loadGetRequest(state, action) {
             return {
                 ...state,
-                load_glow: true
+                load_glow: true,
+                spinner_glow: false
             }
         },
         loadGetResponse(state, action) {
@@ -148,10 +151,29 @@ const servicesSlice = createSlice(({
                 total_no_of_datas: 0
             }
         },
+        LoadMobileNumVerificationRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true
+            }
+        },
+        LoadMobileNumVerificationResponse(state, action) {
+            console.log(action.payload)
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
+        LoadMobileNumVerificationFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
         updateLoadVerifyData(state, action) {
             return {
                 ...state,
-                mobile_number: action.payload
+                phone_number: action.payload
             }
         },
         updateLoadEditData(state, action) {
@@ -201,7 +223,7 @@ const servicesSlice = createSlice(({
         updateTruckVerifyData(state, action) {
             return {
                 ...state,
-                mobile_number: action.payload
+                phone_number: action.payload
             }
         },
         updateTruckEditData(state, action) {
@@ -214,7 +236,6 @@ const servicesSlice = createSlice(({
             }
         },
         updateTruckFilterData(state, action) {
-            console.log(action.payload)
             return {
                 ...state,
                 truck_filter_card: {
@@ -255,7 +276,7 @@ const servicesSlice = createSlice(({
         updateDriverVerifyData(state, action) {
             return {
                 ...state,
-                mobile_number: action.payload
+                phone_number: action.payload
             }
         },
         updateDriverEditData(state, action) {
@@ -305,7 +326,7 @@ const servicesSlice = createSlice(({
         updateBuyAndSellVerifyData(state, action) {
             return {
                 ...state,
-                mobile_number: action.payload
+                phone_number: action.payload
             }
         },
         updateBuyAndSellEditData(state, action) {
@@ -326,6 +347,21 @@ const servicesSlice = createSlice(({
                 }
             }
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(updateBlogModalType, (state, action) => {
+                state.modal_from = "Blog"
+                state.modal_type = "Create"
+            })
+            .addCase(updateEditBlog, (state, action) => {
+                state.modal_from = "Blog"
+                state.modal_type = "Edit"
+            })
+            .addCase(updateDeleteBlog, (state, action) => {
+                state.modal_from = "Blog"
+                state.modal_type = "Delete"
+            })
     }
 }))
 
@@ -337,12 +373,15 @@ const { actions, reducer } = servicesSlice;
 export const {
     updateEditDetails,
     updateDeleteDetails,
-    updateServiceModalType,
+    updateCreateModalDetails,
     initializeFilterDetails,
 
     loadGetRequest,
     loadGetResponse,
     loadGetFaliure,
+    LoadMobileNumVerificationRequest,
+    LoadMobileNumVerificationResponse,
+    LoadMobileNumVerificationFailure,
     updateLoadVerifyData,
     updateLoadEditData,
     updateLoadFilterData,

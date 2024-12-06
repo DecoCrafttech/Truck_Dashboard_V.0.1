@@ -46,6 +46,10 @@ const GoogleLocationInput = ({
                 name="name"
                 className="form-control location-input bg-transparent py-2"
                 apiKey={process.env.REACT_APP_API_googleLocationKey}
+                options={{
+                    types: ['(regions)'],
+                    componentRestrictions: { country: 'in' },
+                }}
                 onPlaceSelected={(place) => {
                     if (place) {
                         handleFromLocation(place.address_components);

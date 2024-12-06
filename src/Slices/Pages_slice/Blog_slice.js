@@ -31,7 +31,6 @@ const servicesSlice = createSlice(({
             return {
                 ...state,
                 blog_edit_data: action.payload,
-                blog_modal_type: "Edit"
             }
         },
         updateDeleteBlog(state, action) {
@@ -39,7 +38,6 @@ const servicesSlice = createSlice(({
                 ...state,
                 blog_delete_id: action.payload?.delete_id,
                 blog_deletion_heading: action.payload?.deletion_blog_heading,
-                blog_modal_type: "Delete"
             }
         },
 

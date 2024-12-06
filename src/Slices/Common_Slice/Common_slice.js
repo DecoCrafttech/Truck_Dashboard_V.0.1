@@ -369,9 +369,12 @@ const commonSlice = createSlice({
             .addCase(updateAddBlogResponse,(state,action)=>{
                 state.modalShow = false
             })
+
+            //blog
             .addCase(blogDeletionResponse,(state,action)=>{
-                state.modalShow = true 
+                state.modalShow = false 
             })
+            
     }
 })
 
