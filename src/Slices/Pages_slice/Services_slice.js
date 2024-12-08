@@ -9,6 +9,9 @@ const servicesSlice = createSlice(({
         phone_number: null,
         is_mobile_num_verified: false,
         spinner_glow: false,
+        user_data: {},
+        re_render: false,
+        user_vehicle_list: [],
 
         load_glow: false,
         allLoads_details: [],
@@ -38,81 +41,108 @@ const servicesSlice = createSlice(({
     },
     reducers: {
         updateCreateModalDetails(state, action) {
-            return {
+            let obj = {
                 ...state,
                 modal_from: action.payload?.from,
-                modal_type: action.payload?.type
+                modal_type: action.payload?.type,
+                is_mobile_num_verified: false,
+                phone_number: null,
+                user_data: []
+            }
+
+            switch (action.payload?.from) {
+                case "Load":
+                    obj.new_edit_load_card = {}
+                    return obj
+
+                case "Truck":
+                    obj.new_edit_truck_card = {}
+                    return obj
+
+                case "Driver":
+                    obj.new_edit_driver_card = {}
+                    return obj
+
+                case "BuyAndSell":
+                    obj.new_edit_buyAndsell_card = {}
+                    return obj
+
+                default:
+                    break;
             }
         },
         updateEditDetails(state, action) {
+            let obj = {
+                ...state,
+                modal_from: action.payload?.from,
+                modal_type: action.payload?.type,
+                user_data: {
+                    ...state.user_data,
+                    user_id: action.payload?.data?.user_id
+                }
+            }
+
             switch (action.payload?.from) {
                 case "Load":
-                    return {
-                        ...state,
-                        modal_from: action.payload?.from,
-                        modal_type: action.payload?.type,
-                        new_edit_load_card: action.payload?.data
-                    }
+                    obj.new_edit_load_card = action.payload?.data
+                    return obj
+
                 case "Truck":
-                    return {
-                        ...state,
-                        modal_from: action.payload?.from,
-                        modal_type: action.payload?.type,
-                        new_edit_truck_card: action.payload?.data
+                    let selectedVehicle = []
+                    if (action.payload?.from === "Truck" && action.payload?.type === "Edit") {
+                        selectedVehicle = state?.user_vehicle_list?.filter((v) => v.label === action.payload?.data?.vehicle_number)
                     }
+
+                    obj.new_edit_truck_card = {
+                        ...state?.new_edit_truck_card,
+                        ...action.payload?.data,
+                        vehicle_number_selected: selectedVehicle
+                    }
+                    return obj
 
                 case "Driver":
-                    return {
-                        ...state,
-                        modal_from: action.payload?.from,
-                        modal_type: action.payload?.type,
-                        new_edit_driver_card: action.payload?.data
-                    }
+                    obj.new_edit_driver_card = action.payload?.data
+                    return obj
 
                 case "BuyAndSell":
-                    return {
-                        ...state,
-                        modal_from: action.payload?.from,
-                        modal_type: action.payload?.type,
-                        new_edit_buyAndsell_card: action.payload?.data
-                    }
+                    obj.new_edit_buyAndsell_card = action.payload?.data
+                    return obj
 
                 default:
                     break;
             }
         },
         updateDeleteDetails(state, action) {
+            let obj = {
+                ...state,
+                modal_from: action.payload?.from,
+                modal_type: action.payload?.type,
+                user_data: {
+                    ...state.user_data,
+                    user_id: action.payload?.data?.user_id
+                }
+            }
+
             switch (action.payload?.from) {
                 case "Load":
-                    return {
-                        ...state,
-                        modal_from: action.payload?.from,
-                        modal_type: action.payload?.type,
-                        // new_edit_load_card:action.payload?.data
-                    }
+                    obj.new_edit_load_card = action.payload?.data
+                    obj.loadDelete_id = action.payload?.data?.load_id
+                    return obj
+
                 case "Truck":
-                    return {
-                        ...state,
-                        modal_from: action.payload?.from,
-                        modal_type: action.payload?.type
-                        // new_edit_truck_card:action.payload?.data
-                    }
+                    obj.new_edit_truck_card = action.payload?.data
+                    obj.truckDelete_id = action.payload?.data?.truck_id
+                    return obj
 
                 case "Driver":
-                    return {
-                        ...state,
-                        modal_from: action.payload?.from,
-                        modal_type: action.payload?.type
-                        // new_edit_driver_card:action.payload?.data
-                    }
+                    obj.new_edit_driver_card = action.payload?.data
+                    obj.driverDelete_id = action.payload?.data?.driver_id
+                    return obj
 
                 case "BuyAndSell":
-                    return {
-                        ...state,
-                        modal_from: action.payload?.from,
-                        modal_type: action.payload?.type
-                        // new_edit_buyAndsell_card:action.payload?.data
-                    }
+                    obj.new_edit_buyAndsell_card = action.payload?.data
+                    obj.buyAndsellDelete_id = action.payload?.data?.buy_sell_id
+                    return obj
 
                 default:
                     break;
@@ -125,7 +155,79 @@ const servicesSlice = createSlice(({
                 modal_type: action.payload?.type
             }
         },
+        MobileNumVerificationRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true,
+                new_edit_load_card: {},
 
+            }
+        },
+        MobileNumVerificationResponse(state, action) {
+            let obj = {
+                ...state,
+                spinner_glow: false,
+                is_mobile_num_verified: true,
+                user_data: action.payload[0],
+            }
+
+            if (state.modal_from === "Load") {
+                obj.new_edit_load_card = {
+                    ...state.new_edit_load_card,
+                    contact_no: state.phone_number
+                }
+                return obj
+            }
+
+            if (state.modal_from === "Truck") {
+                obj.new_edit_truck_card = {
+                    ...state.new_edit_truck_card,
+                    contact_no: state.phone_number
+                }
+                return obj
+            }
+
+            if (state.modal_from === "Driver") {
+                obj.new_edit_driver_card = {
+                    ...state.new_edit_driver_card,
+                    contact_no: state.phone_number
+                }
+                return obj
+            }
+
+            if (state.modal_from === "BuyAndSell") {
+                obj.new_edit_buyAndsell_card = {
+                    ...state.new_edit_buyAndsell_card,
+                    contact_no: state.phone_number
+                }
+                return obj
+            }
+        },
+        MobileNumVerificationFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
+        updateVerifyMobileNumberData(state, action) {
+            return {
+                ...state,
+                phone_number: action.payload
+            }
+        },
+        updateUserVehicleList(state, action) {
+            let react_vehicle_list_dropdown_select = [];
+            if (action.payload[0]?.vehicle_list?.length) {
+                react_vehicle_list_dropdown_select = action.payload[0]?.vehicle_list?.map((v, i) => {
+                    return { value: i + 1, label: v }
+                })
+            }
+
+            return {
+                ...state,
+                user_vehicle_list: react_vehicle_list_dropdown_select,
+            }
+        },
 
         //                                                             load api's                                                         //
         //get load api
@@ -151,31 +253,7 @@ const servicesSlice = createSlice(({
                 total_no_of_datas: 0
             }
         },
-        LoadMobileNumVerificationRequest(state, action) {
-            return {
-                ...state,
-                spinner_glow: true
-            }
-        },
-        LoadMobileNumVerificationResponse(state, action) {
-            console.log(action.payload)
-            return {
-                ...state,
-                spinner_glow: false
-            }
-        },
-        LoadMobileNumVerificationFailure(state, action) {
-            return {
-                ...state,
-                spinner_glow: false
-            }
-        },
-        updateLoadVerifyData(state, action) {
-            return {
-                ...state,
-                phone_number: action.payload
-            }
-        },
+
         updateLoadEditData(state, action) {
             return {
                 ...state,
@@ -194,10 +272,65 @@ const servicesSlice = createSlice(({
                 }
             }
         },
+        ResetLoadFilterData(state, action) {
+            return {
+                ...state,
+                load_filter_card: {}
+            }
+        },
+
+        //post or edit load
+        LoadPostRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true
+            }
+        },
+        LoadPostResponse(state, action) {
+            return {
+                ...state,
+                spinner_glow: false,
+                new_edit_load_card: {},
+                re_render: !state.re_render
+            }
+        },
+        LoadPostFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
+
+        //delete load
+        LoadDeleteRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true
+            }
+        },
+        LoadDeleteResponse(state, action) {
+            return {
+                ...state,
+                spinner_glow: false,
+                loadDelete_id: null,
+                re_render: !state.re_render
+            }
+        },
+        LoadDeleteFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
 
 
 
-        //                                                            truck api's                                                         //
+
+
+
+
+
+        //                                                                                                 truck api's                                                         //
         //get truck api
         truckGetRequest(state, action) {
             return {
@@ -220,12 +353,6 @@ const servicesSlice = createSlice(({
                 total_no_of_datas: 0
             }
         },
-        updateTruckVerifyData(state, action) {
-            return {
-                ...state,
-                phone_number: action.payload
-            }
-        },
         updateTruckEditData(state, action) {
             return {
                 ...state,
@@ -242,6 +369,57 @@ const servicesSlice = createSlice(({
                     ...state.truck_filter_card,
                     ...action.payload
                 }
+            }
+        },
+        ResetTruckFilterData(state, action) {
+            return {
+                ...state,
+                truck_filter_card: {}
+            }
+        },
+
+
+        //post or edit Truck
+        TruckPostRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true
+            }
+        },
+        TruckPostResponse(state, action) {
+            return {
+                ...state,
+                spinner_glow: false,
+                new_edit_load_card: {},
+                re_render: !state.re_render
+            }
+        },
+        TruckPostFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
+
+        //delete load
+        TruckDeleteRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true
+            }
+        },
+        TruckDeleteResponse(state, action) {
+            return {
+                ...state,
+                spinner_glow: false,
+                truckDelete_id: null,
+                re_render: !state.re_render
+            }
+        },
+        TruckDeleteFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
             }
         },
 
@@ -271,12 +449,6 @@ const servicesSlice = createSlice(({
                 driver_glow: false,
                 alldrivers_details: [],
                 total_no_of_datas: 0
-            }
-        },
-        updateDriverVerifyData(state, action) {
-            return {
-                ...state,
-                phone_number: action.payload
             }
         },
         updateDriverEditData(state, action) {
@@ -321,12 +493,6 @@ const servicesSlice = createSlice(({
                 buyAndsell_glow: false,
                 allbuyAndsell_details: [],
                 total_no_of_datas: 0
-            }
-        },
-        updateBuyAndSellVerifyData(state, action) {
-            return {
-                ...state,
-                phone_number: action.payload
             }
         },
         updateBuyAndSellEditData(state, action) {
@@ -375,28 +541,41 @@ export const {
     updateDeleteDetails,
     updateCreateModalDetails,
     initializeFilterDetails,
+    updateUserVehicleList,
 
     loadGetRequest,
     loadGetResponse,
     loadGetFaliure,
-    LoadMobileNumVerificationRequest,
-    LoadMobileNumVerificationResponse,
-    LoadMobileNumVerificationFailure,
-    updateLoadVerifyData,
+    MobileNumVerificationRequest,
+    MobileNumVerificationResponse,
+    MobileNumVerificationFailure,
+    updateVerifyMobileNumberData,
     updateLoadEditData,
     updateLoadFilterData,
+    ResetLoadFilterData,
     LoadsVerificationRequest,
     LoadsVerificationResponse,
-
+    LoadPostRequest,
+    LoadPostResponse,
+    LoadPostFailure,
+    LoadDeleteRequest,
+    LoadDeleteResponse,
+    LoadDeleteFailure,
 
     truckGetRequest,
     truckGetResponse,
     truckGetFailure,
     truckVerificationRequest,
     truckVerificationResponse,
-    updateTruckVerifyData,
     updateTruckEditData,
     updateTruckFilterData,
+    ResetTruckFilterData,
+    TruckPostRequest,
+    TruckPostResponse,
+    TruckPostFailure,
+    TruckDeleteRequest,
+    TruckDeleteResponse,
+    TruckDeleteFailure,
 
 
     driverGetRequest,
@@ -404,7 +583,6 @@ export const {
     driverGetFailure,
     driverVerificationRequest,
     driverVerificationResponse,
-    updateDriverVerifyData,
     updateDriverEditData,
     updateDriverFilterData,
 
@@ -414,7 +592,6 @@ export const {
     buyAndsellGetFailure,
     buyAndSellVerificationRequest,
     buyAndSellVerificationResponse,
-    updateBuyAndSellVerifyData,
     updateBuyAndSellEditData,
     updateBuyAndSellFilterData
 

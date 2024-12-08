@@ -7,7 +7,8 @@ import Icons from 'Utils/Icons'
 
 const TruckCard = ({
     placeholder,
-    truck_data
+    truck_data,
+    is_delete_card
 }) => {
     const dispatch = useDispatch();
 
@@ -49,7 +50,7 @@ const TruckCard = ({
 
 
     return (
-        <div className="col-12 col-sm-6 col-lg-4 p-2 d-inline-flex ">
+        <div className={`${is_delete_card ? "col-12" : "col-12 col-sm-6 col-lg-4"} p-2 d-inline-flex`}>
             <Card className="card-border rounded-3 w-100 shadow border-0">
                 <Card.Header className="d-flex align-items-center bg-transparent border-0">
                     <div className="col">
@@ -99,26 +100,35 @@ const TruckCard = ({
                     <div className="col-12 d-flex flex-wrap">
                         {cardDetails(truck_data)}
                     </div>
-
-                    <hr className={placeholder ? 'm-1 d-none' : ''} />
+                    {
+                        !is_delete_card ?
+                            <hr className={placeholder ? 'm-1 d-none' : ''} />
+                            :
+                            null
+                    }
                 </Card.Body>
 
-                <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-1">
-                    <div className="col px-1">
-                        <ButtonComponent
-                            className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
-                            buttonName={placeholder ? "" : 'Delete'}
-                            clickFunction={() => dispatch(handleDeleteModal({ from: "Truck", type: "Delete", data: truck_data }))}
-                        />
-                    </div>
-                    <div className="col px-1">
-                        <ButtonComponent
-                            className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
-                            buttonName={placeholder ? "" : 'Edit'}
-                            clickFunction={() => dispatch(handleEditModal({ from: "Truck", type: "Edit", data: truck_data }))}
-                        />
-                    </div>
-                </Card.Footer>
+                {
+                    !is_delete_card ?
+                        <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-1">
+                            <div className="col px-1">
+                                <ButtonComponent
+                                    className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
+                                    buttonName={placeholder ? "" : 'Delete'}
+                                    clickFunction={() => dispatch(handleDeleteModal({ from: "Truck", type: "Delete", data: truck_data }))}
+                                />
+                            </div>
+                            <div className="col px-1">
+                                <ButtonComponent
+                                    className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
+                                    buttonName={placeholder ? "" : 'Edit'}
+                                    clickFunction={() => dispatch(handleEditModal({ from: "Truck", type: "Edit", data: truck_data }))}
+                                />
+                            </div>
+                        </Card.Footer>
+                        :
+                        null
+                }
             </Card>
         </div >
     )

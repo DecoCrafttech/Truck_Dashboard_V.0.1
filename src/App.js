@@ -35,8 +35,7 @@ const App = () => {
   }, [])
 
   //error state
-  useEffect(() => {
-    console.log(Err)
+  useEffect(() => { 
     if (Err) {
       toast(Err, {
         position: "top-right",

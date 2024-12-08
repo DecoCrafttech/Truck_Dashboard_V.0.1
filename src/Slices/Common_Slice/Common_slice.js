@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
 import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogResponse, updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
-import { buyAndsellGetRequest, buyAndsellGetResponse, driverGetRequest, driverGetResponse, loadGetRequest, loadGetResponse, truckGetRequest, truckGetResponse } from "Slices/Pages_slice/Services_slice";
+import { buyAndsellGetRequest, buyAndsellGetResponse, driverGetRequest, driverGetResponse, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
     name: 'commonSlice',
@@ -206,7 +206,6 @@ const commonSlice = createSlice({
         updateResetAllMenus(state, action) {
             return {
                 ...state,
-                nextButton: false,
                 edited: false,
                 validated: false,
                 modalShow: false,
@@ -304,26 +303,81 @@ const commonSlice = createSlice({
                 state.modalShow = false
             })
 
+            //common 
+            .addCase(MobileNumVerificationRequest, (state, action) => {
+                state.validated = false
+            })
+            .addCase(updateCreateModalDetails, (state, action) => {
+                state.validated = false
+                state.modalShow = true
+            })
+            .addCase(updateDeleteDetails, (state, action) => {
+                state.modalShow = true
+            })
+            .addCase(updateEditDetails, (state, action) => {
+                state.modalShow = true
+            })
+            .addCase(initializeFilterDetails, (state, action) => {
+                state.modalShow = true
+            })
+
+
             //load
             .addCase(loadGetRequest, (state, action) => {
                 state.totalCount = 0
+                state.modalShow = false
+                state.apply_filter = false
             })
             .addCase(loadGetResponse, (state, action) => {
                 state.totalCount = action.payload?.total_no_of_data
-                state.apply_filter = false
+            })
+            .addCase(LoadPostRequest, (state, action) => {
+                state.modalShow = false
+                state.validated = false
+            })
+            .addCase(LoadPostFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "Error"
+            })
+            .addCase(LoadDeleteResponse, (state, action) => {
                 state.modalShow = false
             })
+            .addCase(LoadDeleteFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "Error"
+            })
+            .addCase(ResetLoadFilterData, (state, action) => {
+                state.modalShow = false
+                state.apply_filter_clicked = false
+                state.apply_filter = false
+            })
+
+
 
             //truck
             .addCase(truckGetRequest, (state, action) => {
                 state.totalCount = 0
-            })
-            .addCase(truckGetResponse, (state, action) => {
-                state.totalCount = action.payload?.total_no_of_data
                 state.apply_filter = false
                 state.modalShow = false
             })
-            
+            .addCase(truckGetResponse, (state, action) => {
+                state.totalCount = action.payload?.total_no_of_data
+            })
+            .addCase(TruckPostRequest, (state, action) => {
+                state.modalShow = false
+                state.validated = false
+            })
+            .addCase(TruckPostFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "Error"
+            })
+            .addCase(ResetTruckFilterData, (state, action) => {
+                state.modalShow = false
+                state.apply_filter_clicked = false
+                state.apply_filter = false
+            })
+
+
             //driver
             .addCase(driverGetRequest, (state, action) => {
                 state.totalCount = 0
@@ -333,6 +387,7 @@ const commonSlice = createSlice({
                 state.apply_filter = false
                 state.modalShow = false
             })
+
 
             //buy and sell
             .addCase(buyAndsellGetRequest, (state, action) => {
@@ -344,6 +399,7 @@ const commonSlice = createSlice({
                 state.modalShow = false
             })
 
+
             //blog page
             .addCase(getBlogRequest, (state, action) => {
                 state.totalCount = 0
@@ -351,30 +407,30 @@ const commonSlice = createSlice({
             .addCase(getBlogResponse, (state, action) => {
                 state.totalCount = action.payload?.total_no_of_data
             })
-            
-            .addCase(updateBlogEditData, (state,action)=>{
+
+            .addCase(updateBlogEditData, (state, action) => {
                 state.validated = false
             })
-            .addCase(updateBlogModalType,(state,action)=>{
+            .addCase(updateBlogModalType, (state, action) => {
                 state.modalShow = true
                 state.validated = false
             })
-            .addCase(updateEditBlog,(state,action)=>{
+            .addCase(updateEditBlog, (state, action) => {
                 state.modalShow = true
                 state.validated = false
             })
-            .addCase(updateDeleteBlog,(state,action)=>{
-                state.modalShow = true 
+            .addCase(updateDeleteBlog, (state, action) => {
+                state.modalShow = true
             })
-            .addCase(updateAddBlogResponse,(state,action)=>{
+            .addCase(updateAddBlogResponse, (state, action) => {
                 state.modalShow = false
             })
 
             //blog
-            .addCase(blogDeletionResponse,(state,action)=>{
-                state.modalShow = false 
+            .addCase(blogDeletionResponse, (state, action) => {
+                state.modalShow = false
             })
-            
+
     }
 })
 

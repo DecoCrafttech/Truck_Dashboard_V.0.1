@@ -7,7 +7,8 @@ import { Card } from 'react-bootstrap'
 
 const BlogCard = ({
     placeholder,
-    blogData
+    blogData,
+    is_delete_card
 
 }) => {
 
@@ -29,24 +30,29 @@ const BlogCard = ({
                 <p className={placeholder ? 'placeholder w-100 py-4 pb-5 rounded-2' : 'mb-0 text-secondary'}>{blogData?.blog_content}</p>
             </Card.Body>
 
-            <Card.Footer className='border-0 bg-transparent d-flex flex-wrap'>
-                <div className="col-6 p-1">
-                    <ButtonComponent
-                        className={placeholder ? "placeholder w-100 pe-none" : "btn-outline-danger w-100"}
-                        buttonName="Delete"
-                        title="Delete"
-                        clickFunction={() => dispatch(handleDeleteBlog(blogData?.heading1, blogData?.blog_id))}
-                    />
-                </div>
-                <div className="col-6 p-1">
-                    <ButtonComponent
-                        className={placeholder ? "placeholder w-100 pe-none" : "btn-primary w-100"}
-                        buttonName="Edit"
-                        title="Edit"
-                        clickFunction={() => dispatch(handleEditBlog(blogData))}
-                    />
-                </div>
-            </Card.Footer>
+            {
+                !is_delete_card ?
+                    <Card.Footer className='border-0 bg-transparent d-flex flex-wrap'>
+                        <div className="col-6 p-1">
+                            <ButtonComponent
+                                className={placeholder ? "placeholder w-100 pe-none" : "btn-outline-danger w-100"}
+                                buttonName="Delete"
+                                title="Delete"
+                                clickFunction={() => dispatch(handleDeleteBlog(blogData?.heading1, blogData?.blog_id))}
+                            />
+                        </div>
+                        <div className="col-6 p-1">
+                            <ButtonComponent
+                                className={placeholder ? "placeholder w-100 pe-none" : "btn-primary w-100"}
+                                buttonName="Edit"
+                                title="Edit"
+                                clickFunction={() => dispatch(handleEditBlog(blogData))}
+                            />
+                        </div>
+                    </Card.Footer>
+                    :
+                    null
+            }
         </Card>
     )
 }

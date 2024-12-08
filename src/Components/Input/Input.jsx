@@ -12,7 +12,8 @@ const Input = ({
     inputError,
     change,
     multiple,
-    value
+    value,
+    keyDown
 }) => {
 
     return (
@@ -34,6 +35,7 @@ const Input = ({
                 placeholder={placeholder}
                 className={className}
                 onChange={change}
+                onKeyDown={keyDown}
                 multiple={multiple}
                 value={value}
             />

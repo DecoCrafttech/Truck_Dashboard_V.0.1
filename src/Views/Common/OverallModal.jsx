@@ -1,6 +1,11 @@
 import { handleAddBlog, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
-import { handleBuyAndSellInputOnChange, handlePostLoadsVerification } from "Actions/Pages_actions/ServicesActions";
+import { handleBuyAndSellInputOnChange, handleDeleteLoad, handleDeleteTruck, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
 import ButtonComponent from "Components/Button/Button";
+import BlogCard from "Components/Card/BlogCard";
+import BuyandSellCard from "Components/Card/BuyandSellCard";
+import DriverCard from "Components/Card/DriverCard";
+import LoadCard from "Components/Card/LoadCard";
+import TruckCard from "Components/Card/TruckCard";
 import { useDispatch } from "Components/CustomHooks";
 import GoogleLocationInput from "Components/Input/GoogleLocationInput";
 import Input from "Components/Input/Input";
@@ -11,7 +16,8 @@ import ModalComponent from "Components/Modal/Modal";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { updateApplyFilterClickedTrue, updateModalShow } from "Slices/Common_Slice/Common_slice";
+import { updateApplyFilterClickedFalse, updateApplyFilterClickedTrue, updateModalShow } from "Slices/Common_Slice/Common_slice";
+import { ResetLoadFilterData, ResetTruckFilterData } from "Slices/Pages_slice/Services_slice";
 import Icons from "Utils/Icons";
 import JsonData from "Utils/JsonData";
 
@@ -66,40 +72,6 @@ export function OverallModel() {
         }
     }
 
-    function dynamicMobileVerification() {
-        let funByNum = null
-
-        if (servicesState?.modal_from === "Load") {
-            funByNum = JsonJsx?.loadVerifyInputs
-        }
-
-        if (servicesState?.modal_from === "Truck") {
-            funByNum = JsonJsx?.loadVerifyInputs
-        }
-
-        if (servicesState?.modal_from === "Driver") {
-            funByNum = JsonJsx?.loadVerifyInputs
-        }
-
-        if (servicesState?.modal_from === "BuyAndSell") {
-            funByNum = JsonJsx?.loadVerifyInputs
-        }
-
-        return funByNum?.map((ipVal, iPInd) => {
-            return <div className="col-12 p-1 mt-2 p-4">
-                <Input
-                    type={ipVal?.type}
-                    value={ipVal?.value}
-                    change={ipVal?.change}
-                    label={ipVal?.name}
-                    labelClassName="text-secondary mb-0 fs-14"
-                    mandatory={ipVal?.isMandatory}
-                    inputError={ipVal?.Err}
-                />
-            </div>
-        })
-    }
-
     function dynamicInput() {
         let funBy = null
 
@@ -144,27 +116,39 @@ export function OverallModel() {
                 case "select":
                     return <div className='col-6 p-1 mt-2'>
                         {
-                            servicesState?.modal_type === "Filter" && ipVal?.name === "To" ?
-                                <ReactDropdownSelect
-                                    multi={true}
-                                    name={ipVal?.name}
-                                    isMandatory={ipVal?.isMandatory}
-                                    options={ipVal?.options}
-                                    labelField="label"
-                                    valueField="label"
-                                    value={ipVal?.value}
-                                    change={ipVal?.change}
-                                    className='rounded filter-select-dropdown'
-                                />
+                            servicesState?.modal_type === "Filter" && ipVal?.name === "To" ||
+                                ((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && servicesState?.modal_from === "Truck" && ipVal?.name === "Vehicle Number") ?
+                                <Fragment>
+                                    <ReactDropdownSelect
+                                        multi={!((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && servicesState?.modal_from === "Truck" && ipVal?.name === "Vehicle Number") ? true : false}
+                                        name={ipVal?.name}
+                                        isMandatory={ipVal?.isMandatory}
+                                        options={ipVal?.options}
+                                        labelField="label"
+                                        valueField="label"
+                                        create={((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && servicesState?.modal_from === "Truck" && ipVal?.name === "Vehicle Number") ? true : false}
+                                        value={ipVal?.value}
+                                        change={ipVal?.change}
+                                        className='rounded filter-select-dropdown'
+                                    />
+                                    <div className='text-danger pt-2 ps-1 fs-15'>
+                                        {ipVal?.Err}
+                                    </div>
+                                </Fragment>
                                 :
-                                <SelectBox
-                                    selectOptions={ipVal?.options}
-                                    value={ipVal?.value}
-                                    change={ipVal?.change}
-                                    label={ipVal?.name}
-                                    labelClassName="text-secondary mb-0 fs-14"
-                                    mandatory={ipVal?.isMandatory}
-                                />
+                                <Fragment>
+                                    <SelectBox
+                                        selectOptions={ipVal?.options}
+                                        value={ipVal?.value}
+                                        change={ipVal?.change}
+                                        label={ipVal?.name}
+                                        labelClassName="text-secondary mb-0 fs-14"
+                                        mandatory={ipVal?.isMandatory}
+                                    />
+                                    <div className='text-danger pt-2 ps-1 fs-15'>
+                                        {ipVal?.Err}
+                                    </div>
+                                </Fragment>
                         }
                     </div>
 
@@ -179,6 +163,9 @@ export function OverallModel() {
                             labelClassName="text-secondary mb-0 fs-14"
                             mandatory={ipVal?.isMandatory}
                         />
+                        <div className='text-danger pt-2 ps-1 fs-15'>
+                            {ipVal?.Err}
+                        </div>
                     </div>
 
                 case "input":
@@ -194,7 +181,9 @@ export function OverallModel() {
                                     className="d-none"
                                     htmlFor="file_upload"
                                     multiple={true}
+                                    inputError={ipVal?.Err}
                                 />
+
                                 <div className='border py-2 rounded-2 col-12 text-center'>
                                     <span className='me-2'>{Icons.fileUploadIcon}</span>
                                     <span className='text-secondary fs-15'>Click here to choose image</span>
@@ -253,9 +242,11 @@ export function OverallModel() {
                                 type={ipVal?.type}
                                 value={ipVal?.value}
                                 change={ipVal?.change}
+                                keyDown={ipVal?.keyDown}
                                 label={ipVal?.name}
                                 labelClassName="text-secondary mb-0 fs-14"
                                 mandatory={ipVal?.isMandatory}
+                                inputError={ipVal?.Err}
                             />
                         </div>
 
@@ -270,8 +261,13 @@ export function OverallModel() {
                             label={ipVal?.name}
                             labelClassName="text-secondary mb-0 fs-14"
                             mandatory={ipVal?.isMandatory}
+                            inputError={ipVal?.Err}
                         />
-                    </div>
+
+                        <div className='text-danger pt-2 ps-1 fs-15'>
+                            {ipVal?.Err}
+                        </div>
+                    </div >
 
                 default:
                     break;
@@ -294,16 +290,128 @@ export function OverallModel() {
                             servicesState?.is_mobile_num_verified ?
                                 dynamicInput()
                                 :
-                                dynamicMobileVerification()
+                                JsonJsx?.verifyMobileNumber?.map((ipVal, iPInd) => {
+                                    return <div className="col-12 p-1 mt-2 p-4">
+                                        <Input
+                                            type={ipVal?.type}
+                                            value={ipVal?.value}
+                                            change={ipVal?.change}
+                                            keyDown={ipVal?.keyDown}
+                                            label={ipVal?.name}
+                                            labelClassName="text-secondary mb-0 fs-14"
+                                            mandatory={ipVal?.isMandatory}
+                                            inputError={ipVal?.Err}
+                                        />
+                                    </div>
+                                })
                             :
                             dynamicInput()
 
                     case "Delete":
-                        return <h6 className='mb-0'>Delete Blog</h6>;
+                        switch (servicesState?.modal_from) {
+                            case "Load":
+                                return <div className='mb-0 py-1 w-100'>
+                                    <p className="text-center text-danger w-100 mt-3">
+                                        Are you sure do you want to delete the load
+                                    </p>
+                                    <LoadCard load={servicesState?.new_edit_load_card} is_delete_card={true} />
+                                </div>
+
+                            case "Truck":
+                                return <div className='mb-0 py-1 w-100'>
+                                    <p className="text-center text-danger w-100 mt-3">
+                                        Are you sure do you want to delete the truck
+                                    </p>
+                                    <TruckCard truck_data={servicesState?.new_edit_truck_card} is_delete_card={true} />
+                                </div>
+
+                            case "Driver":
+                                return <div className='mb-0 py-1 w-100'>
+                                    <p className="text-center text-danger w-100 mt-3">
+                                        Are you sure do you want to delete the driver
+                                    </p>
+                                    <DriverCard driver_data={servicesState?.new_edit_driver_card} is_delete_card={true} />
+                                </div>
+
+                            case "BuyAndSell":
+                                return <div className='mb-0 py-1 w-100'>
+                                    <p className="text-center text-danger w-100 mt-3">
+                                        Are you sure do you want to delete the buy and sell
+                                    </p>
+                                    <BuyandSellCard buy_sell_data={servicesState?.new_edit_buyAndsell_card} is_delete_card={true} />
+                                </div>
+
+                            case "Blog":
+                                return <div className='mb-0 py-1 w-100'>
+                                    <p className="text-center text-danger w-100 mt-3">
+                                        Are you sure do you want to delete the blog
+                                    </p>
+                                    <BlogCard load={servicesState?.new_edit_load_card} is_delete_card={true} />
+                                </div>
+
+                            default:
+                                break;
+                        }
 
                     default:
                         break;
                 }
+        }
+    }
+
+    function dynamicFilterFun() {
+        switch (servicesState?.modal_from) {
+            case "Load":
+                dispatch(ResetLoadFilterData())
+                break;
+
+            case "Truck":
+                dispatch(ResetTruckFilterData())
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    function dynamicPostFun() {
+        switch (servicesState?.modal_from) {
+            case "Load":
+                dispatch(handlePostOrEditLoad(servicesState))
+                break;
+
+            case "Truck":
+                dispatch(handlePostOrEditTruck(servicesState))
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    function dynamicEditFun() {
+        switch (servicesState?.modal_from) {
+            case "Load":
+                dispatch(handlePostOrEditLoad(servicesState))
+                break;
+
+            case "Truck":
+                dispatch(handlePostOrEditTruck(servicesState))
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    function dynamicDeleteFun() {
+        switch (servicesState?.modal_from) {
+            case "Load":
+                dispatch(handleDeleteLoad(servicesState))
+                break;
+
+            case "Truck":
+                dispatch(handleDeleteTruck(servicesState))
                 break;
 
 
@@ -318,13 +426,19 @@ export function OverallModel() {
             case "Truck":
             case "Driver":
             case "BuyAndSell":
-                // case "Blog":
                 switch (servicesState?.modal_type) {
                     case "Edit":
                         return <div className='col-12 p-2 px-3'>
                             <ButtonComponent
                                 className="btn-danger w-100 py-2"
-                                buttonName="Edit Load"
+                                buttonName={
+                                    servicesState?.spinner_glow ?
+                                        <SpinnerComponent />
+                                        :
+                                        `Edit ${servicesState?.modal_from} Details`
+                                }
+                                clickFunction={dynamicEditFun}
+                                btnDisable={servicesState?.spinner_glow}
                             />
                         </div>
 
@@ -333,14 +447,22 @@ export function OverallModel() {
                             <div className="col-6 p-1 pb-0">
                                 <ButtonComponent
                                     className="btn-secondary w-100 py-2"
-                                    buttonName="Close"
+                                    buttonName="No"
                                     clickFunction={() => dispatch(updateModalShow())}
+                                    btnDisable={servicesState?.spinner_glow}
                                 />
                             </div>
                             <div className="col-6 p-1 pb-0">
                                 <ButtonComponent
                                     className="btn-danger w-100 py-2"
-                                    buttonName="Delete Load"
+                                    buttonName={
+                                        servicesState?.spinner_glow ?
+                                            <SpinnerComponent />
+                                            :
+                                            "Yes"
+                                    }
+                                    clickFunction={dynamicDeleteFun}
+                                    btnDisable={servicesState?.spinner_glow}
                                 />
                             </div>
                         </div>
@@ -350,7 +472,14 @@ export function OverallModel() {
                             <div className='col-12 p-2 px-3'>
                                 <ButtonComponent
                                     className="btn-danger w-100 py-2"
-                                    buttonName="Post Load"
+                                    buttonName={
+                                        servicesState?.spinner_glow ?
+                                            <SpinnerComponent />
+                                            :
+                                            `Post ${servicesState?.modal_from}`
+                                    }
+                                    clickFunction={dynamicPostFun}
+                                    btnDisable={servicesState?.spinner_glow}
                                 />
                             </div>
                             :
@@ -363,7 +492,7 @@ export function OverallModel() {
                                             :
                                             "Verify Mobile Number"
                                     }
-                                    clickFunction={() => dispatch(handlePostLoadsVerification(servicesState?.phone_number))}
+                                    clickFunction={() => dispatch(handlePostVerification(servicesState))}
                                     btnDisable={servicesState?.spinner_glow}
                                 />
                             </div>
@@ -374,8 +503,8 @@ export function OverallModel() {
                             <div className="col-6 p-1 pb-0">
                                 <ButtonComponent
                                     className="btn-secondary w-100 py-2"
-                                    buttonName="Cancel"
-                                    clickFunction={() => dispatch(updateModalShow())}
+                                    buttonName="Clear Filter"
+                                    clickFunction={dynamicFilterFun}
                                 />
                             </div>
                             <div className="col-6 p-1 pb-0">
@@ -464,7 +593,7 @@ export function OverallModel() {
             modalHeaderClassname="border-0"
             modalHeader={modalHeaderFun()}
             modalBodyClassname="py-2"
-            modalBody={<div className='d-flex flex-wrap p-3 pt-0'>{modalBodyFun()}</div>}
+            modalBody={<div className='d-flex flex-wrap p-3 py-0'>{modalBodyFun()}</div>}
             showModalFooter={true}
             modalFooterClassname="border-0"
             modalFooter={modalFooterFun()}

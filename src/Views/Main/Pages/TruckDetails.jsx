@@ -6,13 +6,13 @@ import ButtonComponent from 'Components/Button/Button'
 import TruckCard from 'Components/Card/TruckCard'
 import { useDispatch } from 'Components/CustomHooks'
 import { Card } from 'react-bootstrap'
-import { SearchComponent } from 'ResuableFunctions/SearchFun' 
-import Icons from 'Utils/Icons' 
+import { SearchComponent } from 'ResuableFunctions/SearchFun'
+import Icons from 'Utils/Icons'
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter'
 
 const TruckDetails = () => {
     const { commonState, servicesState } = useSelector((state) => state);
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(handleResetAlMenus)
@@ -54,7 +54,7 @@ const TruckDetails = () => {
             dispatch(handleGetTruck(params))
         }
 
-    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter])
+    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter, servicesState?.re_render])
 
     return (
         <Fragment>
@@ -62,9 +62,9 @@ const TruckDetails = () => {
                 <div className="w-100 d-inline-flex flex-wrap align-items-center">
                     <div className="col-6">
                         <p className='m-0 ps-1'>{`showing ${commonState?.currentPage * commonState?.pageSize <= commonState?.totalCount ?
-                                commonState?.currentPage * commonState?.pageSize
-                                :
-                                (commonState?.currentPage - 1) * commonState?.pageSize + servicesState?.alltrucks_details?.length
+                            commonState?.currentPage * commonState?.pageSize
+                            :
+                            (commonState?.currentPage - 1) * commonState?.pageSize + servicesState?.alltrucks_details?.length
                             } of ${commonState?.totalCount}`}
                         </p>
                     </div>
@@ -75,7 +75,7 @@ const TruckDetails = () => {
                             <ButtonComponent
                                 className="bg-white py-2 w-100"
                                 buttonName="Filter"
-                                clickFunction={() => dispatch(handleFilterModal("Truck","Filter"))}
+                                clickFunction={() => dispatch(handleFilterModal("Truck", "Filter"))}
                             />
                         </div>
                         <div className="col-3 text-end p-1">
@@ -91,7 +91,7 @@ const TruckDetails = () => {
                                         </span>
                                     </span>
                                 }
-                                clickFunction={() => dispatch(handleCreateModal("Truck","Create"))}
+                                clickFunction={() => dispatch(handleCreateModal("Truck", "Create"))}
                             />
                         </div>
                     </div>
@@ -113,7 +113,7 @@ const TruckDetails = () => {
                     </Card.Body>
                 </Card>
 
-                { commonState?.totalCount ? <ServiesFooter /> : null }
+                {commonState?.totalCount ? <ServiesFooter /> : null}
             </div>
         </Fragment>
     )

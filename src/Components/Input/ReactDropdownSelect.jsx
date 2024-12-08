@@ -11,9 +11,9 @@ const ReactDropdownSelect = ({
     change,
     labelField,
     valueField,
-    className
-}) => {
-    console.log(options)
+    className,
+    create
+}) => { 
     
     return (
         <Fragment>
@@ -32,6 +32,7 @@ const ReactDropdownSelect = ({
                 options={options}
                 labelField={labelField}
                 valueField={valueField}
+                create={create}
                 values={value}
                 onChange={change}
                 className={className}

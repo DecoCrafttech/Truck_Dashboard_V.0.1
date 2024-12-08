@@ -7,12 +7,12 @@ import ServiesFooter from 'Components/Panel_compnent/ServiesFooter'
 import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { SearchComponent } from 'ResuableFunctions/SearchFun' 
+import { SearchComponent } from 'ResuableFunctions/SearchFun'
 import Icons from 'Utils/Icons'
 
 const LoadDetails = () => {
     const { commonState, servicesState } = useSelector((state) => state);
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(handleResetAlMenus)
@@ -37,9 +37,7 @@ const LoadDetails = () => {
         }
         else if (commonState?.apply_filter_clicked) {
             const newParams = { ...params }
-            console.log(servicesState?.load_filter_card,"servicesState?.load_filter_card?")
             const filteredToLoc = servicesState?.load_filter_card?.to_location?.map((v) => v?.label)
-            console.log(filteredToLoc,"filteredToLoc")
 
             newParams.from_location = servicesState?.load_filter_card?.from_location || ''
             newParams.to_location = servicesState?.load_filter_card?.to_location ? filteredToLoc : [] || []
@@ -48,14 +46,12 @@ const LoadDetails = () => {
             newParams.tone = servicesState?.load_filter_card?.tone || ''
             newParams.material = servicesState?.load_filter_card?.material || ''
 
-
             dispatch(handleGetLoads(newParams))
         }
         else {
             dispatch(handleGetLoads(params))
         }
-
-    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter])
+    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter, servicesState?.re_render])
 
     return (
         <Fragment>
@@ -76,7 +72,7 @@ const LoadDetails = () => {
                             <ButtonComponent
                                 className="bg-white py-2 w-100"
                                 buttonName="Filter"
-                                clickFunction={() => dispatch(handleFilterModal("Load","Filter"))}
+                                clickFunction={() => dispatch(handleFilterModal("Load", "Filter"))}
                             />
                         </div>
                         <div className="col-3 text-end p-1">
@@ -92,7 +88,7 @@ const LoadDetails = () => {
                                         </span>
                                     </span>
                                 }
-                                clickFunction={() => dispatch(handleCreateModal("Load","Create"))}
+                                clickFunction={() => dispatch(handleCreateModal("Load", "Create"))}
                             />
                         </div>
                     </div>
@@ -119,7 +115,7 @@ const LoadDetails = () => {
                     </Card.Body>
                 </Card>
 
-                { commonState?.totalCount ? <ServiesFooter /> : null }
+                {commonState?.totalCount ? <ServiesFooter /> : null}
             </div>
 
         </Fragment>
