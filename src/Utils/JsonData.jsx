@@ -809,19 +809,11 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_driver_card?.vehicle_number || '',
-                options: state?.servicesState?.new_edit_driver_card?.vehicle_number_options,
-                change: (e) => dispatch(handleDriverInputOnChange({ vehicle_number: e.target.value })),
-                isMandatory: true
-            },
-            {
-                name: "Owner Name",
-                type: "text",
-                category: "input",
-                placeholder: "",
-                value: state?.servicesState?.new_edit_driver_card?.owner_name || '',
-                change: (e) => dispatch(handleDriverInputOnChange({ owner_name: e.target.value })),
-                isMandatory: true
+                value: state?.servicesState?.new_edit_driver_card?.vehicle_number_selected || [],
+                options: state?.servicesState?.user_vehicle_list,
+                change: (value) => dispatch(handleDriverInputOnChange({ vehicle_number: value, vehicle_number_selected: value[0]?.label })),
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_driver_card?.vehicle_number?.length ? "Vehicle number required" : ''
             },
             {
                 name: "Company Name",
@@ -830,6 +822,15 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.new_edit_driver_card?.company_name || '',
                 change: (e) => dispatch(handleDriverInputOnChange({ company_name: e.target.value })),
+                isMandatory: true
+            },
+            {
+                name: "Driver Name",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.new_edit_driver_card?.driver_name || '',
+                change: (e) => dispatch(handleDriverInputOnChange({ driver_name: e.target.value })),
                 isMandatory: true
             },
             {

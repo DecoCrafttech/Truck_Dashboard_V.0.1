@@ -101,7 +101,15 @@ const servicesSlice = createSlice(({
                     return obj
 
                 case "Driver":
-                    obj.new_edit_driver_card = action.payload?.data
+                    let selectedVehicleDriver = []
+                    if (action.payload?.from === "Driver" && action.payload?.type === "Edit") {
+                        selectedVehicleDriver = state?.user_vehicle_list?.filter((v) => v.label === action.payload?.data?.vehicle_number)
+                    }
+                    obj.new_edit_driver_card = {
+                        ...state?.new_edit_driver_card,
+                        ...action.payload?.data,
+                        vehicle_number_selected: selectedVehicleDriver, 
+                    }
                     return obj
 
                 case "BuyAndSell":
@@ -190,7 +198,8 @@ const servicesSlice = createSlice(({
             if (state.modal_from === "Driver") {
                 obj.new_edit_driver_card = {
                     ...state.new_edit_driver_card,
-                    contact_no: state.phone_number
+                    contact_no: state.phone_number,
+                    driver_name: action.payload[0].first_name
                 }
                 return obj
             }
@@ -470,6 +479,58 @@ const servicesSlice = createSlice(({
             }
         },
 
+        ResetDriverFilterData(state, action) {
+            return {
+                ...state,
+                driver_filter_card: {}
+            }
+        },
+
+        //post or edit driver
+        DriverPostRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true
+            }
+        },
+        DriverPostResponse(state, action) {
+            return {
+                ...state,
+                spinner_glow: false,
+                new_edit_driver_card: {},
+                re_render: !state.re_render
+            }
+        },
+        DriverPostFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
+
+        //delete driver
+        DriverDeleteRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true
+            }
+        },
+        DriverDeleteResponse(state, action) {
+            return {
+                ...state,
+                spinner_glow: false,
+                driverDelete_id: null,
+                re_render: !state.re_render
+            }
+        },
+        DriverDeleteFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
+
+
 
 
         //                                                            buy and sell api's                                                         //
@@ -577,7 +638,6 @@ export const {
     TruckDeleteResponse,
     TruckDeleteFailure,
 
-
     driverGetRequest,
     driverGetResponse,
     driverGetFailure,
@@ -585,6 +645,13 @@ export const {
     driverVerificationResponse,
     updateDriverEditData,
     updateDriverFilterData,
+    ResetDriverFilterData,
+    DriverPostRequest,
+    DriverPostResponse,
+    DriverPostFailure,
+    DriverDeleteRequest,
+    DriverDeleteResponse,
+    DriverDeleteFailure,
 
 
     buyAndsellGetRequest,

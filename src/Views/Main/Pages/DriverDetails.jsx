@@ -51,7 +51,7 @@ const DriverDetails = () => {
             dispatch(handleGetDriver(params))
         }
 
-    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter])
+    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter, servicesState?.re_render])
 
 
     return (
@@ -73,7 +73,7 @@ const DriverDetails = () => {
                             <ButtonComponent
                                 className="bg-white py-2 w-100"
                                 buttonName="Filter"
-                                clickFunction={() => dispatch(handleFilterModal("Driver","Filter"))}
+                                clickFunction={() => dispatch(handleFilterModal("Driver", "Filter"))}
                             />
                         </div>
                         <div className="col-3 text-end p-1">
@@ -89,7 +89,7 @@ const DriverDetails = () => {
                                         </span>
                                     </span>
                                 }
-                                clickFunction={() => dispatch(handleCreateModal("Driver","Create"))}
+                                clickFunction={() => dispatch(handleCreateModal("Driver", "Create"))}
                             />
                         </div>
                     </div>
@@ -111,7 +111,7 @@ const DriverDetails = () => {
                     </Card.Body>
                 </Card>
 
-                { commonState?.totalCount ? <ServiesFooter /> : null }
+                {commonState?.totalCount ? <ServiesFooter /> : null}
             </div>
         </Fragment>
     )

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
 import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogResponse, updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
-import { buyAndsellGetRequest, buyAndsellGetResponse, driverGetRequest, driverGetResponse, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
+import { buyAndsellGetRequest, buyAndsellGetResponse, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
     name: 'commonSlice',
@@ -386,6 +386,19 @@ const commonSlice = createSlice({
                 state.totalCount = action.payload?.total_no_of_data
                 state.apply_filter = false
                 state.modalShow = false
+            })
+            .addCase(DriverPostRequest, (state, action) => {
+                state.modalShow = false
+                state.validated = false
+            })
+            .addCase(DriverPostFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "Error"
+            })
+            .addCase(ResetDriverFilterData, (state, action) => {
+                state.modalShow = false
+                state.apply_filter_clicked = false
+                state.apply_filter = false
             })
 
 

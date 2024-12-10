@@ -1,6 +1,6 @@
 import { handleResetValidation, handleValidation } from 'Actions/Common_actions/Common_action';
 import axiosInstance from 'Services/axiosInstance';
-import { updateModalShow, updateToast } from 'Slices/Common_Slice/Common_slice';
+import { updateToast } from 'Slices/Common_Slice/Common_slice';
 import {
     updateEditDetails,
     updateDeleteDetails,
@@ -41,6 +41,14 @@ import {
     driverGetFailure,
     updateDriverEditData,
     updateDriverFilterData,
+    ResetDriverFilterData,
+    DriverPostRequest,
+    DriverPostResponse,
+    DriverPostFailure,
+    DriverDeleteRequest,
+    DriverDeleteResponse,
+    DriverDeleteFailure,
+
 
     buyAndsellGetRequest,
     buyAndsellGetResponse,
@@ -60,7 +68,7 @@ export const handleDeleteModal = deleteData => dispatch => {
 }
 
 export const handleEditModal = editData => async (dispatch) => {
-    if (editData?.from === "Truck") {
+    if (editData?.from === "Truck" || editData?.from === "Driver") {
         dispatch(getUserVehicleList({ user_id: editData?.data?.user_id, editData }))
     } else {
         dispatch(updateEditDetails(editData))
@@ -102,7 +110,7 @@ export const handlePostVerification = (servicesState) => async (dispatch) => {
                 const { data } = await axiosInstance.post("/get_user_details", { phone_number: servicesState?.phone_number })
 
                 if (data?.error_code === 0) {
-                    if (servicesState?.modal_from === "Truck") {
+                    if (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver") {
                         if (data?.data[0]?.user_id) {
                             const response = await axiosInstance.post("/get_user_vehicle_list", { user_id: data?.data[0]?.user_id })
 
@@ -353,6 +361,70 @@ export const handleDriverInputOnChange = (inputData) => dispatch => {
 
 export const handleOnchangeDriverFilter = (inputData) => dispatch => {
     dispatch(updateDriverFilterData(inputData))
+}
+
+export const handlePostOrEditDriver = (servicesState) => async (dispatch) => {
+    if (servicesState?.user_data?.user_id) {
+        console.log(servicesState?.new_edit_driver_card)
+        if (servicesState?.new_edit_driver_card?.vehicle_number_selected?.length &&
+            servicesState?.new_edit_driver_card?.company_name &&
+            servicesState?.new_edit_driver_card?.contact_no &&
+            servicesState?.new_edit_driver_card?.driver_name &&  
+            servicesState?.new_edit_driver_card?.from_location &&
+            servicesState?.new_edit_driver_card?.to_location &&
+            servicesState?.new_edit_driver_card?.truck_body_type &&
+            servicesState?.new_edit_driver_card?.no_of_tyres) {
+            dispatch(DriverPostRequest())
+            dispatch(handleResetValidation) 
+
+            try {
+                const params = {
+                    ...servicesState?.new_edit_driver_card,
+                    vehicle_number: servicesState?.new_edit_driver_card?.vehicle_number_selected,
+                    from: servicesState?.new_edit_driver_card?.from_location,
+                    to: servicesState?.new_edit_driver_card?.to_location,
+                    truck_name: '',
+                    user_id: servicesState?.user_data?.user_id,
+                    driver_id: servicesState?.new_edit_driver_card?.driver_id
+                }
+
+                const { data } = await axiosInstance.post("/driver_entry", params);
+                if (data?.error_code === 0) {
+                    dispatch(DriverPostResponse())
+                } else {
+                    dispatch(DriverPostFailure(data?.message))
+                }
+            }
+            catch (Err) {
+                dispatch(DriverPostFailure(Err?.message))
+            }
+        } else {
+            dispatch(handleValidation)
+        }
+    } else {
+        dispatch(handleValidation)
+    }
+}
+
+export const handleDeleteDriver = (servicesState) => async (dispatch) => {
+    dispatch(DriverDeleteRequest())
+    try {
+        const params = {
+            driver_id: servicesState?.driverDelete_id
+        }
+
+        const { data } = await axiosInstance.post("/remove_driver_entry", params);
+        if (data?.error_code === 0) {
+            dispatch(DriverDeleteResponse())
+        } else {
+            dispatch(DriverDeleteFailure(data?.message))
+        }
+    }
+    catch (Err) {
+        dispatch(DriverDeleteFailure(Err?.message))
+    }
+
+
 }
 
 

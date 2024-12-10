@@ -1,5 +1,5 @@
 import { handleAddBlog, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
-import { handleBuyAndSellInputOnChange, handleDeleteLoad, handleDeleteTruck, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
+import { handleBuyAndSellInputOnChange, handleDeleteDriver, handleDeleteLoad, handleDeleteTruck, handlePostOrEditDriver, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
 import ButtonComponent from "Components/Button/Button";
 import BlogCard from "Components/Card/BlogCard";
 import BuyandSellCard from "Components/Card/BuyandSellCard";
@@ -16,7 +16,7 @@ import ModalComponent from "Components/Modal/Modal";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { updateApplyFilterClickedFalse, updateApplyFilterClickedTrue, updateModalShow } from "Slices/Common_Slice/Common_slice";
+import { updateApplyFilterClickedTrue, updateModalShow } from "Slices/Common_Slice/Common_slice";
 import { ResetLoadFilterData, ResetTruckFilterData } from "Slices/Pages_slice/Services_slice";
 import Icons from "Utils/Icons";
 import JsonData from "Utils/JsonData";
@@ -117,7 +117,7 @@ export function OverallModel() {
                     return <div className='col-6 p-1 mt-2'>
                         {
                             servicesState?.modal_type === "Filter" && ipVal?.name === "To" ||
-                                ((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && servicesState?.modal_from === "Truck" && ipVal?.name === "Vehicle Number") ?
+                                ((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver") && ipVal?.name === "Vehicle Number") ?
                                 <Fragment>
                                     <ReactDropdownSelect
                                         multi={!((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && servicesState?.modal_from === "Truck" && ipVal?.name === "Vehicle Number") ? true : false}
@@ -369,6 +369,10 @@ export function OverallModel() {
                 dispatch(ResetTruckFilterData())
                 break;
 
+            case "Driver":
+                dispatch(ResetTruckFilterData())
+                break;
+
             default:
                 break;
         }
@@ -382,6 +386,10 @@ export function OverallModel() {
 
             case "Truck":
                 dispatch(handlePostOrEditTruck(servicesState))
+                break;
+
+            case "Driver":
+                dispatch(handlePostOrEditDriver(servicesState))
                 break;
 
             default:
@@ -399,6 +407,10 @@ export function OverallModel() {
                 dispatch(handlePostOrEditTruck(servicesState))
                 break;
 
+            case "Driver":
+                dispatch(handlePostOrEditDriver(servicesState))
+                break;
+
             default:
                 break;
         }
@@ -414,6 +426,9 @@ export function OverallModel() {
                 dispatch(handleDeleteTruck(servicesState))
                 break;
 
+            case "Driver":
+                dispatch(handleDeleteDriver(servicesState))
+                break;
 
             default:
                 break;
