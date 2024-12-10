@@ -40,8 +40,8 @@ export const handleEditBlog = (edit_date) => dispatch => {
 
 
 //                                                             delete blog modal                                                               //
-export const handleDeleteBlog = (deletion_blog_heading, delete_id) => dispatch => {
-    dispatch(updateDeleteBlog({ deletion_blog_heading, delete_id }))
+export const handleDeleteBlog = (deletion_blog_data) => dispatch => {
+    dispatch(updateDeleteBlog({ deletion_blog_data }))
 }
 
 

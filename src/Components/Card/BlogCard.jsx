@@ -11,8 +11,7 @@ const BlogCard = ({
     is_delete_card
 
 }) => {
-
-
+ 
     const dispatch = useDispatch()
     return (
         <Card className='border-0 rounded-3 h-100'>
@@ -38,7 +37,7 @@ const BlogCard = ({
                                 className={placeholder ? "placeholder w-100 pe-none" : "btn-outline-danger w-100"}
                                 buttonName="Delete"
                                 title="Delete"
-                                clickFunction={() => dispatch(handleDeleteBlog(blogData?.heading1, blogData?.blog_id))}
+                                clickFunction={() => dispatch(handleDeleteBlog(blogData))}
                             />
                         </div>
                         <div className="col-6 p-1">

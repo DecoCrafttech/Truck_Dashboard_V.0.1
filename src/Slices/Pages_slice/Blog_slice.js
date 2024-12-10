@@ -36,8 +36,9 @@ const servicesSlice = createSlice(({
         updateDeleteBlog(state, action) {
             return {
                 ...state,
-                blog_delete_id: action.payload?.delete_id,
-                blog_deletion_heading: action.payload?.deletion_blog_heading,
+                blog_delete_id: action.payload?.deletion_blog_data?.delete_id,
+                blog_deletion_heading: action.payload?.deletion_blog_data?.deletion_blog_heading,
+                blog_edit_data:action.payload?.deletion_blog_data
             }
         },
 

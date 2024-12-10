@@ -342,11 +342,11 @@ export function OverallModel() {
                                 </div>
 
                             case "Blog":
-                                return <div className='mb-0 py-1 w-100'>
+                                return <div className='mb-0 py-1 w-100 h-100'>
                                     <p className="text-center text-danger w-100 mt-3">
                                         Are you sure do you want to delete the blog
                                     </p>
-                                    <BlogCard load={servicesState?.new_edit_load_card} is_delete_card={true} />
+                                    <BlogCard blogData={blogState?.blog_edit_data} is_delete_card={true} />
                                 </div>
 
                             default:
