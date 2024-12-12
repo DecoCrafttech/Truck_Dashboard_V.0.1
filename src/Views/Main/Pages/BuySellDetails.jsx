@@ -1,13 +1,8 @@
 import { handleResetAlMenus } from 'Actions/Common_actions/Common_action'
-import { handleBuyAndSellInputOnChange, handleCreateModal, handleFilterModal, handleGetBuyandSell } from 'Actions/Pages_actions/ServicesActions'
+import { handleCreateModal, handleFilterModal, handleGetBuyandSell } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
 import BuyandSellCard from 'Components/Card/BuyandSellCard'
 import { useDispatch } from 'Components/CustomHooks'
-import GoogleLocationInput from 'Components/Input/GoogleLocationInput'
-import Input from 'Components/Input/Input' 
-import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect'
-import SelectBox from 'Components/Input/SelectBox'
-import Textbox from 'Components/Input/textbox' 
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter'
 import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
@@ -48,7 +43,7 @@ const BuySellDetails = () => {
             const newParams = { ...params }
             newParams.model = servicesState?.buyAndsell_filter_card?.model || ''
             newParams.brand = servicesState?.buyAndsell_filter_card?.brand || ''
-            newParams.location = servicesState?.buyAndsell_filter_card?.location ? [servicesState?.buyAndsell_filter_card?.to_location] : [] || []
+            newParams.location = servicesState?.buyAndsell_filter_card?.location ? [servicesState?.buyAndsell_filter_card?.location] : [] || []
             newParams.kms_driven = servicesState?.buyAndsell_filter_card?.kms_driven || ''
             newParams.price = servicesState?.buyAndsell_filter_card?.price || ''
             newParams.tonnage = servicesState?.buyAndsell_filter_card?.tonnage || ''
@@ -60,7 +55,7 @@ const BuySellDetails = () => {
         else {
             dispatch(handleGetBuyandSell(params))
         }
-    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter])
+    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter, servicesState?.re_render])
 
 
     return (
@@ -69,9 +64,9 @@ const BuySellDetails = () => {
                 <div className="w-100 d-inline-flex flex-wrap align-items-center">
                     <div className="col-5">
                         <p className='m-0 ps-1'>{`showing ${commonState?.currentPage * commonState?.pageSize <= commonState?.totalCount ?
-                                commonState?.currentPage * commonState?.pageSize
-                                :
-                                (commonState?.currentPage - 1) * commonState?.pageSize + servicesState?.alltrucks_details?.length
+                            commonState?.currentPage * commonState?.pageSize
+                            :
+                            (commonState?.currentPage - 1) * commonState?.pageSize + servicesState?.alltrucks_details?.length
                             } of ${commonState?.totalCount}`}
                         </p>
                     </div>
@@ -82,7 +77,7 @@ const BuySellDetails = () => {
                             <ButtonComponent
                                 className="bg-white py-2 w-100"
                                 buttonName="Filter"
-                                clickFunction={() => dispatch(handleFilterModal("BuyAndSell","Filter"))}
+                                clickFunction={() => dispatch(handleFilterModal("BuyAndSell", "Filter"))}
                             />
                         </div>
                         <div className="col-3 text-end p-1">
@@ -98,7 +93,7 @@ const BuySellDetails = () => {
                                         </span>
                                     </span>
                                 }
-                                clickFunction={() => dispatch(handleCreateModal("BuyAndSell","Create"))}
+                                clickFunction={() => dispatch(handleCreateModal("BuyAndSell", "Create"))}
                             />
                         </div>
                     </div>
@@ -120,7 +115,7 @@ const BuySellDetails = () => {
                     </Card.Body>
                 </Card>
 
-                { commonState?.totalCount ? <ServiesFooter /> : null }
+                {commonState?.totalCount ? <ServiesFooter /> : null}
             </div>
 
         </Fragment>

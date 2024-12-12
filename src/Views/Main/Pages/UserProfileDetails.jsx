@@ -14,6 +14,7 @@ import SpinnerComponent from 'Components/Spinner/Spinner'
 import LoadCard from 'Components/Card/LoadCard'
 import BuyandSellCard from 'Components/Card/BuyandSellCard'
 import TruckCard from 'Components/Card/TruckCard'
+import DriverCard from 'Components/Card/DriverCard'
 
 const UserProfileDetails = () => {
     const { dashboardState } = useSelector((state) => state)
@@ -230,7 +231,7 @@ const UserProfileDetails = () => {
                                 <Card.Header className='d-flex flex-wrap align-items-center ps-2 py-3'>
                                     <HandleAddvehicleOnChange parentDiv="col-12 col-md-8 col-lg-7 col-xxl-5 d-inline-flex flex-wrap" divOneCls="col-8" divTwoCls="col-4" />
                                 </Card.Header>
-                                
+
                                 <Card.Body className='d-flex flex-wrap'>
                                     {dashboardState?.dashboard_profile_data?.vehicle_data?.length ?
                                         dashboardState?.dashboard_profile_data?.vehicle_data?.map((vehItem, vehInd) => (
@@ -332,12 +333,12 @@ const UserProfileDetails = () => {
                             <Card.Body>
                                 {dashboardState?.profileGlow ?
                                     [...Array(6)].map((value, placeholderInd) => (
-                                        <LoadCard placeholder={dashboardState?.profileGlow} key={placeholderInd} />
+                                        <DriverCard placeholder={dashboardState?.driver_glow} key={placeholderInd} />
                                     ))
                                     :
                                     dashboardState?.dashboard_profile_data?.driver_data && dashboardState?.dashboard_profile_data?.driver_data?.length ?
-                                        dashboardState?.dashboard_profile_data?.driver_data?.map((loadVal, loadInd) => (
-                                            <LoadCard placeholder={dashboardState?.profileGlow} load={loadVal} key={loadInd} />
+                                        dashboardState?.dashboard_profile_data?.driver_data?.map((driverVal, driverInd) => (
+                                            <DriverCard placeholder={dashboardState?.driver_glow} driver_data={driverVal} key={driverInd} />
                                         ))
                                         :
                                         <div className='w-100 py-5 d-inline-flex align-items-center justify-content-center'>

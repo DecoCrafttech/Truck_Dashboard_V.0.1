@@ -949,19 +949,21 @@ const JsonData = () => {
                 category: "select",
                 placeholder: "",
                 options: modelYears(),
-                value: state?.servicesState?.new_edit_buyAndsell_card?.model_year || '',
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ model_year: e.target.value })),
-                isMandatory: true
+                value: state?.servicesState?.new_edit_buyAndsell_card?.model || '',
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ model: e.target.value })),
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.model ? "Model required" : ''
             },
             {
                 name: "Brand Name",
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.brand_name || '',
+                value: state?.servicesState?.new_edit_buyAndsell_card?.brand || '',
                 options: jsonOnly.truckBrand,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ brand_name: e.target.value })),
-                isMandatory: true
+                change: (e) => dispatch(handleBuyAndSellInputOnChange({ brand: e.target.value })),
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.brand ? "Brand required" : ''
             },
             {
                 name: "Owner Name",
@@ -970,30 +972,33 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.new_edit_buyAndsell_card?.owner_name || '',
                 change: (e) => dispatch(handleBuyAndSellInputOnChange({ owner_name: e.target.value })),
-                isMandatory: true
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.owner_name ? "Owner name required" : ''
             },
             {
                 name: "Vehicle Number",
-                type: "text",
-                category: "input",
+                type: "select",
+                category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.vehicle_number || '',
-                options: state?.servicesState?.new_edit_buyAndsell_card?.vehicle_number_options,
-                change: (e) => dispatch(handleBuyAndSellInputOnChange({ vehicle_number: e.target.value })),
-                isMandatory: true
+                value: state?.servicesState?.new_edit_buyAndsell_card?.vehicle_number_selected || [],
+                options: state?.servicesState?.user_vehicle_list,
+                change: (value) => dispatch(handleBuyAndSellInputOnChange({ vehicle_number: value, vehicle_number_selected: value[0]?.label })),
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.vehicle_number?.length ? "Vehicle number required" : ''
             },
             {
                 name: "Kilometers driven",
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.kmd_driven || '',
+                value: state?.servicesState?.new_edit_buyAndsell_card?.kms_driven || '',
                 change: (e) => {
                     if (/^\d*$/.test(e.target.value)) {
-                        dispatch(handleBuyAndSellInputOnChange({ kmd_driven: e.target.value }))
+                        dispatch(handleBuyAndSellInputOnChange({ kms_driven: e.target.value }))
                     }
                 },
-                isMandatory: true
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.kms_driven ? "Kilometers required" : ''
             },
             {
                 name: "Price",
@@ -1006,20 +1011,22 @@ const JsonData = () => {
                         dispatch(handleBuyAndSellInputOnChange({ price: e.target.value }))
                     }
                 },
-                isMandatory: true
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.price ? "Price required" : ''
             },
             {
                 name: "Tonnage",
                 type: "text",
                 category: "input",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.ton || '',
+                value: state?.servicesState?.new_edit_buyAndsell_card?.tonnage || '',
                 change: (e) => {
                     if (/^\d*$/.test(e.target.value)) {
-                        dispatch(handleBuyAndSellInputOnChange({ ton: e.target.value }))
+                        dispatch(handleBuyAndSellInputOnChange({ tonnage: e.target.value }))
                     }
                 },
-                isMandatory: true
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.tonnage ? "Tonnage required" : ''
             },
             {
                 name: "Location",
@@ -1029,7 +1036,8 @@ const JsonData = () => {
                 value: state?.servicesState?.new_edit_buyAndsell_card?.location || '',
                 change: (e) => dispatch(handleBuyAndSellInputOnChange({ location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleBuyAndSellInputOnChange({ location: slectedLoc })),
-                isMandatory: true
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.location ? "Location required" : ''
             },
             {
                 name: "Contact Number",
@@ -1042,7 +1050,8 @@ const JsonData = () => {
                         dispatch(handleBuyAndSellInputOnChange({ contact_no: e.target.value }))
                     }
                 },
-                isMandatory: true
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.contact_no ? "Contact Number required" : ''
             },
 
             {
@@ -1053,7 +1062,8 @@ const JsonData = () => {
                 value: state?.servicesState?.new_edit_buyAndsell_card?.truck_body_type || '',
                 options: jsonOnly.truckBodyType,
                 change: (e) => dispatch(handleBuyAndSellInputOnChange({ truck_body_type: e.target.value })),
-                isMandatory: true
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.truck_body_type ? "Truck Body Type required" : ''
             },
             {
                 name: "No Of Tyres",
@@ -1063,7 +1073,8 @@ const JsonData = () => {
                 value: state?.servicesState?.new_edit_buyAndsell_card?.no_of_tyres || '',
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleBuyAndSellInputOnChange({ no_of_tyres: e.target.value })),
-                isMandatory: true
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.no_of_tyres ? "No Of Tyres required" : ''
             },
             {
                 name: "Upload image",
@@ -1089,7 +1100,8 @@ const JsonData = () => {
                         })
                         .catch((error) => console.error('Error reading files:', error));
                 },
-                isMandatory: true
+                isMandatory: true,
+                Err: commonState?.validated && !state?.servicesState?.new_edit_buyAndsell_card?.blog_image_show_ui?.length ? "Image required" : ''
             },
             {
                 name: "Description",

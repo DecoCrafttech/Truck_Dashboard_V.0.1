@@ -108,12 +108,22 @@ const servicesSlice = createSlice(({
                     obj.new_edit_driver_card = {
                         ...state?.new_edit_driver_card,
                         ...action.payload?.data,
-                        vehicle_number_selected: selectedVehicleDriver, 
+                        vehicle_number_selected: selectedVehicleDriver,
                     }
                     return obj
 
                 case "BuyAndSell":
-                    obj.new_edit_buyAndsell_card = action.payload?.data
+                    let selectedVehicleBuyAndSell = []
+                    if (action.payload?.from === "BuyAndSell" && action.payload?.type === "Edit") {
+                        selectedVehicleBuyAndSell = state?.user_vehicle_list?.filter((v) => v.label === action.payload?.data?.vehicle_number)
+                    } 
+
+                    obj.new_edit_buyAndsell_card = {
+                        ...state?.new_edit_buyAndsell_card,
+                        ...action.payload?.data,
+                        
+                        vehicle_number_selected: selectedVehicleBuyAndSell,
+                    }
                     return obj
 
                 default:
@@ -207,7 +217,8 @@ const servicesSlice = createSlice(({
             if (state.modal_from === "BuyAndSell") {
                 obj.new_edit_buyAndsell_card = {
                     ...state.new_edit_buyAndsell_card,
-                    contact_no: state.phone_number
+                    contact_no: state.phone_number,
+                    owner_name: action.payload[0].first_name
                 }
                 return obj
             }
@@ -335,10 +346,6 @@ const servicesSlice = createSlice(({
 
 
 
-
-
-
-
         //                                                                                                 truck api's                                                         //
         //get truck api
         truckGetRequest(state, action) {
@@ -435,8 +442,6 @@ const servicesSlice = createSlice(({
 
 
 
-
-
         //                                                            driver api's                                                         //
         //get driver api
         driverGetRequest(state, action) {
@@ -478,7 +483,6 @@ const servicesSlice = createSlice(({
                 }
             }
         },
-
         ResetDriverFilterData(state, action) {
             return {
                 ...state,
@@ -574,6 +578,56 @@ const servicesSlice = createSlice(({
                 }
             }
         },
+        ResetbuyAndsellFilterData(state, action) {
+            return {
+                ...state,
+                buyAndsell_filter_card: {}
+            }
+        },
+
+        //post or edit buyAndsell
+        buyAndsellPostRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true
+            }
+        },
+        buyAndsellPostResponse(state, action) {
+            return {
+                ...state,
+                spinner_glow: false,
+                new_edit_buyAndsell_card: {},
+                re_render: !state.re_render
+            }
+        },
+        buyAndsellPostFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
+
+        //delete driver
+        buyAndsellDeleteRequest(state, action) {
+            return {
+                ...state,
+                spinner_glow: true
+            }
+        },
+        buyAndsellDeleteResponse(state, action) {
+            return {
+                ...state,
+                spinner_glow: false,
+                buyAndsellDelete_id: null,
+                re_render: !state.re_render
+            }
+        },
+        buyAndsellDeleteFailure(state, action) {
+            return {
+                ...state,
+                spinner_glow: false
+            }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -660,7 +714,14 @@ export const {
     buyAndSellVerificationRequest,
     buyAndSellVerificationResponse,
     updateBuyAndSellEditData,
-    updateBuyAndSellFilterData
+    updateBuyAndSellFilterData,
+    ResetbuyAndsellFilterData,
+    buyAndsellPostRequest,
+    buyAndsellPostResponse,
+    buyAndsellPostFailure,
+    buyAndsellDeleteRequest,
+    buyAndsellDeleteResponse,
+    buyAndsellDeleteFailure,
 
 
 } = actions;

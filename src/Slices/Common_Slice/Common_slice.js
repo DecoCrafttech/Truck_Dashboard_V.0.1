@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
 import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogResponse, updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
-import { buyAndsellGetRequest, buyAndsellGetResponse, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
+import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellPostFailure, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
     name: 'commonSlice',
@@ -411,7 +411,22 @@ const commonSlice = createSlice({
                 state.apply_filter = false
                 state.modalShow = false
             })
-
+            .addCase(buyAndsellPostFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "Error"
+            })
+            .addCase(buyAndsellDeleteResponse, (state, action) => {
+                state.modalShow = false
+            })
+            .addCase(buyAndsellDeleteFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "Error"
+            })
+            .addCase(ResetbuyAndsellFilterData, (state, action) => {
+                state.modalShow = false
+                state.apply_filter_clicked = false
+                state.apply_filter = false
+            })
 
             //blog page
             .addCase(getBlogRequest, (state, action) => {

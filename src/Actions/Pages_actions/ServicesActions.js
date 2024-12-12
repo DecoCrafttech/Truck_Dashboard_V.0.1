@@ -41,7 +41,6 @@ import {
     driverGetFailure,
     updateDriverEditData,
     updateDriverFilterData,
-    ResetDriverFilterData,
     DriverPostRequest,
     DriverPostResponse,
     DriverPostFailure,
@@ -55,6 +54,12 @@ import {
     buyAndsellGetFailure,
     updateBuyAndSellEditData,
     updateBuyAndSellFilterData,
+    buyAndsellPostRequest,
+    buyAndsellPostResponse,
+    buyAndsellPostFailure,
+    buyAndsellDeleteRequest,
+    buyAndsellDeleteResponse,
+    buyAndsellDeleteFailure,
 
 
 } from 'Slices/Pages_slice/Services_slice';
@@ -68,7 +73,7 @@ export const handleDeleteModal = deleteData => dispatch => {
 }
 
 export const handleEditModal = editData => async (dispatch) => {
-    if (editData?.from === "Truck" || editData?.from === "Driver") {
+    if (editData?.from === "Truck" || editData?.from === "Driver" || editData?.from === "BuyAndSell") {
         dispatch(getUserVehicleList({ user_id: editData?.data?.user_id, editData }))
     } else {
         dispatch(updateEditDetails(editData))
@@ -110,7 +115,7 @@ export const handlePostVerification = (servicesState) => async (dispatch) => {
                 const { data } = await axiosInstance.post("/get_user_details", { phone_number: servicesState?.phone_number })
 
                 if (data?.error_code === 0) {
-                    if (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver") {
+                    if (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") {
                         if (data?.data[0]?.user_id) {
                             const response = await axiosInstance.post("/get_user_vehicle_list", { user_id: data?.data[0]?.user_id })
 
@@ -284,7 +289,7 @@ export const handlePostOrEditTruck = (servicesState) => async (dispatch) => {
             servicesState?.new_edit_truck_card?.truck_body_type &&
             servicesState?.new_edit_truck_card?.no_of_tyres) {
             dispatch(TruckPostRequest())
-            dispatch(handleResetValidation) 
+            dispatch(handleResetValidation)
 
             try {
                 const params = {
@@ -365,17 +370,16 @@ export const handleOnchangeDriverFilter = (inputData) => dispatch => {
 
 export const handlePostOrEditDriver = (servicesState) => async (dispatch) => {
     if (servicesState?.user_data?.user_id) {
-        console.log(servicesState?.new_edit_driver_card)
         if (servicesState?.new_edit_driver_card?.vehicle_number_selected?.length &&
             servicesState?.new_edit_driver_card?.company_name &&
             servicesState?.new_edit_driver_card?.contact_no &&
-            servicesState?.new_edit_driver_card?.driver_name &&  
+            servicesState?.new_edit_driver_card?.driver_name &&
             servicesState?.new_edit_driver_card?.from_location &&
             servicesState?.new_edit_driver_card?.to_location &&
             servicesState?.new_edit_driver_card?.truck_body_type &&
             servicesState?.new_edit_driver_card?.no_of_tyres) {
             dispatch(DriverPostRequest())
-            dispatch(handleResetValidation) 
+            dispatch(handleResetValidation)
 
             try {
                 const params = {
@@ -453,4 +457,88 @@ export const handleBuyAndSellInputOnChange = (inputData) => dispatch => {
 
 export const handleOnchangeBuyAndSellFilter = (inputData) => dispatch => {
     dispatch(updateBuyAndSellFilterData(inputData))
+}
+
+export const handlePostOrEditBuyAndSell = (servicesState) => async (dispatch) => {
+    if (servicesState?.user_data?.user_id) {
+
+        if (servicesState?.new_edit_buyAndsell_card?.vehicle_number_selected &&
+            servicesState?.new_edit_buyAndsell_card?.model &&
+            servicesState?.new_edit_buyAndsell_card?.brand &&
+            servicesState?.new_edit_buyAndsell_card?.owner_name &&
+            servicesState?.new_edit_buyAndsell_card?.kms_driven &&
+            servicesState?.new_edit_buyAndsell_card?.price &&
+            servicesState?.new_edit_buyAndsell_card?.tonnage &&
+            servicesState?.new_edit_buyAndsell_card?.location &&
+            servicesState?.new_edit_buyAndsell_card?.contact_no &&
+            servicesState?.new_edit_buyAndsell_card?.truck_body_type &&
+            servicesState?.new_edit_buyAndsell_card?.no_of_tyres &&
+            servicesState?.new_edit_buyAndsell_card?.blog_image_show_ui?.length) {
+
+            dispatch(buyAndsellPostRequest())
+            dispatch(handleResetValidation) 
+
+            const formData = new FormData()
+            formData.append("user_id", servicesState?.user_data?.user_id);
+            formData.append("brand", servicesState?.new_edit_buyAndsell_card?.brand);
+            formData.append("contact_no", servicesState?.new_edit_buyAndsell_card?.contact_no);
+            formData.append("description", servicesState?.new_edit_buyAndsell_card?.description || '');
+            formData.append("price", servicesState?.new_edit_buyAndsell_card?.price);
+            formData.append("kms_driven", servicesState?.new_edit_buyAndsell_card?.kms_driven);
+            formData.append("location", servicesState?.new_edit_buyAndsell_card?.location);
+            formData.append("model", servicesState?.new_edit_buyAndsell_card?.model);
+            formData.append("owner_name", servicesState?.new_edit_buyAndsell_card?.owner_name);
+            formData.append("vehicle_number", servicesState?.new_edit_buyAndsell_card?.vehicle_number_selected);
+            formData.append("truck_body_type", servicesState?.new_edit_buyAndsell_card?.truck_body_type)
+            formData.append("no_of_tyres", servicesState?.new_edit_buyAndsell_card?.no_of_tyres)
+            formData.append("tonnage", servicesState?.new_edit_buyAndsell_card?.tonnage !== '' ? `${servicesState?.new_edit_buyAndsell_card?.tonnage} Ton` : '')
+            
+            if(servicesState?.new_edit_buyAndsell_card?.buy_sell_id){
+                formData.append("buy_sell_id", servicesState?.new_edit_buyAndsell_card?.buy_sell_id);
+            }
+
+            if (servicesState?.new_edit_buyAndsell_card?.blog_image_send_api.length > 0) {
+                for (let i = 0; i < servicesState?.new_edit_buyAndsell_card?.blog_image_send_api.length; i++) {
+                    formData.append(`truck_image${i + 1}`, servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i]);
+                }
+            } 
+
+            try {
+                const { data } = await axiosInstance.post("/truck_buy_sell", formData);
+                if (data?.error_code === 0) {
+                    dispatch(buyAndsellPostResponse())
+                } else {
+                    dispatch(buyAndsellPostFailure(data?.message))
+                }
+            }
+            catch (Err) {
+                dispatch(buyAndsellPostFailure(Err?.message))
+            }
+        } else {
+            dispatch(handleValidation)
+        }
+    } else {
+        dispatch(handleValidation)
+    }
+}
+
+export const handleDeleteBuyAndSell = (servicesState) => async (dispatch) => {
+    dispatch(buyAndsellDeleteRequest())
+    try {
+        const params = {
+            buy_sell_id: servicesState?.buyAndsellDelete_id
+        }
+
+        const { data } = await axiosInstance.post("/remove_truck_buy_sell", params);
+        if (data?.error_code === 0) {
+            dispatch(buyAndsellDeleteResponse())
+        } else {
+            dispatch(buyAndsellDeleteFailure(data?.message))
+        }
+    }
+    catch (Err) {
+        dispatch(buyAndsellDeleteFailure(Err?.message))
+    }
+
+
 }

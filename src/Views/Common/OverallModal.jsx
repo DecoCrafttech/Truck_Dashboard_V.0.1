@@ -1,5 +1,5 @@
 import { handleAddBlog, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
-import { handleBuyAndSellInputOnChange, handleDeleteDriver, handleDeleteLoad, handleDeleteTruck, handlePostOrEditDriver, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
+import { handleBuyAndSellInputOnChange, handleDeleteBuyAndSell, handleDeleteDriver, handleDeleteLoad, handleDeleteTruck, handlePostOrEditBuyAndSell, handlePostOrEditDriver, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
 import ButtonComponent from "Components/Button/Button";
 import BlogCard from "Components/Card/BlogCard";
 import BuyandSellCard from "Components/Card/BuyandSellCard";
@@ -17,7 +17,7 @@ import SpinnerComponent from "Components/Spinner/Spinner";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { updateApplyFilterClickedTrue, updateModalShow } from "Slices/Common_Slice/Common_slice";
-import { ResetLoadFilterData, ResetTruckFilterData } from "Slices/Pages_slice/Services_slice";
+import { ResetbuyAndsellFilterData, ResetLoadFilterData, ResetTruckFilterData } from "Slices/Pages_slice/Services_slice";
 import Icons from "Utils/Icons";
 import JsonData from "Utils/JsonData";
 
@@ -117,16 +117,16 @@ export function OverallModel() {
                     return <div className='col-6 p-1 mt-2'>
                         {
                             servicesState?.modal_type === "Filter" && ipVal?.name === "To" ||
-                                ((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver") && ipVal?.name === "Vehicle Number") ?
+                                ((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ?
                                 <Fragment>
                                     <ReactDropdownSelect
-                                        multi={!((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && servicesState?.modal_from === "Truck" && ipVal?.name === "Vehicle Number") ? true : false}
+                                        multi={!((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ? true : false}
                                         name={ipVal?.name}
                                         isMandatory={ipVal?.isMandatory}
                                         options={ipVal?.options}
                                         labelField="label"
                                         valueField="label"
-                                        create={((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && servicesState?.modal_from === "Truck" && ipVal?.name === "Vehicle Number") ? true : false}
+                                        create={((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ? true : false}
                                         value={ipVal?.value}
                                         change={ipVal?.change}
                                         className='rounded filter-select-dropdown'
@@ -373,6 +373,10 @@ export function OverallModel() {
                 dispatch(ResetTruckFilterData())
                 break;
 
+            case "BuyAndSell":
+                dispatch(ResetbuyAndsellFilterData())
+                break;
+
             default:
                 break;
         }
@@ -390,6 +394,10 @@ export function OverallModel() {
 
             case "Driver":
                 dispatch(handlePostOrEditDriver(servicesState))
+                break;
+
+            case "BuyAndSell":
+                dispatch(handlePostOrEditBuyAndSell(servicesState))
                 break;
 
             default:
@@ -411,6 +419,10 @@ export function OverallModel() {
                 dispatch(handlePostOrEditDriver(servicesState))
                 break;
 
+            case "BuyAndSell":
+                dispatch(handlePostOrEditBuyAndSell(servicesState))
+                break;
+
             default:
                 break;
         }
@@ -428,6 +440,10 @@ export function OverallModel() {
 
             case "Driver":
                 dispatch(handleDeleteDriver(servicesState))
+                break;
+
+            case "BuyAndSell":
+                dispatch(handleDeleteBuyAndSell(servicesState))
                 break;
 
             default:
