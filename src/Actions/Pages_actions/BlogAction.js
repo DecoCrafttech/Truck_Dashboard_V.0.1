@@ -66,7 +66,7 @@ export const handleGetBlog = params => async (dispatch) => {
 
 //                                                             adding blog                                                                     //
 export const handleAddBlog = params => async (dispatch) => {
-    if (params?.language && params?.category && params?.heading1 && params?.heading2 && params?.blog_content && params?.blog_image_send_api) {
+    if (params?.language && params?.category && params?.heading1 && params?.heading2 && params?.blog_content && params?.blog_image_send_api?.length) {
         try {
             const fd = new FormData()
             fd.append("language", params?.language)
@@ -74,8 +74,7 @@ export const handleAddBlog = params => async (dispatch) => {
             fd.append("heading1", params?.heading1)
             fd.append("heading2", params?.heading2)
             fd.append("blog_content", params?.blog_content)
-            fd.append("image_name", params?.blog_image_send_api)
-
+            fd.append("image_name", params?.blog_image_send_api[0]) 
             dispatch(updateAddBlogRequest())
             const { data } = await axiosInstance.post("/blog_post_entry", fd)
 

@@ -13,7 +13,8 @@ const Input = ({
     change,
     multiple,
     value,
-    keyDown
+    keyDown,
+    disabled
 }) => {
 
     return (
@@ -38,6 +39,7 @@ const Input = ({
                 onKeyDown={keyDown}
                 multiple={multiple}
                 value={value}
+                disabled={disabled}
             />
             {
                 inputError ?

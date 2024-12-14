@@ -3,12 +3,11 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import sha256 from 'sha256';
 import { useSelector } from 'react-redux';
-
-import InputGroup from '../Input/InputGroup';
-import ButtonComponent from '../Button/Button';
-import { useCustomNavigate, useDispatch } from '../CustomHooks';
-import SpinnerComponent from '../Spinner/Spinner';
-import { handleEyeFunction, handleLogin, handleLoginCredentials, handleValidation } from '../../Redux/Actions/Common_actions/Common_action';
+import InputGroup from 'Components/Input/InputGroup';
+import ButtonComponent from 'Components/Button/Button';
+import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import SpinnerComponent from 'Components/Spinner/Spinner';
+import { handleEyeFunction, handleLogin, handleLoginCredentials, handleValidation } from 'Actions/Common_actions/Common_action';
 
 const LoginForm = () => {
     const { usernamee, passwordd, eyeOpen, buttonSpinner, validated, token, user_id } = useSelector((state) => state.commonState);
@@ -25,8 +24,10 @@ const LoginForm = () => {
         if (usernamee && passwordd) {
             let username = usernamee
             let password = sha256(passwordd)
-            const basicAuth = "Basic " + btoa(`${username}:${password}`);
-            dispatch(handleLogin(basicAuth))
+            // const basicAuth = "Basic " + btoa(`${username}:${password}`);
+            // dispatch(handleLogin(basicAuth))
+
+            dispatch(handleLogin({ username, password }))
         } else {
             dispatch(handleValidation)
         }
@@ -70,7 +71,7 @@ const LoginForm = () => {
 
             <ButtonComponent
                 type="button"
-                className="btn-md w-100"
+                className="btn-md btn-primary w-100"
                 clickFunction={handleSubmit}
                 title="Login"
                 buttonName={buttonSpinner ?

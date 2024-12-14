@@ -11,7 +11,8 @@ const GoogleLocationInput = ({
     htmlFor,
     labelClassName,
     label,
-    mandatory
+    mandatory,
+    disabled
 }) => {
     const handleFromLocation = (selectedLocation) => {
         if (selectedLocation) {
@@ -44,7 +45,7 @@ const GoogleLocationInput = ({
 
             <Autocomplete
                 name="name"
-                className="form-control location-input bg-transparent py-2"
+                className={`${disabled ? "pe-none opacity-75 text-muted" : ""} form-control location-input bg-transparent py-2`}
                 apiKey={process.env.REACT_APP_API_googleLocationKey}
                 options={{
                     types: ['(regions)'],

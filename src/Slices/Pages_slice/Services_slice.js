@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { updateBlogModalType, updateDeleteBlog, updateEditBlog } from "./Blog_slice";
+import { updateFeedbackModal } from "./Feedback_slice";
 
 const servicesSlice = createSlice(({
     name: "service_slice",
@@ -643,6 +644,10 @@ const servicesSlice = createSlice(({
                 state.modal_from = "Blog"
                 state.modal_type = "Delete"
             })
+            .addCase(updateFeedbackModal, (state, action) => {
+                state.modal_from = action.payload?.from
+                state.modal_type = action.payload?.type
+            })
     }
 }))
 
@@ -657,6 +662,7 @@ export const {
     updateCreateModalDetails,
     initializeFilterDetails,
     updateUserVehicleList,
+    updateModelStatus,
 
     loadGetRequest,
     loadGetResponse,

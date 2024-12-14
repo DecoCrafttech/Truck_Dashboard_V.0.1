@@ -438,17 +438,31 @@ th {
   margin-bottom: 0;
 }
 
-.buyAndSell_model_height{
+.buyAndSell_model_height {
   height: 45rem !important;
   overflow-y: scroll !important;
 }
 
-.blog-main-content-height{
+.blog-main-content-height {
   height: 36rem;
 }
 
-.placeholder-blog-image{
+.placeholder-blog-image {
   height: 12rem;
+}
+
+.feedback-success {
+  border-radius: 4px !important;
+  border: 1px solid #00B087 !important;
+  background: rgba(22, 192, 152, 0.38) !important;
+  color: #008767 !important;
+}
+
+.feedback-danger {
+  border-radius: 4px !important;
+  border: 1px solid #DF0404 !important;
+  background: #FFC5C5 !important;
+  color: #DF0404 !important;
 }
 
 @media (min-width:1500px) {

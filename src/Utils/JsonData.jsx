@@ -16,6 +16,7 @@ import {
     handleTruckInputOnChange
 } from 'Actions/Pages_actions/ServicesActions';
 import { useSelector } from 'react-redux';
+import { handleFeedbackModalOnChange } from 'Actions/Pages_actions/FeedbackAction';
 
 
 
@@ -62,6 +63,15 @@ const readFile = (file) => {
     });
 };
 
+function formatDateForInput(date) {
+    if (!date) return ""; // Return empty if date is null
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+};
+
 const filesizes = (bytes, decimals = 2) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -75,7 +85,7 @@ const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
     const state = store.getState();
-    const { dashboardState, servicesState, blogState, commonState } = useSelector((state) => state);
+    const { dashboardState, servicesState, blogState, commonState, feedbackState } = useSelector((state) => state);
 
     const jsonOnly = {
         sidebarMenus: [
@@ -396,7 +406,6 @@ const JsonData = () => {
                                 makeImagesList = [...myImages, ...makeImagesList];
                             }
                             dispatch(handleBlogInputOnChange({ blog_image_show_ui: makeImagesList, blog_image_send_api: e.target.files }))
-                            // dispatch(handleBuyAndSellInputOnChange({ blog_image_show_ui: makeImagesList, blog_image_send_api: e.target.files }));
                         })
                         .catch((error) => console.error('Error reading files:', error));
 
@@ -1194,6 +1203,94 @@ const JsonData = () => {
                 change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
             }
+        ],
+
+        //
+        feebbackUpdateOrWatchStatus: [
+            {
+                name: "Complaint ID",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: feedbackState?.feedback_modal_data?.complaint_id || '',
+                isMandatory: true,
+                disabled: true
+            },
+            {
+                name: "Customer Name",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: feedbackState?.feedback_modal_data?.customer_name || '',
+                isMandatory: true,
+                disabled: true
+            },
+            {
+                name: "Category",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: feedbackState?.feedback_modal_data?.category || '',
+                isMandatory: true,
+                disabled: true
+            },
+            {
+                name: "Email ID",
+                type: "email",
+                category: "input",
+                placeholder: "",
+                value: feedbackState?.feedback_modal_data?.email_id || '',
+                isMandatory: true,
+                disabled: true
+            },
+            {
+                name: "Phone Number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: feedbackState?.feedback_modal_data?.phone_no || '',
+                isMandatory: true,
+                disabled: true
+            },
+            {
+                name: "complaint_date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: feedbackState?.feedback_modal_data?.complaint_date ? formatDateForInput(feedbackState?.feedback_modal_data?.complaint_date) : '',
+                isMandatory: true,
+                disabled: true
+            },
+            {
+                name: "solved_date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: feedbackState?.feedback_modal_data?.solved_date ? formatDateForInput(feedbackState?.feedback_modal_data?.solved_date) : '',
+                isMandatory: true,
+                disabled: true
+            },
+            {
+                name: "content",
+                type: "date",
+                category: "textbox",
+                placeholder: "",
+                value: feedbackState?.feedback_modal_data?.content || '',
+                isMandatory: true,
+                disabled: true
+            },
+            {
+                name: "Remarks",
+                type: "date",
+                category: "textbox",
+                placeholder: "",
+                value: feedbackState?.feedback_modal_data?.remarks || '',
+                change: (e) => dispatch(handleFeedbackModalOnChange({ ...feedbackState?.feedback_modal_data, remarks: e.target.value })),
+                isMandatory: true,
+                disabled: servicesState?.modal_from === "Feedback" &&
+                    (servicesState?.modal_type === "" || servicesState?.modal_type === "not solved") ? false : true,
+                Err: commonState?.validated && !state?.feedbackState?.remarks ? "Remarks required" : ''
+            },
         ]
     }
 

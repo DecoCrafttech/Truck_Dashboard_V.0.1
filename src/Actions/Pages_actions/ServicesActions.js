@@ -475,8 +475,7 @@ export const handlePostOrEditBuyAndSell = (servicesState) => async (dispatch) =>
             servicesState?.new_edit_buyAndsell_card?.no_of_tyres &&
             servicesState?.new_edit_buyAndsell_card?.blog_image_show_ui?.length) {
 
-            dispatch(buyAndsellPostRequest())
-            dispatch(handleResetValidation) 
+            dispatch(buyAndsellPostRequest()) 
 
             const formData = new FormData()
             formData.append("user_id", servicesState?.user_data?.user_id);

@@ -7,9 +7,8 @@ import SelectBox from 'Components/Input/SelectBox'
 import Pagination from 'Components/Pagination/Pagination'
 import React, { Fragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { updateEntriesCount, updateModalShow } from 'Slices/Common_Slice/Common_slice'
-import Icons from 'Utils/Icons'
-import JsonData from 'Utils/JsonData'
+import { updateEntriesCount } from 'Slices/Common_Slice/Common_slice'
+import Icons from 'Utils/Icons' 
 
 const Blog = () => {
     const { commonState, blogState } = useSelector((state) => state)

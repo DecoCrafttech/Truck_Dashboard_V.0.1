@@ -30,6 +30,7 @@ const ServiesFooter = () => {
                         </div>
                     </div>
                 </div>
+                
                 <div className="col-12 col-md-6 d-inline-flex justify-content-end">
                     <Pagination totalCount={commonState?.totalCount} currentPage={commonState?.currentPage} pageSize={commonState?.pageSize} />
                 </div>

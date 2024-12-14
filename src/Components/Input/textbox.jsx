@@ -11,7 +11,8 @@ const Textbox = ({
     rows,
     cols,
     change,
-    value
+    value,
+    disabled
 }) => {
 
     return (
@@ -25,7 +26,7 @@ const Textbox = ({
                         null
                 }
             </Form.Label>
-            <Form.Control as="textarea" rows={rows} cols={cols} onChange={change} value={value} />
+            <Form.Control as="textarea" rows={rows} cols={cols} onChange={change} value={value} disabled={disabled}/>
         </Form.Group>
     )
 }

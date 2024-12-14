@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
 import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogResponse, updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
-import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellPostFailure, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
+import { getFeedbackFailure, getFeedbackRequest, updateFeedbackModal, updateFeedbackStatusFailure, updateFeedbackStatusResponse } from "Slices/Pages_slice/Feedback_slice";
+import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellPostFailure, buyAndsellPostRequest, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
     name: 'commonSlice',
@@ -381,6 +382,8 @@ const commonSlice = createSlice({
             //driver
             .addCase(driverGetRequest, (state, action) => {
                 state.totalCount = 0
+                state.modalShow = false
+                state.validated = false
             })
             .addCase(driverGetResponse, (state, action) => {
                 state.totalCount = action.payload?.total_no_of_data
@@ -405,6 +408,8 @@ const commonSlice = createSlice({
             //buy and sell
             .addCase(buyAndsellGetRequest, (state, action) => {
                 state.totalCount = 0
+                state.modalShow = false
+                state.validated = false
             })
             .addCase(buyAndsellGetResponse, (state, action) => {
                 state.totalCount = action.payload?.total_no_of_data
@@ -459,6 +464,25 @@ const commonSlice = createSlice({
                 state.modalShow = false
             })
 
+            //feedback
+            .addCase(getFeedbackRequest, (state, action) => {
+                state.totalCount = 0
+            })
+            .addCase(getFeedbackFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "Error"
+            })
+            .addCase(updateFeedbackModal, (state, action) => {
+                state.modalShow = true
+            })
+
+            .addCase(updateFeedbackStatusResponse, (state, action) => {
+                state.modalShow = false
+            })
+            .addCase(updateFeedbackStatusFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "Error"
+            })
     }
 })
 

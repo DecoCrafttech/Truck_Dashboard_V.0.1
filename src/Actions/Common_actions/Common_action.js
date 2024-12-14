@@ -45,9 +45,9 @@ export const handleCurrentMenuInd = (menus, myCurrPath) => dispatch => {
                     return nestedValue
                 }
             })
-            if(path?.length){
+            if (path?.length) {
                 return path
-            } 
+            }
         })
         if (!ifNested.length) {
             const currInd = menus.filter((v) => myCurrPath === v.route_name ? v : null)
@@ -86,21 +86,24 @@ export const handleResetValidation = dispatch => {
 export const handleLogin = (basicAuth) => async (dispatch) => {
     try {
         dispatch(loginRequest())
-        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/login`,
-            {
-                headers: {
-                    Authorization: basicAuth,
-                },
-            }
-        );
+        // const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/login`,
+        //     {
+        //         headers: {
+        //             Authorization: basicAuth,
+        //         },
+        //     }
+        // );
+        console.log(basicAuth)
+
+        const { data } = await axiosInstance.post("/login",{...basicAuth});
 
         if (data.error_code === 200) {
             dispatch(loginResponse(data))
         } else {
-            dispatch(updateToast({message:data?.message,type:"error"}))
+            dispatch(updateToast({ message: data?.message, type: "error" }))
         }
     } catch (err) {
-        dispatch(updateToast({message:err?.message,type:"error"}))
+        dispatch(updateToast({ message: err?.message, type: "error" }))
     }
 }
 
@@ -122,7 +125,7 @@ export const handlerefreshToken = () => async (dispatch) => {
             dispatch(updateRemoveToken())
         }
     } catch (err) {
-        dispatch(updateToast({message:err?.message,type:"error"}))
+        dispatch(updateToast({ message: err?.message, type: "error" }))
     }
 }
 

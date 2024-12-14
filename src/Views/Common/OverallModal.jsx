@@ -1,4 +1,6 @@
+import { handleUpdateModalShow } from "Actions/Common_actions/Common_action";
 import { handleAddBlog, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
+import { handleUpdateFeedbackComplaints } from "Actions/Pages_actions/FeedbackAction";
 import { handleBuyAndSellInputOnChange, handleDeleteBuyAndSell, handleDeleteDriver, handleDeleteLoad, handleDeleteTruck, handlePostOrEditBuyAndSell, handlePostOrEditDriver, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
 import ButtonComponent from "Components/Button/Button";
 import BlogCard from "Components/Card/BlogCard";
@@ -24,7 +26,7 @@ import JsonData from "Utils/JsonData";
 
 
 export function OverallModel() {
-    const { commonState, servicesState, blogState } = useSelector((state) => state);
+    const { commonState, servicesState, blogState, feedbackState } = useSelector((state) => state);
     const dispatch = useDispatch();
     const JsonJsx = JsonData()?.jsxJson;
 
@@ -66,6 +68,9 @@ export function OverallModel() {
                         break;
                 }
                 break;
+
+            case "Feedback":
+                return <h6 className='mb-0'>Feedback</h6>;
 
             default:
                 break;
@@ -111,6 +116,15 @@ export function OverallModel() {
             funBy = JsonJsx?.blogInputs
         }
 
+        if (servicesState?.modal_from === "Feedback") {
+            if (["", "not solved"].includes(servicesState?.modal_type)) {
+                const removeSolvedDate = JsonJsx?.feebbackUpdateOrWatchStatus?.filter((v) => v?.name !== "solved_date")
+                funBy = removeSolvedDate
+            } else {
+                funBy = JsonJsx?.feebbackUpdateOrWatchStatus
+            }
+        }
+
         return funBy?.map((ipVal, iPInd) => {
             switch (ipVal?.category) {
                 case "select":
@@ -130,6 +144,7 @@ export function OverallModel() {
                                         value={ipVal?.value}
                                         change={ipVal?.change}
                                         className='rounded filter-select-dropdown'
+                                        disabled={ipVal?.disabled}
                                     />
                                     <div className='text-danger pt-2 ps-1 fs-15'>
                                         {ipVal?.Err}
@@ -144,6 +159,7 @@ export function OverallModel() {
                                         label={ipVal?.name}
                                         labelClassName="text-secondary mb-0 fs-14"
                                         mandatory={ipVal?.isMandatory}
+                                        disableSelectBox={ipVal?.disabled}
                                     />
                                     <div className='text-danger pt-2 ps-1 fs-15'>
                                         {ipVal?.Err}
@@ -162,6 +178,7 @@ export function OverallModel() {
                             label={ipVal?.name}
                             labelClassName="text-secondary mb-0 fs-14"
                             mandatory={ipVal?.isMandatory}
+                            disabled={ipVal?.disabled}
                         />
                         <div className='text-danger pt-2 ps-1 fs-15'>
                             {ipVal?.Err}
@@ -182,6 +199,7 @@ export function OverallModel() {
                                     htmlFor="file_upload"
                                     multiple={true}
                                     inputError={ipVal?.Err}
+                                    disabled={ipVal?.disabled}
                                 />
 
                                 <div className='border py-2 rounded-2 col-12 text-center'>
@@ -247,6 +265,7 @@ export function OverallModel() {
                                 labelClassName="text-secondary mb-0 fs-14"
                                 mandatory={ipVal?.isMandatory}
                                 inputError={ipVal?.Err}
+                                disabled={ipVal?.disabled}
                             />
                         </div>
 
@@ -262,6 +281,7 @@ export function OverallModel() {
                             labelClassName="text-secondary mb-0 fs-14"
                             mandatory={ipVal?.isMandatory}
                             inputError={ipVal?.Err}
+                            disabled={ipVal?.disabled}
                         />
 
                         <div className='text-danger pt-2 ps-1 fs-15'>
@@ -356,6 +376,11 @@ export function OverallModel() {
                     default:
                         break;
                 }
+            case "Feedback":
+                return dynamicInput()
+
+            default:
+                break;
         }
     }
 
@@ -581,6 +606,7 @@ export function OverallModel() {
                                             "Delete Blog"
                                     }
                                     clickFunction={() => dispatch(handleDeleteBlogApi(blogState?.blog_delete_id))}
+                                    btnDisable={blogState?.blog_modal_spinner}
                                 />
                             </div>
                         </div>
@@ -604,6 +630,36 @@ export function OverallModel() {
                         break;
                 }
 
+            case "Feedback":
+                switch (servicesState?.modal_type) {
+                    case "not solved":
+                    case "":
+                        return <div className='col-12 p-2'>
+                            <ButtonComponent
+                                className="btn-danger w-100 py-2"
+                                buttonName={
+                                    feedbackState?.feedback_modal_spinner ?
+                                        <SpinnerComponent />
+                                        :
+                                        "Update Feedback"
+                                }
+                                clickFunction={() => dispatch(handleUpdateFeedbackComplaints(feedbackState?.feedback_modal_data))}
+                                btnDisable={feedbackState?.feedback_modal_spinner}
+                            />
+                        </div>
+
+                    case "solved":
+                        return <div className='col-12 p-2'>
+                            <ButtonComponent
+                                className="btn-danger w-100 py-2"
+                                buttonName="Close"
+                                clickFunction={() => dispatch(handleUpdateModalShow)}
+                            />
+                        </div>
+
+                    default:
+                        break;
+                }
             default:
                 break;
         }
@@ -613,8 +669,8 @@ export function OverallModel() {
         <ModalComponent
             show={commonState?.modalShow}
             modalSize={
-                servicesState?.modal_type === "Create" ?
-                    servicesState?.is_mobile_num_verified ? "lg" : "md"
+                servicesState?.modal_type === "Create" || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" ?
+                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" ? "lg" : "md"
                     :
                     ["Edit", "Filter"].includes(servicesState?.modal_type) ? "lg" : "md"
             }

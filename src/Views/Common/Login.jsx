@@ -1,7 +1,7 @@
 import React from 'react'
-import LoginForm from '../../components/Form/LoginForm'
-import Img from '../../components/Img/Img'
-import Image from '../../Utils/Image'
+import LoginForm from 'Components/Form/LoginForm'
+import Img from 'Components/Img/Img'
+import Image from 'Utils/Image'
 
 const Login = () => {
   return (
@@ -13,11 +13,11 @@ const Login = () => {
               <div className="card-body p-3 p-md-4 p-xl-5 py-5">
                 <div className="text-center mb-3">
                   <Img
-                    src={Image.companyLogoBlue}
+                    src={Image.CompanyLogo}
                     alt="modelrocket-logo"
-                  />
-                  <p className='text-secondary fw-bold mt-3'>Customer Onboarding</p>
-                  <hr className='text-secondary mt-2 mb-5'/>
+                    width="60%"
+                    height="60%"
+                  /> 
                 </div>
                 <LoginForm />
               </div>
