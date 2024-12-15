@@ -5,13 +5,15 @@ import dashboardSlice from 'Slices/Pages_slice/dashboard_slice';
 import servicesReducer from 'Slices/Pages_slice/Services_slice';
 import blogReducer from 'Slices/Pages_slice/Blog_slice';
 import feedbackSlice from 'Slices/Pages_slice/Feedback_slice';
+import analyticsSlice from 'Slices/Pages_slice/Analytice_slice';
 
 const reducers = combineReducers({
     commonState: commonReducer,
     dashboardState: dashboardSlice,
     servicesState: servicesReducer,
     blogState: blogReducer,
-    feedbackState: feedbackSlice
+    feedbackState: feedbackSlice,
+    analyticsState: analyticsSlice
 })
 
 const store = configureStore({

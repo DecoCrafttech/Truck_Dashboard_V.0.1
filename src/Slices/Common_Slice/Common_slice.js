@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
+import { getIndividualAnalyticsFailure, getIndividualAnalyticsRequest } from "Slices/Pages_slice/Analytice_slice";
 import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogResponse, updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
 import { getFeedbackFailure, getFeedbackRequest, updateFeedbackModal, updateFeedbackStatusFailure, updateFeedbackStatusResponse } from "Slices/Pages_slice/Feedback_slice";
-import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellPostFailure, buyAndsellPostRequest, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
+import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellPostFailure, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
     name: 'commonSlice',
@@ -338,14 +339,14 @@ const commonSlice = createSlice({
             })
             .addCase(LoadPostFailure, (state, action) => {
                 state.Err = action.payload
-                state.Toast_Type = "Error"
+                state.Toast_Type = "error"
             })
             .addCase(LoadDeleteResponse, (state, action) => {
                 state.modalShow = false
             })
             .addCase(LoadDeleteFailure, (state, action) => {
                 state.Err = action.payload
-                state.Toast_Type = "Error"
+                state.Toast_Type = "error"
             })
             .addCase(ResetLoadFilterData, (state, action) => {
                 state.modalShow = false
@@ -370,7 +371,7 @@ const commonSlice = createSlice({
             })
             .addCase(TruckPostFailure, (state, action) => {
                 state.Err = action.payload
-                state.Toast_Type = "Error"
+                state.Toast_Type = "error"
             })
             .addCase(ResetTruckFilterData, (state, action) => {
                 state.modalShow = false
@@ -396,7 +397,7 @@ const commonSlice = createSlice({
             })
             .addCase(DriverPostFailure, (state, action) => {
                 state.Err = action.payload
-                state.Toast_Type = "Error"
+                state.Toast_Type = "error"
             })
             .addCase(ResetDriverFilterData, (state, action) => {
                 state.modalShow = false
@@ -418,14 +419,14 @@ const commonSlice = createSlice({
             })
             .addCase(buyAndsellPostFailure, (state, action) => {
                 state.Err = action.payload
-                state.Toast_Type = "Error"
+                state.Toast_Type = "error"
             })
             .addCase(buyAndsellDeleteResponse, (state, action) => {
                 state.modalShow = false
             })
             .addCase(buyAndsellDeleteFailure, (state, action) => {
                 state.Err = action.payload
-                state.Toast_Type = "Error"
+                state.Toast_Type = "error"
             })
             .addCase(ResetbuyAndsellFilterData, (state, action) => {
                 state.modalShow = false
@@ -470,7 +471,7 @@ const commonSlice = createSlice({
             })
             .addCase(getFeedbackFailure, (state, action) => {
                 state.Err = action.payload
-                state.Toast_Type = "Error"
+                state.Toast_Type = "error"
             })
             .addCase(updateFeedbackModal, (state, action) => {
                 state.modalShow = true
@@ -481,8 +482,21 @@ const commonSlice = createSlice({
             })
             .addCase(updateFeedbackStatusFailure, (state, action) => {
                 state.Err = action.payload
-                state.Toast_Type = "Error"
+                state.Toast_Type = "error"
             })
+
+
+            //analytics
+            .addCase(getIndividualAnalyticsRequest, (state, action) => {
+                state.modalShow = false
+                state.apply_filter = false
+                state.apply_filter_clicked = false
+            })
+            .addCase(getIndividualAnalyticsFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "error"
+            })
+
     }
 })
 

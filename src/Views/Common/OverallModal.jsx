@@ -84,7 +84,14 @@ export function OverallModel() {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
                 funBy = JsonJsx?.loadAddEditInputs
             } else {
-                funBy = JsonJsx?.loadFilterInputs
+                let restrictDate = JsonJsx?.loadFilterInputs?.filter((v) => v?.name !== "From Date" && v?.name !== "To Date")
+
+                if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
+                    funBy = JsonJsx?.loadFilterInputs
+                } else {
+                    console.log(restrictDate)
+                    funBy = restrictDate
+                }
             }
         }
 
@@ -92,7 +99,12 @@ export function OverallModel() {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
                 funBy = JsonJsx?.truckAddEditInputs
             } else {
-                funBy = JsonJsx?.truckFilterInputs
+                let restrictDate = JsonJsx?.truckFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date")
+                if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
+                    funBy = JsonJsx?.truckFilterInputs
+                } else {
+                    funBy = restrictDate
+                }
             }
         }
 
@@ -100,7 +112,12 @@ export function OverallModel() {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
                 funBy = JsonJsx?.driverAddEditInputs
             } else {
-                funBy = JsonJsx?.driverFilterInputs
+                let restrictDate = JsonJsx?.driverFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date")
+                if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
+                    funBy = JsonJsx?.driverFilterInputs
+                } else {
+                    funBy = restrictDate
+                }
             }
         }
 
@@ -108,7 +125,12 @@ export function OverallModel() {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
                 funBy = JsonJsx?.buyAndSellAddEdit
             } else {
-                funBy = JsonJsx?.buyAndSellFilterInputs
+                let restrictDate = JsonJsx?.buyAndSellFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date")
+                if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
+                    funBy = JsonJsx?.buyAndSellFilterInputs
+                } else {
+                    funBy = restrictDate
+                }
             }
         }
 
@@ -266,6 +288,7 @@ export function OverallModel() {
                                 mandatory={ipVal?.isMandatory}
                                 inputError={ipVal?.Err}
                                 disabled={ipVal?.disabled}
+                                max={ipVal?.name==="To Date" || ipVal?.name==="From Date" ? new Date().toISOString().split('T')[0] : null} 
                             />
                         </div>
 

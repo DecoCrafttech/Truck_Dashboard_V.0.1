@@ -362,10 +362,6 @@ th {
 }
 
 .file-image {
-  /* width: 130px;
-  min-width: 130px;
-  height: 85px;
-  min-height: 85px; */
   width: 130px;
   height: 85px;
   background-size: cover;
@@ -465,6 +461,17 @@ th {
   color: #DF0404 !important;
 }
 
+.selcted_analytics_button_active{
+  border-bottom: 2px solid blue !important;
+  border-radius: 0px !important;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.line_graph_glow_height{
+  height: 25rem;
+}
+
 @media (min-width:1500px) {
   .profile-main-data {
     width: 40% !important;
@@ -472,5 +479,94 @@ th {
 
   .post_details_width {
     width: 20% !important;
+  }
+}
+
+
+
+
+/* ----------------------------------------------------
+    404 Area
+---------------------------------------------------- */
+.mb-120 {
+  margin-bottom: 120px !important;
+}
+.mb-30 {
+  margin-bottom: 30px !important;
+}
+.error-img{
+  margin-top: 15rem;
+}
+
+.error-img img{
+  width: 40rem;
+}
+
+.error-404-inner .btn-wrapper {
+  margin-top: 50px;
+}
+
+.error-404-title {
+  font-size: 120px;
+  line-height: 1;
+  margin-bottom: 40px;
+}
+
+/* 404 area 1 */
+.ltn__404-area-1 .error-404-title {
+  font-size: 400px;
+  line-height: 1;
+  color: var(--ltn__secondary-color);
+  margin-bottom: 0;
+}
+
+.ltn__404-area-1 h2 {
+  font-size: 60px;
+}
+
+/* 404 area 2 */
+.ltn__404-area-2 {
+  min-height: 90vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.ltn__404-area-2 .error-404-inner {
+  padding: 150px 0 170px;
+}
+
+@media (max-width: 1199px) {
+  .ltn__404-area-1 .error-404-title {
+    font-size: 200px;
+  }
+
+  .ltn__404-area-1 h2 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 991px) {
+  .ltn__404-area-2 .error-404-inner {
+    padding: 80px 0 110px;
+  }
+
+  .error-404-inner p br {
+    display: none;
+  }
+
+  .error-404-title {
+    font-size: 80px;
+  }
+
+  .ltn__404-area-1 .error-404-title {
+    font-size: 100px;
+  }
+
+  .ltn__404-area-1 h2 {
+    font-size: 20px;
   }
 }

@@ -17,6 +17,7 @@ import {
 } from 'Actions/Pages_actions/ServicesActions';
 import { useSelector } from 'react-redux';
 import { handleFeedbackModalOnChange } from 'Actions/Pages_actions/FeedbackAction';
+import { updateSelectedLineChart } from 'Slices/Pages_slice/Analytice_slice';
 
 
 
@@ -85,7 +86,7 @@ const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
     const state = store.getState();
-    const { dashboardState, servicesState, blogState, commonState, feedbackState } = useSelector((state) => state);
+    const { dashboardState, servicesState, blogState, commonState, feedbackState, analyticsState } = useSelector((state) => state);
 
     const jsonOnly = {
         sidebarMenus: [
@@ -305,10 +306,78 @@ const JsonData = () => {
             { value: 31, label: 'Uttar Pradesh' },
             { value: 32, label: 'Uttarakhand' },
             { value: 33, label: 'West Bengal' }
-        ]
+        ],
     }
 
     const jsxJson = {
+        //                                                              Analytics                                                            //
+        analyticsPieChart: [
+            {
+                type: "Load",
+                value: 0,
+                color: "#0088FE"
+            },
+            {
+                type: "Truck",
+                value: 0,
+                color: "#00C49F"
+            },
+            {
+                type: "Driver",
+                value: 0,
+                color: "#FFBB28"
+            },
+            {
+                type: "Buy and sell",
+                value: 0,
+                color: "#FF8042"
+            },
+            {
+                type: "Insurance",
+                value: 0,
+                color: "red",
+            },
+            {
+                type: "Fastag",
+                value: 0,
+                color: "blue"
+            }
+        ],
+        analyticsButtons: [
+            {
+                className: analyticsState?.selected_Line_chart === "Load" ? "selcted_analytics_button_active" : "",
+                buttonName: "Load",
+                click: () => dispatch(updateSelectedLineChart("Load"))
+            },
+            {
+                className: analyticsState?.selected_Line_chart === "Truck" ? "selcted_analytics_button_active" : "",
+                buttonName: "Truck",
+                click: () => dispatch(updateSelectedLineChart("Truck"))
+            },
+            {
+                className: analyticsState?.selected_Line_chart === "Driver" ? "selcted_analytics_button_active" : "",
+                buttonName: "Driver",
+                click: () => dispatch(updateSelectedLineChart("Driver"))
+            },
+            {
+                className: analyticsState?.selected_Line_chart === "BuyAndSell" ? "selcted_analytics_button_active" : "",
+                buttonName: "BuyAndSell",
+                click: () => dispatch(updateSelectedLineChart("BuyAndSell"))
+            },
+            {
+                className: analyticsState?.selected_Line_chart === "Insurance" ? "selcted_analytics_button_active" : "",
+                buttonName: "Insurance",
+                click: () => dispatch(updateSelectedLineChart("Insurance"))
+            },
+            {
+                className: analyticsState?.selected_Line_chart === "Fastag" ? "selcted_analytics_button_active" : "",
+                buttonName: "Fastag",
+                click: () => dispatch(updateSelectedLineChart("Fastag"))
+            }
+        ],
+
+
+        //                                                              Dashboard menu                                                        //
         dashboardMenus: [
             {
                 icon: Icons.dashboardUserIcon,
@@ -331,6 +400,8 @@ const JsonData = () => {
                 value: dashboardState?.dashboard_data?.new_customer
             }
         ],
+
+
         //                                                              blog                                                                  //
         blogInputs: [
             {
@@ -545,6 +616,24 @@ const JsonData = () => {
         ],
         loadFilterInputs: [
             {
+                name: "From Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.load_filter_card?.from_date || '',
+                change: (e) => dispatch(handleOnchangeLoadFilter({ from_date: e.target.value })),
+                isMandatory: true, 
+            },
+            {
+                name: "To Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.load_filter_card?.to_date || '',
+                change: (e) => dispatch(handleOnchangeLoadFilter({ to_date: e.target.value })),
+                isMandatory: true, 
+            },
+            {
                 name: "From",
                 type: "text",
                 category: "googleLocation",
@@ -749,6 +838,24 @@ const JsonData = () => {
         ],
         truckFilterInputs: [
             {
+                name: "From Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.truck_filter_card?.from_date || '',
+                change: (e) => dispatch(handleOnchangeTruckFilter({ from_date: e.target.value })),
+                isMandatory: true, 
+            },
+            {
+                name: "To Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.truck_filter_card?.to_date || '',
+                change: (e) => dispatch(handleOnchangeTruckFilter({ to_date: e.target.value })),
+                isMandatory: true, 
+            },
+            {
                 name: "From",
                 type: "text",
                 category: "googleLocation",
@@ -811,7 +918,7 @@ const JsonData = () => {
         ],
 
 
-        //                                                                             truck                                                                  //
+        //                                                               driver                                                                //
         driverAddEditInputs: [
             {
                 name: "Vehicle Number",
@@ -908,6 +1015,24 @@ const JsonData = () => {
         ],
         driverFilterInputs: [
             {
+                name: "From Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.driver_filter_card?.from_date || '',
+                change: (e) => dispatch(handleOnchangeDriverFilter({ from_date: e.target.value })),
+                isMandatory: true, 
+            },
+            {
+                name: "To Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.driver_filter_card?.to_date || '',
+                change: (e) => dispatch(handleOnchangeDriverFilter({ to_date: e.target.value })),
+                isMandatory: true, 
+            },
+            {
                 name: "From",
                 type: "text",
                 category: "googleLocation",
@@ -950,7 +1075,7 @@ const JsonData = () => {
         ],
 
 
-        //                                                                             buy and sell                                                          //
+        //                                                             buy and sell                                                            //
         buyAndSellAddEdit: [
             {
                 name: "Model Year",
@@ -1124,6 +1249,24 @@ const JsonData = () => {
         ],
         buyAndSellFilterInputs: [
             {
+                name: "From Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.buyAndsell_filter_card?.from_date || '',
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ from_date: e.target.value })),
+                isMandatory: true, 
+            },
+            {
+                name: "To Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: state?.servicesState?.buyAndsell_filter_card?.to_date || '',
+                change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ to_date: e.target.value })),
+                isMandatory: true, 
+            },
+            {
                 name: "Model Year",
                 type: "select",
                 category: "select",
@@ -1205,7 +1348,8 @@ const JsonData = () => {
             }
         ],
 
-        //
+
+        //                                                             feedback and complaint                                                  //
         feebbackUpdateOrWatchStatus: [
             {
                 name: "Complaint ID",

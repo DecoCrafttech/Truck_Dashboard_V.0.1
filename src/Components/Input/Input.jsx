@@ -14,22 +14,27 @@ const Input = ({
     multiple,
     value,
     keyDown,
-    disabled
+    disabled,
+    max
 }) => {
 
     return (
         <>
-            <Form.Label htmlFor={htmlFor} className={labelClassName}>
-                {label}
+            {label ?
+                <Form.Label htmlFor={htmlFor} className={labelClassName}>
+                    {label}
 
-                {
-                    mandatory ?
-                        <span className='text-danger ms-1'>*</span>
-                        :
-                        null
-                }
+                    {
+                        mandatory ?
+                            <span className='text-danger ms-1'>*</span>
+                            :
+                            null
+                    }
 
-            </Form.Label>
+                </Form.Label>
+                :
+                null
+            }
             <Form.Control
                 type={type}
                 id={htmlFor}
@@ -40,6 +45,7 @@ const Input = ({
                 multiple={multiple}
                 value={value}
                 disabled={disabled}
+                max={max}
             />
             {
                 inputError ?

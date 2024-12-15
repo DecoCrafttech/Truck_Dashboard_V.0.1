@@ -175,6 +175,10 @@ const eyeIcon = <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" v
     <path d="M10.0392 16.8916C12.9808 16.8916 15.7225 15.1583 17.6308 12.1583C18.3808 10.9833 18.3808 9.00831 17.6308 7.83331C15.7225 4.83331 12.9808 3.09998 10.0392 3.09998C7.09751 3.09998 4.35584 4.83331 2.44751 7.83331C1.69751 9.00831 1.69751 10.9833 2.44751 12.1583C4.35584 15.1583 7.09751 16.8916 10.0392 16.8916Z" stroke="#020B2A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
+const downloadIcon = <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <path d="M14.0003 18.6667L8.16699 12.8334L9.80032 11.1417L12.8337 14.1751V4.66675H15.167V14.1751L18.2003 11.1417L19.8337 12.8334L14.0003 18.6667ZM7.00033 23.3334C6.35866 23.3334 5.80955 23.1051 5.35299 22.6486C4.89644 22.192 4.66777 21.6425 4.66699 21.0001V17.5001H7.00033V21.0001H21.0003V17.5001H23.3337V21.0001C23.3337 21.6417 23.1054 22.1912 22.6488 22.6486C22.1923 23.1059 21.6428 23.3342 21.0003 23.3334H7.00033Z" fill="#353297" />
+</svg>
+
 const Icons = {
     dashboardIcon,
     analyticsIcon,
@@ -214,7 +218,8 @@ const Icons = {
     searchCancelIcon,
     backIcon,
     fileUploadIcon,
-    eyeIcon
+    eyeIcon,
+    downloadIcon
 }
 
 export default Icons

@@ -20,6 +20,8 @@ import UserProfileDetails from "Views/Main/Pages/UserProfileDetails";
 import Blog from "Views/Main/Pages/Blog";
 import { OverallModel } from "Views/Common/OverallModal";
 import Login from "Views/Common/Login";
+import Error from "Views/Common/error";
+import { Analytics } from "Views/Main/Pages/Analytics";
 
 
 const App = () => {
@@ -74,7 +76,7 @@ const App = () => {
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<UserProfileDetails />} />
           </Route>
-          <Route path="analytics" element={<p>analytics</p>} />
+          <Route path="analytics" element={<Analytics />} />
           <Route path="services" >
             <Route path="load_details" element={<LoadDetails />} />
             <Route path="truck_details" element={<TruckDetails />} />
@@ -90,7 +92,7 @@ const App = () => {
 
 
         {/* page not found  */}
-        <Route path="*" element={<h1>Not found</h1>} />
+        <Route path="*" element={<Error />} />
       </Routes>
     </HelmetProvider >
     :
