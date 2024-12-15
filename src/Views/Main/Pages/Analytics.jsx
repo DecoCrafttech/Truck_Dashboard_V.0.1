@@ -1,27 +1,44 @@
-import { handlendIndividualSelectedAnalysis } from 'Actions/Pages_actions/AnalyticsAction';
+import { handlendIndividualSelectedAnalysis, handlendOverallAnalysis } from 'Actions/Pages_actions/AnalyticsAction';
 import { handleFilterModal } from 'Actions/Pages_actions/ServicesActions';
 import ButtonComponent from 'Components/Button/Button';
 import { useDispatch } from 'Components/CustomHooks';
 import Input from 'Components/Input/Input';
+import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect';
 import SpinnerComponent from 'Components/Spinner/Spinner';
 import React, { useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { PieChart, Pie, Cell } from "recharts";
-import { updateReportDate } from 'Slices/Pages_slice/Analytice_slice';
+import { updateOverallAnalysis, updateReportDate } from 'Slices/Pages_slice/Analytice_slice';
 import Icons from 'Utils/Icons';
 import JsonData from 'Utils/JsonData';
 
 export const Analytics = () => {
     const { commonState, servicesState, analyticsState } = useSelector((state) => state)
     const { analyticsPieChart, analyticsButtons } = JsonData()?.jsxJson
+    const { overallAnalysis } = JsonData()?.jsonOnly
     const dispatch = useDispatch()
 
     const parentWidth = 400
     const parentHeight = 300
+    //initial render data
+    useEffect(() => {
+        dispatch(handlendOverallAnalysis({ filter_category: analyticsState?.overall_chart }))
+    }, [analyticsState?.overall_chart])
+
+    //overall data
+    useEffect(() => {
+        if (analyticsState?.selected_Line_chart === "Overall" || analyticsState?.clear_filter) {
+            dispatch(handlendOverallAnalysis({
+                from_date: analyticsState?.overall_chart_filter?.from_date || new Date().toISOString().split('T')[0],
+                to_date: analyticsState?.overall_chart_filter?.to_date || new Date().toISOString().split('T')[0]
+            }))
+        }
+    }, [commonState?.apply_filter_clicked, commonState?.apply_filter, analyticsState?.clear_filter])
 
 
+    //individual data
     useEffect(() => {
         if (analyticsState?.selected_Line_chart === "Load") {
             const newParams = {
@@ -160,33 +177,6 @@ export const Analytics = () => {
         }
     }, [commonState?.apply_filter_clicked, commonState?.apply_filter, analyticsState?.selected_Line_chart, analyticsState?.report_getting_date])
 
-    const data = [
-        { time: '00', load: 10, truck: 12, driver: 18, buysell: 12 },
-        { time: '01', load: 50, truck: 41, driver: 1, buysell: 12 },
-        { time: '02', load: 20, truck: 15, driver: 5, buysell: 12 },
-        { time: '03', load: 50, truck: 41, driver: 58, buysell: 12 },
-        { time: '04', load: 20, truck: 15, driver: 2, buysell: 12 },
-        { time: '05', load: 50, truck: 61, driver: 5, buysell: 12 },
-        { time: '06', load: 20, truck: 15, driver: 15, buysell: 8 },
-        { time: '07', load: 50, truck: 61, driver: 25, buysell: 8 },
-        { time: '08', load: 20, truck: 15, driver: 15, buysell: 8 },
-        { time: '09', load: 50, truck: 61, driver: 25, buysell: 8 },
-        { time: '10', load: 20, truck: 15, driver: 30, buysell: 8 },
-        { time: '11', load: 50, truck: 61, driver: 50, buysell: 8 },
-        { time: '12', load: 10, truck: 8, driver: 18, buysell: 12 },
-        { time: '13', load: 50, truck: 41, driver: 1, buysell: 12 },
-        { time: '14', load: 20, truck: 15, driver: 5, buysell: 12 },
-        { time: '15', load: 50, truck: 41, driver: 58, buysell: 12 },
-        { time: '16', load: 20, truck: 15, driver: 2, buysell: 12 },
-        { time: '17', load: 50, truck: 61, driver: 5, buysell: 12 },
-        { time: '18', load: 20, truck: 15, driver: 15, buysell: 12 },
-        { time: '19', load: 50, truck: 61, driver: 25, buysell: 12 },
-        { time: '20', load: 20, truck: 15, driver: 15, buysell: 12 },
-        { time: '21', load: 50, truck: 61, driver: 25, buysell: 12 },
-        { time: '22', load: 20, truck: 15, driver: 30, buysell: 12 },
-        { time: '23', load: 50, truck: 61, driver: 50, buysell: 12 },
-        { time: '24', load: 50, truck: 61, driver: 50, buysell: 12 },
-    ]
 
     const piedata = [
         {
@@ -315,7 +305,7 @@ export const Analytics = () => {
                 </LineChart>
 
             default:
-                return <LineChart data={data}>
+                return <LineChart data={analyticsState?.overall_analytics_data?.daily_requirements}>
                     <CartesianGrid strokeDasharray="3 3" />
 
                     <XAxis
@@ -376,6 +366,9 @@ export const Analytics = () => {
 
     function dynamicFilter(filterType) {
         switch (filterType) {
+            case "Overall":
+                return () => dispatch(handleFilterModal("Overall", "Filter"))
+
             case "Load":
                 return () => dispatch(handleFilterModal("Load", "Filter"))
 
@@ -408,7 +401,7 @@ export const Analytics = () => {
                             <Card.Body className="py-5 d-inline-flex justify-content-center">
                                 <PieChart width={parentWidth} height={parentHeight}>
                                     <Pie
-                                        data={piedata}
+                                        data={analyticsPieChart}
                                         cx={parentWidth / 2}
                                         cy={parentHeight / 2}
                                         innerRadius={parentWidth * 0.2}
@@ -417,7 +410,7 @@ export const Analytics = () => {
                                         cornerRadius={8}
                                         dataKey="value"
                                     >
-                                        {data.map((entry, index) => (
+                                        {analyticsPieChart?.map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={analyticsPieChart[index]?.color} />
                                         ))}
                                     </Pie>
@@ -440,9 +433,30 @@ export const Analytics = () => {
                     {/* line charts  */}
                     <div className="col-xxl-8 p-2">
                         <Card className='border-0'>
-                            <Card.Header className='border-0 py-4 row align-items-center'>
-                                <div className="col-8">
+                            <Card.Header className='border-0 py-2 row align-items-center'>
+                                <div className="col-7">
                                     <h6 className='fw-bold'>Daily Requirements and Tracking Details</h6>
+                                </div>
+                                <div className="col-5 d-flex flex-wrap align-items-center justify-content-end">
+                                    <div className="col-4 p-2">
+                                        <ButtonComponent
+                                            className="bg-white border py-2 w-100"
+                                            buttonName="Filter"
+                                            clickFunction={dynamicFilter("Overall")}
+                                        />
+                                    </div>
+
+                                    <div className="col-4">
+                                        <ReactDropdownSelect
+                                            multi={false}
+                                            options={overallAnalysis}
+                                            labelField="label"
+                                            valueField="label"
+                                            value={analyticsState?.overall_analytics_select_box_data}
+                                            change={(value) => dispatch(updateOverallAnalysis(value))}
+                                            className='rounded filter-select-dropdown'
+                                        />
+                                    </div>
                                 </div>
                             </Card.Header>
                             <Card.Body className='py-5 px-3'>

@@ -17,7 +17,7 @@ import {
 } from 'Actions/Pages_actions/ServicesActions';
 import { useSelector } from 'react-redux';
 import { handleFeedbackModalOnChange } from 'Actions/Pages_actions/FeedbackAction';
-import { updateSelectedLineChart } from 'Slices/Pages_slice/Analytice_slice';
+import { updateOverallChartFilter, updateSelectedLineChart } from 'Slices/Pages_slice/Analytice_slice';
 
 
 
@@ -307,39 +307,62 @@ const JsonData = () => {
             { value: 32, label: 'Uttarakhand' },
             { value: 33, label: 'West Bengal' }
         ],
+        overallAnalysis: [
+            { value: 1, label: 'today' },
+            { value: 2, label: 'last 7 days' },
+            { value: 3, label: 'this month' }
+        ]
     }
 
     const jsxJson = {
         //                                                              Analytics                                                            //
+        analyticsOverallLineChartFilter: [
+            {
+                name: "From Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: analyticsState?.overall_chart_filter?.from_date || '',
+                change: (e) => dispatch(updateOverallChartFilter({ from_date: e.target.value })),
+            },
+            {
+                name: "To Date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: analyticsState?.overall_chart_filter?.to_date || '',
+                change: (e) => dispatch(updateOverallChartFilter({ to_date: e.target.value })),
+            },
+        ],
         analyticsPieChart: [
             {
                 type: "Load",
-                value: 0,
+                value: analyticsState?.overall_analytics_data?.analytics?.length ? analyticsState?.overall_analytics_data?.analytics[1]?.value : 0,
                 color: "#0088FE"
             },
             {
                 type: "Truck",
-                value: 0,
+                value: analyticsState?.overall_analytics_data?.analytics?.length ? analyticsState?.overall_analytics_data?.analytics[0]?.value : 0,
                 color: "#00C49F"
             },
             {
                 type: "Driver",
-                value: 0,
+                value: analyticsState?.overall_analytics_data?.analytics?.length ? analyticsState?.overall_analytics_data?.analytics[2]?.value : 0,
                 color: "#FFBB28"
             },
             {
                 type: "Buy and sell",
-                value: 0,
+                value: analyticsState?.overall_analytics_data?.analytics?.length ? analyticsState?.overall_analytics_data?.analytics[3]?.value : 0,
                 color: "#FF8042"
             },
             {
                 type: "Insurance",
-                value: 0,
+                value: analyticsState?.overall_analytics_data?.analytics?.length ? analyticsState?.overall_analytics_data?.analytics[4]?.value : 0,
                 color: "red",
             },
             {
                 type: "Fastag",
-                value: 0,
+                value: analyticsState?.overall_analytics_data?.analytics?.length ? analyticsState?.overall_analytics_data?.analytics[5]?.value : 0,
                 color: "blue"
             }
         ],
@@ -622,7 +645,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.load_filter_card?.from_date || '',
                 change: (e) => dispatch(handleOnchangeLoadFilter({ from_date: e.target.value })),
-                isMandatory: true, 
+                isMandatory: true,
             },
             {
                 name: "To Date",
@@ -631,7 +654,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.load_filter_card?.to_date || '',
                 change: (e) => dispatch(handleOnchangeLoadFilter({ to_date: e.target.value })),
-                isMandatory: true, 
+                isMandatory: true,
             },
             {
                 name: "From",
@@ -844,7 +867,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.truck_filter_card?.from_date || '',
                 change: (e) => dispatch(handleOnchangeTruckFilter({ from_date: e.target.value })),
-                isMandatory: true, 
+                isMandatory: true,
             },
             {
                 name: "To Date",
@@ -853,7 +876,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.truck_filter_card?.to_date || '',
                 change: (e) => dispatch(handleOnchangeTruckFilter({ to_date: e.target.value })),
-                isMandatory: true, 
+                isMandatory: true,
             },
             {
                 name: "From",
@@ -1021,7 +1044,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.driver_filter_card?.from_date || '',
                 change: (e) => dispatch(handleOnchangeDriverFilter({ from_date: e.target.value })),
-                isMandatory: true, 
+                isMandatory: true,
             },
             {
                 name: "To Date",
@@ -1030,7 +1053,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.driver_filter_card?.to_date || '',
                 change: (e) => dispatch(handleOnchangeDriverFilter({ to_date: e.target.value })),
-                isMandatory: true, 
+                isMandatory: true,
             },
             {
                 name: "From",
@@ -1255,7 +1278,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.buyAndsell_filter_card?.from_date || '',
                 change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ from_date: e.target.value })),
-                isMandatory: true, 
+                isMandatory: true,
             },
             {
                 name: "To Date",
@@ -1264,7 +1287,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.buyAndsell_filter_card?.to_date || '',
                 change: (e) => dispatch(handleOnchangeBuyAndSellFilter({ to_date: e.target.value })),
-                isMandatory: true, 
+                isMandatory: true,
             },
             {
                 name: "Model Year",

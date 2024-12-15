@@ -14,20 +14,25 @@ const ReactDropdownSelect = ({
     className,
     create,
     disabled
-}) => { 
-    
+}) => {
+
     return (
         <Fragment>
-            <h6 className="text-secondary mt-2 mb-0 fs-14">
-                {name}
-                {
-                    isMandatory ?
-                        <span className='text-danger ms-1'>*</span>
-                        :
-                        null
-                }
+            {
+                name ?
+                    <h6 className="text-secondary mt-2 mb-0 fs-14">
+                        {name}
+                        {
+                            isMandatory ?
+                                <span className='text-danger ms-1'>*</span>
+                                :
+                                null
+                        }
 
-            </h6>
+                    </h6>
+                    :
+                    null
+            }
             <Select
                 multi={multi}
                 options={options}

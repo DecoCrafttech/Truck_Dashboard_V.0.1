@@ -19,6 +19,7 @@ import SpinnerComponent from "Components/Spinner/Spinner";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { updateApplyFilterClickedTrue, updateModalShow } from "Slices/Common_Slice/Common_slice";
+import { resetOverallChartFilter } from "Slices/Pages_slice/Analytice_slice";
 import { ResetbuyAndsellFilterData, ResetLoadFilterData, ResetTruckFilterData } from "Slices/Pages_slice/Services_slice";
 import Icons from "Utils/Icons";
 import JsonData from "Utils/JsonData";
@@ -71,6 +72,9 @@ export function OverallModel() {
 
             case "Feedback":
                 return <h6 className='mb-0'>Feedback</h6>;
+
+            case "Overall":
+                return <h6 className='mb-0'>Analytics Overall Fliter</h6>;
 
             default:
                 break;
@@ -145,6 +149,10 @@ export function OverallModel() {
             } else {
                 funBy = JsonJsx?.feebbackUpdateOrWatchStatus
             }
+        }
+
+        if (servicesState?.modal_from === "Overall") {
+            funBy = JsonJsx?.analyticsOverallLineChartFilter
         }
 
         return funBy?.map((ipVal, iPInd) => {
@@ -277,7 +285,7 @@ export function OverallModel() {
                             </div>
                         </Fragment>
                         :
-                        <div className="col-6 p-1 mt-2" key={iPInd}>
+                        <div className={servicesState?.modal_from === "Overall" ? "col-12 p-1 mt-2" : "col-6 p-1 mt-2"} key={iPInd}>
                             <Input
                                 type={ipVal?.type}
                                 value={ipVal?.value}
@@ -288,7 +296,7 @@ export function OverallModel() {
                                 mandatory={ipVal?.isMandatory}
                                 inputError={ipVal?.Err}
                                 disabled={ipVal?.disabled}
-                                max={ipVal?.name==="To Date" || ipVal?.name==="From Date" ? new Date().toISOString().split('T')[0] : null} 
+                                max={ipVal?.name === "To Date" || ipVal?.name === "From Date" ? new Date().toISOString().split('T')[0] : null}
                             />
                         </div>
 
@@ -325,6 +333,7 @@ export function OverallModel() {
             case "Driver":
             case "BuyAndSell":
             case "Blog":
+            case "Overall":
                 switch (servicesState?.modal_type) {
                     case "Create":
                     case "Filter":
@@ -425,6 +434,10 @@ export function OverallModel() {
                 dispatch(ResetbuyAndsellFilterData())
                 break;
 
+            case "Overall":
+                dispatch(resetOverallChartFilter())
+                break;
+
             default:
                 break;
         }
@@ -505,6 +518,7 @@ export function OverallModel() {
             case "Truck":
             case "Driver":
             case "BuyAndSell":
+            case "Overall":
                 switch (servicesState?.modal_type) {
                     case "Edit":
                         return <div className='col-12 p-2 px-3'>
@@ -692,8 +706,8 @@ export function OverallModel() {
         <ModalComponent
             show={commonState?.modalShow}
             modalSize={
-                servicesState?.modal_type === "Create" || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" ?
-                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" ? "lg" : "md"
+                servicesState?.modal_type === "Create" || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" || servicesState?.modal_from === "Overall" ?
+                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" && servicesState?.modal_from !== "Overall" ? "lg" : "md"
                     :
                     ["Edit", "Filter"].includes(servicesState?.modal_type) ? "lg" : "md"
             }

@@ -24,10 +24,8 @@ const LoginForm = () => {
         if (usernamee && passwordd) {
             let username = usernamee
             let password = sha256(passwordd)
-            // const basicAuth = "Basic " + btoa(`${username}:${password}`);
-            // dispatch(handleLogin(basicAuth))
-
-            dispatch(handleLogin({ username, password }))
+            const basicAuth = "Basic " + btoa(`${username}:${passwordd}`);
+            dispatch(handleLogin(basicAuth)) 
         } else {
             dispatch(handleValidation)
         }

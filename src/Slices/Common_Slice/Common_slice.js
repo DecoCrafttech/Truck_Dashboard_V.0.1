@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
-import { getIndividualAnalyticsFailure, getIndividualAnalyticsRequest } from "Slices/Pages_slice/Analytice_slice";
+import { getIndividualAnalyticsFailure, getIndividualAnalyticsRequest, getOverallAnalyticsRequest, resetOverallChartFilter } from "Slices/Pages_slice/Analytice_slice";
 import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogResponse, updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
 import { getFeedbackFailure, getFeedbackRequest, updateFeedbackModal, updateFeedbackStatusFailure, updateFeedbackStatusResponse } from "Slices/Pages_slice/Feedback_slice";
@@ -487,16 +487,25 @@ const commonSlice = createSlice({
 
 
             //analytics
+            .addCase(getOverallAnalyticsRequest, (state, action) => {
+                state.modalShow = false
+                state.apply_filter = false
+                state.apply_filter_clicked = false
+            })
             .addCase(getIndividualAnalyticsRequest, (state, action) => {
                 state.modalShow = false
                 state.apply_filter = false
                 state.apply_filter_clicked = false
             })
+            .addCase(resetOverallChartFilter, (state, action) => {
+                state.modalShow = false
+                state.apply_filter_clicked = false
+                state.apply_filter = false
+            })
             .addCase(getIndividualAnalyticsFailure, (state, action) => {
                 state.Err = action.payload
                 state.Toast_Type = "error"
             })
-
     }
 })
 
