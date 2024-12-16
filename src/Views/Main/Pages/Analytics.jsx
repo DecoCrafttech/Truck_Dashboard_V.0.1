@@ -52,15 +52,16 @@ export const Analytics = () => {
             }
 
             const filteredToLoc = servicesState?.load_filter_card?.to_location?.map((v) => v?.label)
-            newParams.from_date = analyticsState?.report_getting_date ?
-                analyticsState?.report_getting_date
+            newParams.from_date = servicesState?.load_filter_card?.from_date ?
+                servicesState?.load_filter_card?.from_date
                 :
-                servicesState?.load_filter_card?.from_date || new Date().toISOString().split('T')[0]
+                analyticsState?.report_getting_date
 
-            newParams.to_date = analyticsState?.report_getting_date ?
-                analyticsState?.report_getting_date
+            newParams.to_date = servicesState?.load_filter_card?.to_date ?
+                servicesState?.load_filter_card?.to_date
                 :
-                servicesState?.load_filter_card?.to_date || new Date().toISOString().split('T')[0]
+                analyticsState?.report_getting_date
+
 
             newParams.from_location = servicesState?.load_filter_card?.from_location || ''
             newParams.to_location = servicesState?.load_filter_card?.to_location ? filteredToLoc : [] || []
@@ -176,34 +177,6 @@ export const Analytics = () => {
 
         }
     }, [commonState?.apply_filter_clicked, commonState?.apply_filter, analyticsState?.selected_Line_chart, analyticsState?.report_getting_date])
-
-
-    const piedata = [
-        {
-            name: "Load",
-            value: 10
-        },
-        {
-            name: "Buy and sell",
-            value: 20
-        },
-        {
-            name: "Truck",
-            value: 30
-        },
-        {
-            name: "Insurance",
-            value: 20
-        },
-        {
-            name: "Driver",
-            value: 30
-        },
-        {
-            name: "Fast tag",
-            value: 2
-        }
-    ]
 
     function dynamicLineCharts(chartType) {
         switch (chartType) {

@@ -633,7 +633,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.new_edit_load_card?.description || '',
                 change: (e) => dispatch(handleLoadInputOnChange({ description: e.target.value })),
-                isMandatory: true,
+                isMandatory: false,
                 // Err: commonState?.validated && !state?.servicesState?.new_edit_load_card?.description ? "Description required" : ''
             }
         ],
@@ -855,7 +855,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.new_edit_truck_card?.description || '',
                 change: (e) => dispatch(handleTruckInputOnChange({ description: e.target.value })),
-                isMandatory: true,
+                isMandatory: false,
                 // Err:commonState?.validated && !state?.servicesState?.new_edit_truck_card?.description ? "Description required" : ''
             }
         ],
@@ -1033,7 +1033,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.new_edit_driver_card?.description || '',
                 change: (e) => dispatch(handleDriverInputOnChange({ description: e.target.value })),
-                isMandatory: true
+                isMandatory: false
             }
         ],
         driverFilterInputs: [
@@ -1267,7 +1267,7 @@ const JsonData = () => {
                 placeholder: "",
                 value: state?.servicesState?.new_edit_buyAndsell_card?.description || '',
                 change: (e) => dispatch(handleBuyAndSellInputOnChange({ description: e.target.value })),
-                isMandatory: true
+                isMandatory: false
             }
         ],
         buyAndSellFilterInputs: [

@@ -18,14 +18,13 @@ import Crm from "Views/Main/Pages/Crm";
 import Feedback from "Views/Main/Pages/Feedback";
 import UserProfileDetails from "Views/Main/Pages/UserProfileDetails";
 import Blog from "Views/Main/Pages/Blog";
-import { OverallModel } from "Views/Common/OverallModal";
 import Login from "Views/Common/Login";
 import Error from "Views/Common/error";
 import { Analytics } from "Views/Main/Pages/Analytics";
 
 
 const App = () => {
-  const { isOnline, Err, Toast_Type } = useSelector((state) => state.commonState);
+  const { token, user_id, isOnline, Err, Toast_Type } = useSelector((state) => state.commonState);
   const sizer = useSize();
   const dispatch = useDispatch();
   const navigate = useCustomNavigate();
@@ -49,12 +48,6 @@ const App = () => {
       return
     }
   }, [Toast_Type, Err, dispatch])
-
-  // useEffect(() => {
-  //   if (!token || !user_id) {
-  //     navigate("/")
-  //   }
-  // }, [token, user_id])
 
   window.addEventListener('online', () => {
     dispatch(handleOnlineOffilne(true))

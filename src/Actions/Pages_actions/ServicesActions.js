@@ -299,7 +299,8 @@ export const handlePostOrEditTruck = (servicesState) => async (dispatch) => {
                     to: servicesState?.new_edit_truck_card?.to_location,
                     truck_name: servicesState?.new_edit_truck_card?.truck_brand_name,
                     user_id: servicesState?.user_data?.user_id,
-                    truck_id: servicesState?.new_edit_truck_card?.truck_id
+                    truck_id: servicesState?.new_edit_truck_card?.truck_id,
+                    description: servicesState?.new_edit_truck_card?.description || '',
                 }
 
                 const { data } = await axiosInstance.post("/truck_entry", params);
@@ -388,6 +389,7 @@ export const handlePostOrEditDriver = (servicesState) => async (dispatch) => {
                     from: servicesState?.new_edit_driver_card?.from_location,
                     to: servicesState?.new_edit_driver_card?.to_location,
                     truck_name: '',
+                    description: servicesState?.new_edit_driver_card?.description || '',
                     user_id: servicesState?.user_data?.user_id,
                     driver_id: servicesState?.new_edit_driver_card?.driver_id
                 }
@@ -475,7 +477,7 @@ export const handlePostOrEditBuyAndSell = (servicesState) => async (dispatch) =>
             servicesState?.new_edit_buyAndsell_card?.no_of_tyres &&
             servicesState?.new_edit_buyAndsell_card?.blog_image_show_ui?.length) {
 
-            dispatch(buyAndsellPostRequest()) 
+            dispatch(buyAndsellPostRequest())
 
             const formData = new FormData()
             formData.append("user_id", servicesState?.user_data?.user_id);
@@ -491,8 +493,8 @@ export const handlePostOrEditBuyAndSell = (servicesState) => async (dispatch) =>
             formData.append("truck_body_type", servicesState?.new_edit_buyAndsell_card?.truck_body_type)
             formData.append("no_of_tyres", servicesState?.new_edit_buyAndsell_card?.no_of_tyres)
             formData.append("tonnage", servicesState?.new_edit_buyAndsell_card?.tonnage !== '' ? `${servicesState?.new_edit_buyAndsell_card?.tonnage} Ton` : '')
-            
-            if(servicesState?.new_edit_buyAndsell_card?.buy_sell_id){
+
+            if (servicesState?.new_edit_buyAndsell_card?.buy_sell_id) {
                 formData.append("buy_sell_id", servicesState?.new_edit_buyAndsell_card?.buy_sell_id);
             }
 
@@ -500,7 +502,7 @@ export const handlePostOrEditBuyAndSell = (servicesState) => async (dispatch) =>
                 for (let i = 0; i < servicesState?.new_edit_buyAndsell_card?.blog_image_send_api.length; i++) {
                     formData.append(`truck_image${i + 1}`, servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i]);
                 }
-            } 
+            }
 
             try {
                 const { data } = await axiosInstance.post("/truck_buy_sell", formData);

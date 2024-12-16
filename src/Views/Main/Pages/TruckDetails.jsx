@@ -28,6 +28,7 @@ const TruckDetails = () => {
         tone: "",
         truck_body_type: "",
         no_of_tyres: "",
+        description: "",
         page_no: commonState?.currentPage || 1,
         search_val: commonState?.search_clicked ? commonState?.search_value || "" : "",
         data_limit: commonState?.pageSize || 10

@@ -26,6 +26,7 @@ const BuySellDetails = () => {
         price: "",
         location: "",
         tonnage: "",
+        description: "",
         page_no: commonState?.currentPage || 1,
         search_val: commonState?.search_clicked ? commonState?.search_value || "" : "",
         data_limit: commonState?.pageSize || 10

@@ -40,7 +40,7 @@ const analyticsSlice = createSlice({
         updateReportDate(state, action) {
             return {
                 ...state,
-                report_getting_date: action.payload
+                report_getting_date: action.payload,
             }
         },
         updateOverallAnalysis(state, action) {

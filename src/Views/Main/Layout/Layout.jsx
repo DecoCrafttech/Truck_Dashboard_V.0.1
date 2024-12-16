@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
 import { Outlet } from 'react-router-dom';
 
-import { CustomUseLocationHook, useDispatch } from 'Components/CustomHooks';
+import { CustomUseLocationHook, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import { handleCurrentMenuInd, handleUpdateCanvasShow } from 'Actions/Common_actions/Common_action';
 import Header from 'Components/Panel_compnent/Header';
 import Sidebar from 'Components/Panel_compnent/Sidebar';
@@ -13,6 +13,7 @@ import { OverallModel } from 'Views/Common/OverallModal';
 const Layout = () => {
     const state = store.getState()
     const dispatch = useDispatch();
+    const navigate = useCustomNavigate();
     const location = CustomUseLocationHook();
     const handleCanvasOpenOrClose = () => dispatch(handleUpdateCanvasShow)
     const menuOptions = JsonData()?.jsonOnly?.sidebarMenus;
@@ -24,6 +25,13 @@ const Layout = () => {
 
         dispatch(handleCurrentMenuInd(menuOptions, location[location.length - 1]))
     }, [state?.commonState?.innerWidth])
+
+    useEffect(() => {
+        if (!state?.commonState?.user_id) {
+            navigate("/")
+        }
+    }, [state?.commonState?.user_id])
+
 
     return (
         <Fragment>

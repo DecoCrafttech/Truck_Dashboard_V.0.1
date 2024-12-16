@@ -83,19 +83,16 @@ export const handleResetValidation = dispatch => {
 }
 
 // login api 
-export const handleLogin = (basicAuth) => async (dispatch) => {
+export const handleLogin = (basicAuth, navigate) => async (dispatch) => {
     try {
         dispatch(loginRequest())
-        const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/login`,
-            {
-                headers: {
-                    Authorization: basicAuth,
-                },
-            }
-        );  
+        const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/dashboard_login`, {}, {
+            auth: basicAuth,
+        });
 
-        if (data.error_code === 200) {
+        if (data.error_code === 0) {
             dispatch(loginResponse(data))
+            navigate("/dashboard/home")
         } else {
             dispatch(updateToast({ message: data?.message, type: "error" }))
         }

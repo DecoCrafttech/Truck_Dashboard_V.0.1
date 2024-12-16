@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { buyAndsellDeleteResponse, buyAndsellPostResponse, DriverDeleteResponse, DriverPostResponse, LoadDeleteResponse, LoadPostResponse, TruckDeleteResponse, TruckPostResponse } from "Slices/Pages_slice/Services_slice";
 
 const dashboardSlice = createSlice({
     name: "dashboard_slice",
@@ -13,7 +14,9 @@ const dashboardSlice = createSlice({
         add_new_vehicle: '',
         add_vehicle_glow: false,
 
-        delete_vehicle_number: null
+        delete_vehicle_number: null,
+
+        recall_dashboard_again: false
     },
     reducers: {
         //get all profile
@@ -123,6 +126,40 @@ const dashboardSlice = createSlice({
                 delete_vehicle_number: null
             }
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            //load
+            .addCase(LoadPostResponse, (state, action) => {
+                state.recall_dashboard_again = !state.recall_dashboard_again
+            })
+            .addCase(LoadDeleteResponse, (state, action) => {
+                state.recall_dashboard_again = !state.recall_dashboard_again
+            })
+
+            //truck
+            .addCase(TruckPostResponse, (state, action) => {
+                state.recall_dashboard_again = !state.recall_dashboard_again
+            })
+            .addCase(TruckDeleteResponse, (state, action) => {
+                state.recall_dashboard_again = !state.recall_dashboard_again
+            })
+
+            //driver
+            .addCase(DriverPostResponse, (state, action) => {
+                state.recall_dashboard_again = !state.recall_dashboard_again
+            })
+            .addCase(DriverDeleteResponse, (state, action) => {
+                state.recall_dashboard_again = !state.recall_dashboard_again
+            })
+
+            //buy and sell
+            .addCase(buyAndsellPostResponse, (state, action) => {
+                state.recall_dashboard_again = !state.recall_dashboard_again
+            })
+            .addCase(buyAndsellDeleteResponse, (state, action) => {
+                state.recall_dashboard_again = !state.recall_dashboard_again
+            })
     }
 })
 

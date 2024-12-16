@@ -23,19 +23,19 @@ const LoginForm = () => {
     const handleSubmit = () => {
         if (usernamee && passwordd) {
             let username = usernamee
-            let password = sha256(passwordd)
-            const basicAuth = "Basic " + btoa(`${username}:${passwordd}`);
-            dispatch(handleLogin(basicAuth)) 
+            let password = passwordd
+            const basicAuth = { username, password };
+            dispatch(handleLogin(basicAuth,navigate))
         } else {
             dispatch(handleValidation)
         }
     };
 
-    useEffect(() => {
-        if (token && user_id) {
-            navigate("/home")
-        }
-    }, [token, user_id, dispatch])
+    // useEffect(() => {
+    //     if (user_id) {
+    //         navigate("/dashboard/home")
+    //     }
+    // }, [token, user_id, dispatch])
 
 
     return (
