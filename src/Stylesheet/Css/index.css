@@ -461,14 +461,14 @@ th {
   color: #DF0404 !important;
 }
 
-.selcted_analytics_button_active{
+.selcted_analytics_button_active {
   border-bottom: 2px solid blue !important;
   border-radius: 0px !important;
   font-size: 18px;
   font-weight: 700;
 }
 
-.line_graph_glow_height{
+.line_graph_glow_height {
   height: 25rem;
 }
 
@@ -491,14 +491,16 @@ th {
 .mb-120 {
   margin-bottom: 120px !important;
 }
+
 .mb-30 {
   margin-bottom: 30px !important;
 }
-.error-img{
+
+.error-img {
   margin-top: 15rem;
 }
 
-.error-img img{
+.error-img img {
   width: 40rem;
 }
 
@@ -537,6 +539,11 @@ th {
 
 .ltn__404-area-2 .error-404-inner {
   padding: 150px 0 170px;
+}
+
+
+.recharts-layer.recharts-pie-sector path:focus {
+  outline: none !important;
 }
 
 @media (max-width: 1199px) {

@@ -359,6 +359,18 @@ export const Analytics = () => {
         }
     }
 
+    const CustomTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+            console.log(payload)
+            return (
+                <div className="custom-tooltip" style={{ backgroundColor: "#fff", padding: "10px", border: "1px solid #ccc" }}>
+                    <p className="label">{`${payload[0]?.payload?.type} : ${payload[0]?.payload?.value}`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <div className='w-100 h-100'>
             <div className="container-fluid h-100 overflowY">
@@ -382,11 +394,14 @@ export const Analytics = () => {
                                         paddingAngle={3}
                                         cornerRadius={8}
                                         dataKey="value"
+                                        nameKey="name" // This key will be used for tooltip labels
                                     >
                                         {analyticsPieChart?.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={analyticsPieChart[index]?.color} />
+                                            <Cell key={`cell-${index}`} fill={entry.color} />
                                         ))}
                                     </Pie>
+                                    {/* Use Custom Tooltip */}
+                                    <Tooltip content={<CustomTooltip />} />
                                 </PieChart>
                             </Card.Body>
                             <div className="row col-12 py-3">
