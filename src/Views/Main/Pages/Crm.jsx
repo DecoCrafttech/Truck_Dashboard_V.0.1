@@ -4,8 +4,8 @@ import JsonData from 'Utils/JsonData';
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter';
 import ButtonComponent from 'Components/Button/Button';
 import { useDispatch } from 'Components/CustomHooks';
-import { updateCrmViewModal, updateSelectedButton } from 'Slices/Pages_slice/Crm_slice';
-import { handleGetCrmDashboard } from 'Actions/Pages_actions/CrmActions';
+import { updateSelectedButton } from 'Slices/Pages_slice/Crm_slice';
+import { handleGetCrmDashboard, handleGetCrmModal } from 'Actions/Pages_actions/CrmActions';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import Img from 'Components/Img/Img';
 import Icons from 'Utils/Icons';
@@ -90,8 +90,8 @@ const Crm = () => {
                                                 />
                                             </td>
                                             <td>{crmVal?.CRM_value}</td>
-                                            <td>{crmVal?.entry_date}</td>
-                                            <td>{crmVal?.message}</td>
+                                            <td className='fs-14'>{crmVal?.CRM_entry_date?.slice(0, 25)}</td>
+                                            <td>{crmVal?.CRM_message}</td>
                                             <td>{crmVal?.first_name}</td>
                                             <td>{crmVal?.category}</td>
                                             <td>{crmVal?.phone_number}</td>
@@ -102,7 +102,7 @@ const Crm = () => {
                                             <td>{crmVal?.buy_and_sell_post}</td>
                                             <td>{crmVal?.driver_post}</td>
                                             <td className='text-center cursor-pointer'>
-                                                <span className='w-100 text-center' onClick={() => dispatch(updateCrmViewModal(crmVal?.user_id))}>
+                                                <span className='w-100 text-center' onClick={() => dispatch(handleGetCrmModal({ user_id: crmVal?.user_id }))}>
                                                     {Icons.eyeIcon}
                                                 </span>
                                             </td>

@@ -32,7 +32,7 @@ export const handleGetCrmModal = (params) => async (dispatch) => {
     try {
         dispatch(getCrmModalRequest())
 
-        const { data } = await axiosInstance.post("/get_crm_dashboard", params)
+        const { data } = await axiosInstance.post("/get_crm_user_history", params)
         if (data?.error_code === 0) {
             dispatch(getCrmModalResponse(data?.data))
         } else {

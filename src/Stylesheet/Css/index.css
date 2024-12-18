@@ -439,6 +439,11 @@ th {
   overflow-y: scroll !important;
 }
 
+.crm_model_no_data_height{
+  height: 35rem !important;
+  overflow-y: hidden !important;
+}
+
 .blog-main-content-height {
   height: 36rem;
 }

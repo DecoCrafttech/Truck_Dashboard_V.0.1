@@ -28,7 +28,7 @@ import JsonData from "Utils/JsonData";
 
 
 export function OverallModel() {
-    const { commonState, servicesState, blogState, feedbackState } = useSelector((state) => state);
+    const { commonState, servicesState, blogState, feedbackState, crmState } = useSelector((state) => state);
     const dispatch = useDispatch();
     const JsonJsx = JsonData()?.jsxJson;
 
@@ -167,7 +167,7 @@ export function OverallModel() {
                             servicesState?.modal_type === "Filter" && ipVal?.name === "To" ||
                                 ((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") &&
                                     (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ||
-                                    ipVal?.name === "State list" ?
+                                ipVal?.name === "State list" ?
                                 <Fragment>
                                     <ReactDropdownSelect
                                         multi={!((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ? true : false}
@@ -418,8 +418,8 @@ export function OverallModel() {
                 return dynamicInput()
 
             case "CRM":
-                return <div className="w-100 d-flex flex-wrap placeholder-glow h-100 overflow-hidden">
-                    <CrmCard placeholder={true} />
+                return <div className="w-100 h-100 d-flex flex-wrap placeholder-glow h-100 overflow-hidden">
+                    <CrmCard placeholder={crmState?.crm_modal_glow} crmData={crmState?.crm_view_data} />
                 </div>
 
             default:

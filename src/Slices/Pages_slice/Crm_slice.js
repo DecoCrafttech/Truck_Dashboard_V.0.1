@@ -6,7 +6,6 @@ const crmSlice = createSlice({
     initialState: {
         slected_button: "after_sale",
         crm_modal_glow: false,
-        crm_user_id: null,
         crm_view_data: [],
 
         initalGlow: false,
@@ -19,13 +18,6 @@ const crmSlice = createSlice({
                 slected_button: action.payload
             }
         },
-        updateCrmViewModal(state, action) {
-            return {
-                ...state,
-                crm_user_id: action.payload
-            }
-        },
-
 
         //                                                     Get CRM Dashboard                                                       //
         getCrmDashboardRequest(state, action) {
@@ -62,7 +54,7 @@ const crmSlice = createSlice({
         getCrmModalResponse(state, action) {
             return {
                 ...state,
-                crm_view_data: action.payload?.profile,
+                crm_view_data: action.payload,
                 crm_modal_glow: false
             }
         },
@@ -78,8 +70,7 @@ const crmSlice = createSlice({
 const { actions, reducer } = crmSlice;
 
 export const {
-    updateSelectedButton,
-    updateCrmViewModal,
+    updateSelectedButton, 
 
     getCrmDashboardRequest,
     getCrmDashboardResponse,
