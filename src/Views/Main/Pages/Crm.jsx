@@ -4,10 +4,11 @@ import JsonData from 'Utils/JsonData';
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter';
 import ButtonComponent from 'Components/Button/Button';
 import { useDispatch } from 'Components/CustomHooks';
-import { updateSelectedButton } from 'Slices/Pages_slice/Crm_slice';
+import { updateCrmViewModal, updateSelectedButton } from 'Slices/Pages_slice/Crm_slice';
 import { handleGetCrmDashboard } from 'Actions/Pages_actions/CrmActions';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import Img from 'Components/Img/Img';
+import Icons from 'Utils/Icons';
 
 const Crm = () => {
     const { commonState, crmState } = useSelector((state) => state);
@@ -72,6 +73,7 @@ const Crm = () => {
                                     <th className="table-head">Driver post</th>
                                     <th className="table-head">Buy and sell post</th>
                                     <th className="table-head">Feedback</th>
+                                    <th className="table-head">View</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,6 +101,11 @@ const Crm = () => {
                                             <td>{crmVal?.driver_post}</td>
                                             <td>{crmVal?.buy_and_sell_post}</td>
                                             <td>{crmVal?.driver_post}</td>
+                                            <td className='text-center cursor-pointer'>
+                                                <span className='w-100 text-center' onClick={() => dispatch(updateCrmViewModal(crmVal?.user_id))}>
+                                                    {Icons.eyeIcon}
+                                                </span>
+                                            </td>
                                         </tr>
                                     ))
                                 }

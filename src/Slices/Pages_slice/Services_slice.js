@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { updateBlogModalType, updateDeleteBlog, updateEditBlog } from "./Blog_slice";
 import { updateFeedbackModal } from "./Feedback_slice";
+import { updateCrmViewModal } from "./Crm_slice";
+import { updateSelectedLineChart } from "./Analytice_slice";
 
 const servicesSlice = createSlice(({
     name: "service_slice",
@@ -117,12 +119,12 @@ const servicesSlice = createSlice(({
                     let selectedVehicleBuyAndSell = []
                     if (action.payload?.from === "BuyAndSell" && action.payload?.type === "Edit") {
                         selectedVehicleBuyAndSell = state?.user_vehicle_list?.filter((v) => v.label === action.payload?.data?.vehicle_number)
-                    } 
+                    }
 
                     obj.new_edit_buyAndsell_card = {
                         ...state?.new_edit_buyAndsell_card,
                         ...action.payload?.data,
-                        
+
                         vehicle_number_selected: selectedVehicleBuyAndSell,
                     }
                     return obj
@@ -647,6 +649,21 @@ const servicesSlice = createSlice(({
             .addCase(updateFeedbackModal, (state, action) => {
                 state.modal_from = action.payload?.from
                 state.modal_type = action.payload?.type
+            })
+
+            //Analysis
+            .addCase(updateSelectedLineChart, (state, action) => {
+                state.load_filter_card = {}
+                state.truck_filter_card = {}
+                state.driver_filter_card = {}
+                state.buyAndsell_filter_card = {}
+            })
+
+
+            //crm 
+            .addCase(updateCrmViewModal, (state, action) => {
+                state.modal_from = "CRM"
+                state.modal_type = "Create"
             })
     }
 }))

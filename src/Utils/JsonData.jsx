@@ -1320,6 +1320,16 @@ const JsonData = () => {
                 isMandatory: true
             },
             {
+                name: "State list",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                options: jsonOnly.states,
+                value: state?.servicesState?.buyAndsell_filter_card?.statelist || [],
+                change: (value) => dispatch(handleOnchangeBuyAndSellFilter({ statelist: value })),
+                isMandatory: true
+            },
+            {
                 name: "Kilometers driven",
                 type: "select",
                 category: "select",

@@ -69,7 +69,6 @@ export const Analytics = () => {
             newParams.no_of_tyres = servicesState?.load_filter_card?.no_of_tyres || ''
             newParams.tone = servicesState?.load_filter_card?.tone || ''
             newParams.material = servicesState?.load_filter_card?.material || ''
-
             dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_load_analytics", params: newParams, from: "Load" }))
         }
         else if (analyticsState?.selected_Line_chart === "Truck") {
@@ -87,15 +86,15 @@ export const Analytics = () => {
             }
 
             const filteredToLoc = servicesState?.truck_filter_card?.to_location?.map((v) => v?.label)
-            newParams.from_date = analyticsState?.report_getting_date ?
-                analyticsState?.report_getting_date
+            newParams.from_date = servicesState?.truck_filter_card?.from_date ?
+                servicesState?.truck_filter_card?.from_date
                 :
-                servicesState?.truck_filter_card?.from_date || new Date().toISOString().split('T')[0]
+                analyticsState?.report_getting_date
 
-            newParams.to_date = analyticsState?.report_getting_date ?
-                analyticsState?.report_getting_date
+            newParams.to_date = servicesState?.truck_filter_card?.to_date ?
+                servicesState?.truck_filter_card?.to_date
                 :
-                servicesState?.truck_filter_card?.to_date || new Date().toISOString().split('T')[0]
+                analyticsState?.report_getting_date
 
             newParams.truck_name = servicesState?.truck_filter_card?.truck_name || ''
             newParams.from_location = servicesState?.truck_filter_card?.from_location || ''
@@ -103,7 +102,6 @@ export const Analytics = () => {
             newParams.tone = servicesState?.truck_filter_card?.tone || ''
             newParams.truck_body_type = servicesState?.truck_filter_card?.truck_body_type || ''
             newParams.no_of_tyres = servicesState?.truck_filter_card?.no_of_tyres || ''
-
             dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_truck_analytics", params: newParams, from: "Truck" }))
         }
         else if (analyticsState?.selected_Line_chart === "Driver") {
@@ -120,22 +118,20 @@ export const Analytics = () => {
             }
 
             const filteredToLoc = servicesState?.driver_filter_card?.to_location?.map((v) => v?.label)
-            newParams.from_date = analyticsState?.report_getting_date ?
-                analyticsState?.report_getting_date
+            newParams.from_date = servicesState?.driver_filter_card?.from_date ?
+                servicesState?.driver_filter_card?.from_date
                 :
-                servicesState?.driver_filter_card?.from_date || new Date().toISOString().split('T')[0]
+                analyticsState?.report_getting_date
 
-            newParams.to_date = analyticsState?.report_getting_date ?
-                analyticsState?.report_getting_date
+            newParams.to_date = servicesState?.driver_filter_card?.to_date ?
+                servicesState?.driver_filter_card?.to_date
                 :
-                servicesState?.driver_filter_card?.to_date || new Date().toISOString().split('T')[0]
+                analyticsState?.report_getting_date
 
             newParams.from_location = servicesState?.driver_filter_card?.from_location || ''
             newParams.to_location = servicesState?.driver_filter_card?.to_location ? filteredToLoc : [] || []
             newParams.truck_body_type = servicesState?.driver_filter_card?.truck_body_type || ''
             newParams.no_of_tyres = servicesState?.driver_filter_card?.no_of_tyres || ''
-            console.log(newParams)
-
             dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_driver_analytics", params: newParams, from: "Driver" }))
         }
         else if (analyticsState?.selected_Line_chart === "BuyAndSell") {
@@ -151,17 +147,19 @@ export const Analytics = () => {
                 price: "",
                 location: "",
                 tonnage: "",
+                statelist: []
             }
+            const filteredStatelist = servicesState?.buyAndsell_filter_card?.statelist?.map((v) => v?.label)
 
-            newParams.from_date = analyticsState?.report_getting_date ?
-                analyticsState?.report_getting_date
+            newParams.from_date = servicesState?.buyAndsell_filter_card?.from_date ?
+                servicesState?.buyAndsell_filter_card?.from_date
                 :
-                servicesState?.buyAndsell_filter_card?.from_date || new Date().toISOString().split('T')[0]
+                analyticsState?.report_getting_date
 
-            newParams.to_date = analyticsState?.report_getting_date ?
-                analyticsState?.report_getting_date
+            newParams.to_date = servicesState?.buyAndsell_filter_card?.to_date ?
+                servicesState?.buyAndsell_filter_card?.to_date
                 :
-                servicesState?.buyAndsell_filter_card?.to_date || new Date().toISOString().split('T')[0]
+                analyticsState?.report_getting_date
 
             newParams.model = servicesState?.buyAndsell_filter_card?.model || ''
             newParams.brand = servicesState?.buyAndsell_filter_card?.brand || ''
@@ -171,10 +169,9 @@ export const Analytics = () => {
             newParams.tonnage = servicesState?.buyAndsell_filter_card?.tonnage || ''
             newParams.truck_body_type = servicesState?.buyAndsell_filter_card?.truck_body_type || ''
             newParams.no_of_tyres = servicesState?.buyAndsell_filter_card?.no_of_tyres || ''
+            newParams.statelist = filteredStatelist || []
 
             dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_buy_and_sell_analytics", params: newParams, from: "BuyAndSell" }))
-        } else {
-
         }
     }, [commonState?.apply_filter_clicked, commonState?.apply_filter, analyticsState?.selected_Line_chart, analyticsState?.report_getting_date])
 
@@ -398,7 +395,7 @@ export const Analytics = () => {
                                         {analyticsPieChart?.map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={entry.color} />
                                         ))}
-                                    </Pie> 
+                                    </Pie>
 
                                     <Tooltip content={<CustomTooltip />} />
                                 </PieChart>

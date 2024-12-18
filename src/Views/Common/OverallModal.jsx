@@ -5,6 +5,7 @@ import { handleBuyAndSellInputOnChange, handleDeleteBuyAndSell, handleDeleteDriv
 import ButtonComponent from "Components/Button/Button";
 import BlogCard from "Components/Card/BlogCard";
 import BuyandSellCard from "Components/Card/BuyandSellCard";
+import CrmCard from "Components/Card/CrmCard";
 import DriverCard from "Components/Card/DriverCard";
 import LoadCard from "Components/Card/LoadCard";
 import TruckCard from "Components/Card/TruckCard";
@@ -76,6 +77,9 @@ export function OverallModel() {
             case "Overall":
                 return <h6 className='mb-0'>Analytics Overall Fliter</h6>;
 
+            case "CRM":
+                return <h6 className='mb-0'>CRM</h6>;
+
             default:
                 break;
         }
@@ -129,7 +133,7 @@ export function OverallModel() {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
                 funBy = JsonJsx?.buyAndSellAddEdit
             } else {
-                let restrictDate = JsonJsx?.buyAndSellFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date")
+                let restrictDate = JsonJsx?.buyAndSellFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date" && v.name !== "State list")
                 if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
                     funBy = JsonJsx?.buyAndSellFilterInputs
                 } else {
@@ -161,7 +165,9 @@ export function OverallModel() {
                     return <div className='col-6 p-1 mt-2'>
                         {
                             servicesState?.modal_type === "Filter" && ipVal?.name === "To" ||
-                                ((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ?
+                                ((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") &&
+                                    (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ||
+                                    ipVal?.name === "State list" ?
                                 <Fragment>
                                     <ReactDropdownSelect
                                         multi={!((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ? true : false}
@@ -410,6 +416,11 @@ export function OverallModel() {
                 }
             case "Feedback":
                 return dynamicInput()
+
+            case "CRM":
+                return <div className="w-100 d-flex flex-wrap placeholder-glow h-100 overflow-hidden">
+                    <CrmCard placeholder={true} />
+                </div>
 
             default:
                 break;
@@ -697,6 +708,15 @@ export function OverallModel() {
                     default:
                         break;
                 }
+
+            case "CRM":
+                return <div className='col-12 p-2'>
+                    <ButtonComponent
+                        className="btn-danger w-100 py-2"
+                        buttonName="Close"
+                        clickFunction={() => dispatch(handleUpdateModalShow)}
+                    />
+                </div>
             default:
                 break;
         }
@@ -706,8 +726,8 @@ export function OverallModel() {
         <ModalComponent
             show={commonState?.modalShow}
             modalSize={
-                servicesState?.modal_type === "Create" || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" || servicesState?.modal_from === "Overall" ?
-                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" && servicesState?.modal_from !== "Overall" ? "lg" : "md"
+                servicesState?.modal_type === "Create" || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" || servicesState?.modal_from === "Overall" || servicesState?.modal_from === "CRM" ?
+                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" && servicesState?.modal_from !== "Overall" || servicesState?.modal_from === "CRM" ? "lg" : "md"
                     :
                     ["Edit", "Filter"].includes(servicesState?.modal_type) ? "lg" : "md"
             }
@@ -722,8 +742,8 @@ export function OverallModel() {
             modalFooterClassname="border-0"
             modalFooter={modalFooterFun()}
             modalClassname={
-                servicesState?.modal_type === "Create" ?
-                    servicesState?.is_mobile_num_verified ? "buyAndSell_model_height" : "md"
+                servicesState?.modal_type === "Create" || servicesState?.modal_from === "CRM" ?
+                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "CRM" ? "buyAndSell_model_height" : "md"
                     :
                     ["Edit", "Create"].includes(servicesState?.modal_type) ? "buyAndSell_model_height" : ''
             }
