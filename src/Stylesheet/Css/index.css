@@ -262,7 +262,7 @@ th {
 }
 
 .feedback-table-height {
-  height: calc(var(--root-height) - 16.7rem);
+  height: calc(var(--root-height) - 18.7rem);
   width: 100%
 }
 

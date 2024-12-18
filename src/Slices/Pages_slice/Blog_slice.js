@@ -14,17 +14,10 @@ const servicesSlice = createSlice(({
     },
     reducers: {
         updateBlogModalType(state, action) {
-            if (action.payload === "Create") {
-                return {
-                    ...state,
-                    blog_modal_type: action.payload,
-                    blog_edit_data: {}
-                }
-            } else {
-                return {
-                    ...state,
-                    blog_modal_type: action.payload
-                }
+            return {
+                ...state,
+                blog_modal_type: action.payload,
+                blog_edit_data: {}
             }
         },
         updateEditBlog(state, action) {
@@ -38,7 +31,7 @@ const servicesSlice = createSlice(({
                 ...state,
                 blog_delete_id: action.payload?.deletion_blog_data?.blog_id,
                 blog_deletion_heading: action.payload?.deletion_blog_data?.heading1,
-                blog_edit_data:action.payload?.deletion_blog_data
+                blog_edit_data: action.payload?.deletion_blog_data
             }
         },
 
@@ -111,8 +104,8 @@ const servicesSlice = createSlice(({
             return {
                 ...state,
                 blog_modal_spinner: false,
-                blog_delete_id:null,
-                get_blog_recall:true
+                blog_delete_id: null,
+                get_blog_recall: true
             }
         },
         blogDeletionFailure(state, action) {

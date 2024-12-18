@@ -6,6 +6,7 @@ import servicesReducer from 'Slices/Pages_slice/Services_slice';
 import blogReducer from 'Slices/Pages_slice/Blog_slice';
 import feedbackSlice from 'Slices/Pages_slice/Feedback_slice';
 import analyticsSlice from 'Slices/Pages_slice/Analytice_slice';
+import crmSlice from 'Slices/Pages_slice/Crm_slice';
 
 const reducers = combineReducers({
     commonState: commonReducer,
@@ -13,7 +14,8 @@ const reducers = combineReducers({
     servicesState: servicesReducer,
     blogState: blogReducer,
     feedbackState: feedbackSlice,
-    analyticsState: analyticsSlice
+    analyticsState: analyticsSlice,
+    crmState: crmSlice
 })
 
 const store = configureStore({

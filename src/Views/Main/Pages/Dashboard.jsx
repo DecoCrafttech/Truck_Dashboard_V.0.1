@@ -56,7 +56,7 @@ const Dashboard = () => {
                     <div className="table-responsive h-100 overflow-scroll rounded">
                         <table className="table ">
                             <thead>
-                                <tr>
+                                <tr className='text-center'>
                                     <th scope="table-head" className='text-center'>Profile</th>
                                     <th scope="table-head">Name</th>
                                     <th scope="table-head">Phone Number</th>
@@ -69,7 +69,7 @@ const Dashboard = () => {
                             <tbody>
                                 {
                                     dashboardState?.dashboard_data?.profile?.map((dashboardItem, dashboardIndex) => (
-                                        <tr key={dashboardIndex}>
+                                        <tr className='table-body-tr text-center' key={dashboardIndex}>
                                             {/* <th>{(commonState?.currentPage - 1) * commonState?.pageSize + (dashboardIndex + 1)}</th> */}
                                             <td className='text-center'>
                                                 <Img
