@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
 import { getIndividualAnalyticsFailure, getIndividualAnalyticsRequest, getOverallAnalyticsRequest, resetOverallChartFilter } from "Slices/Pages_slice/Analytice_slice";
 import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogResponse, updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
-import { getCrmDashboardFailure, getCrmDashboardRequest, getCrmDashboardResponse, getCrmModalFailure, getCrmModalRequest } from "Slices/Pages_slice/Crm_slice";
+import { getCrmDashboardFailure, getCrmDashboardRequest, getCrmDashboardResponse, getCrmModalFailure, getCrmModalRequest, update_crm_status_entry_user_id, updateCrmStatusEntryFailure, updateCrmStatusEntryResponse } from "Slices/Pages_slice/Crm_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
 import { getFeedbackFailure, getFeedbackRequest, updateFeedbackModal, updateFeedbackStatusFailure, updateFeedbackStatusResponse } from "Slices/Pages_slice/Feedback_slice";
 import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellPostFailure, buyAndsellPostResponse, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
@@ -529,6 +529,17 @@ const commonSlice = createSlice({
                 state.Err = action.payload
                 state.Toast_Type = "error"
             })
+            .addCase(update_crm_status_entry_user_id, (state, action) => {
+                state.modalShow = true
+            })
+            .addCase(updateCrmStatusEntryResponse, (state, action) => {
+                state.modalShow = false
+            })
+            .addCase(updateCrmStatusEntryFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "error"
+            })
+            
     }
 })
 

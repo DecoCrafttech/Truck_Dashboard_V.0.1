@@ -54,7 +54,7 @@ const Dashboard = () => {
             <div className="w-100 card border-0">
                 <div className="dashboard-table-height py-3">
                     <div className="table-responsive h-100 overflow-scroll rounded">
-                        <table className="table ">
+                        <table className="table table-hover">
                             <thead>
                                 <tr className='text-center'>
                                     <th scope="table-head" className='text-center'>Profile</th>

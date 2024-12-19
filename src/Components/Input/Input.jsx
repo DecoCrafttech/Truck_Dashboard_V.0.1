@@ -15,7 +15,8 @@ const Input = ({
     value,
     keyDown,
     disabled,
-    max
+    max,
+    min
 }) => {
 
     return (
@@ -46,6 +47,7 @@ const Input = ({
                 value={value}
                 disabled={disabled}
                 max={max}
+                min={min}
             />
             {
                 inputError ?

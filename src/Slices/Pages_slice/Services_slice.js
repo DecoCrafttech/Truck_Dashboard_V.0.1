@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { updateBlogModalType, updateDeleteBlog, updateEditBlog } from "./Blog_slice";
 import { updateFeedbackModal } from "Slices/Pages_slice/Feedback_slice";
 import { updateSelectedLineChart } from "Slices/Pages_slice/Analytice_slice";
-import { getCrmModalRequest } from "Slices/Pages_slice/Crm_slice";
+import { getCrmModalRequest, update_crm_status_entry_user_id } from "Slices/Pages_slice/Crm_slice";
 
 const servicesSlice = createSlice(({
     name: "service_slice",
@@ -665,6 +665,11 @@ const servicesSlice = createSlice(({
                 state.modal_from = "CRM"
                 state.modal_type = "Create"
             })
+            .addCase(update_crm_status_entry_user_id, (state, action) => {
+                state.modal_from = "CRM"
+                state.modal_type = "Edit"
+            })
+            
     }
 }))
 

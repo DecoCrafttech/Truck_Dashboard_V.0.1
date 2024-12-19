@@ -18,6 +18,7 @@ import {
 import { useSelector } from 'react-redux';
 import { handleFeedbackModalOnChange } from 'Actions/Pages_actions/FeedbackAction';
 import { updateOverallChartFilter, updateSelectedLineChart } from 'Slices/Pages_slice/Analytice_slice';
+import { handleOnchangeCrmStatus } from 'Actions/Pages_actions/CrmActions';
 
 
 
@@ -311,6 +312,11 @@ const JsonData = () => {
             { value: 1, label: 'today' },
             { value: 2, label: 'last 7 days' },
             { value: 3, label: 'this month' }
+        ],
+        crm_status_options:[
+            "HOT",
+            "WARM",
+            "COLD"
         ]
     }
 
@@ -1467,6 +1473,42 @@ const JsonData = () => {
                 disabled: servicesState?.modal_from === "Feedback" &&
                     (servicesState?.modal_type === "" || servicesState?.modal_type === "not solved") ? false : true,
                 Err: commonState?.validated && !state?.feedbackState?.remarks ? "Remarks required" : ''
+            },
+        ],
+
+
+        //                                                             CRM Modal onchange                                                      //
+        crmStatusModal :[
+            {
+                name: "CRM Status",
+                type: "select",
+                category: "select",
+                placeholder: "",
+                options: jsonOnly?.crm_status_options,
+                value: state?.crmState?.crm_status_entry?.crm_status || '',
+                change: (e) => dispatch(handleOnchangeCrmStatus({ crm_status: e.target.value })),
+                isMandatory: true,
+                Err: commonState?.validated && !state?.crmState?.crm_status_entry?.crm_status ? "Crm status required" : ''
+            },
+            {
+                name: "Next call date",
+                type: "date",
+                category: "input",
+                placeholder: "",
+                value: state?.crmState?.crm_status_entry?.entry_date || '',
+                change: (e) => dispatch(handleOnchangeCrmStatus({ entry_date: e.target.value })),
+                isMandatory: true,
+                Err: commonState?.validated && !state?.crmState?.crm_status_entry?.entry_date ? "Next call date required" : ''
+            },
+            {
+                name: "Message",
+                type: "textbox",
+                category: "textbox",
+                placeholder: "",
+                value: state?.crmState?.crm_status_entry?.message || '',
+                change: (e) => dispatch(handleOnchangeCrmStatus({ message: e.target.value })),
+                isMandatory: false,
+                Err: commonState?.validated && !state?.crmState?.crm_status_entry?.message ? "Owner name required" : ''
             },
         ]
     }

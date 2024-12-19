@@ -1,5 +1,6 @@
 import { handleUpdateModalShow } from "Actions/Common_actions/Common_action";
 import { handleAddBlog, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
+import { handleCrmModalEntry } from "Actions/Pages_actions/CrmActions";
 import { handleUpdateFeedbackComplaints } from "Actions/Pages_actions/FeedbackAction";
 import { handleBuyAndSellInputOnChange, handleDeleteBuyAndSell, handleDeleteDriver, handleDeleteLoad, handleDeleteTruck, handlePostOrEditBuyAndSell, handlePostOrEditDriver, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
 import ButtonComponent from "Components/Button/Button";
@@ -78,7 +79,16 @@ export function OverallModel() {
                 return <h6 className='mb-0'>Analytics Overall Fliter</h6>;
 
             case "CRM":
-                return <h6 className='mb-0'>CRM</h6>;
+                switch (servicesState?.modal_type) {
+                    case "Create":
+                        return <h6 className='mb-0'>CRM</h6>;
+
+                    case "Edit":
+                        return <h6 className='mb-0'>CRM Status Entry</h6>;
+
+                    default:
+                        break;
+                }
 
             default:
                 break;
@@ -157,6 +167,10 @@ export function OverallModel() {
 
         if (servicesState?.modal_from === "Overall") {
             funBy = JsonJsx?.analyticsOverallLineChartFilter
+        }
+
+        if (servicesState?.modal_from === "CRM") {
+            funBy = JsonJsx?.crmStatusModal
         }
 
         return funBy?.map((ipVal, iPInd) => {
@@ -303,6 +317,7 @@ export function OverallModel() {
                                 inputError={ipVal?.Err}
                                 disabled={ipVal?.disabled}
                                 max={ipVal?.name === "To Date" || ipVal?.name === "From Date" ? new Date().toISOString().split('T')[0] : null}
+                                min={ipVal?.name === "Next call date" ? new Date().toISOString().split('T')[0] : null}
                             />
                         </div>
 
@@ -417,10 +432,20 @@ export function OverallModel() {
             case "Feedback":
                 return dynamicInput()
 
+
             case "CRM":
-                return <div className="w-100 h-100 d-flex flex-wrap placeholder-glow h-100 overflow-hidden">
-                    <CrmCard placeholder={crmState?.crm_modal_glow} crmData={crmState?.crm_view_data} />
-                </div>
+                switch (servicesState?.modal_type) {
+                    case "Create":
+                        return <div className="w-100 h-100 d-flex flex-wrap placeholder-glow h-100 overflow-hidden">
+                            <CrmCard placeholder={crmState?.crm_modal_glow} crmData={crmState?.crm_view_data} />
+                        </div>
+
+                    case "Edit":
+                        return dynamicInput()
+
+                    default:
+                        break;
+                }
 
             default:
                 break;
@@ -710,13 +735,35 @@ export function OverallModel() {
                 }
 
             case "CRM":
-                return <div className='col-12 p-2'>
-                    <ButtonComponent
-                        className="btn-danger w-100 py-2"
-                        buttonName="Close"
-                        clickFunction={() => dispatch(handleUpdateModalShow)}
-                    />
-                </div>
+                switch (servicesState?.modal_type) {
+                    case "Create":
+                        return <div className='col-12 p-2'>
+                            <ButtonComponent
+                                className="btn-danger w-100 py-2"
+                                buttonName="Close"
+                                clickFunction={() => dispatch(handleUpdateModalShow)}
+                            />
+                        </div>
+
+                    case "Edit":
+                        return <div className="col-12 p-1 pb-0">
+                            <ButtonComponent
+                                className="btn-danger w-100 py-2"
+                                buttonName={
+                                    crmState?.crm_status_entry_spinner ?
+                                        <SpinnerComponent />
+                                        :
+                                        "Save Status"
+                                }
+                                clickFunction={() => dispatch(handleCrmModalEntry(crmState?.crm_status_entry))}
+                                btnDisable={crmState?.crm_status_entry_spinner}
+                            />
+                        </div>
+
+                    default:
+                        break;
+                }
+
             default:
                 break;
         }
@@ -726,8 +773,8 @@ export function OverallModel() {
         <ModalComponent
             show={commonState?.modalShow}
             modalSize={
-                servicesState?.modal_type === "Create" || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" || servicesState?.modal_from === "Overall" || servicesState?.modal_from === "CRM" ?
-                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" && servicesState?.modal_from !== "Overall" || servicesState?.modal_from === "CRM" ? "lg" : "md"
+                servicesState?.modal_type === "Create" || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" || servicesState?.modal_from === "Overall" || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") ?
+                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" && servicesState?.modal_from !== "Overall" || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") ? "lg" : "md"
                     :
                     ["Edit", "Filter"].includes(servicesState?.modal_type) ? "lg" : "md"
             }
@@ -742,8 +789,8 @@ export function OverallModel() {
             modalFooterClassname="border-0"
             modalFooter={modalFooterFun()}
             modalClassname={
-                servicesState?.modal_type === "Create" || servicesState?.modal_from === "CRM" ?
-                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "CRM" ? "buyAndSell_model_height" : "md"
+                servicesState?.modal_type === "Create" || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Edit") ?
+                    servicesState?.is_mobile_num_verified || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") ? "buyAndSell_model_height" : "md"
                     :
                     ["Edit", "Create"].includes(servicesState?.modal_type) ? "buyAndSell_model_height" : ''
             }
