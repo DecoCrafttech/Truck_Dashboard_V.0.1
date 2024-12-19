@@ -84,7 +84,7 @@ export const handleAddNewVehicle = (params) => async (dispatch) => {
 export const handleDeleteVehicle = (params) => async (dispatch) => {
     try {
         dispatch(removeVehicleRequest(params))
-        const { data } = await axiosInstance.post("/remove_user_vehicle_details ", params);
+        const { data } = await axiosInstance.post("/remove_user_vehicle_details", params);
 
         if (data.error_code === 0) {
             dispatch(removeVehicleResponse(params))

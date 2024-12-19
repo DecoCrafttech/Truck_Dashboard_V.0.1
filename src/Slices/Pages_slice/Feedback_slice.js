@@ -39,7 +39,7 @@ const feedbackSlice = createSlice({
             return {
                 ...state,
                 initialGlow: false,
-                feeback_data: action.payload
+                feeback_data: action.payload[0]?.feedback
             }
         },
         getFeedbackFailure(state, action) {
