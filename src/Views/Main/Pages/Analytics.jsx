@@ -196,7 +196,7 @@ export const Analytics = () => {
                     <Line
                         type="monotone"
                         dataKey="load"
-                        stroke="#8884d8"
+                        stroke="#0088FE"
                         strokeWidth={2}
                         dot={true}
                     />
@@ -220,7 +220,7 @@ export const Analytics = () => {
                     <Line
                         type="monotone"
                         dataKey="truck"
-                        stroke="#82ca9d"
+                        stroke="#00C49F"
                         strokeWidth={2}
                         dot={true}
                     />
@@ -244,7 +244,7 @@ export const Analytics = () => {
                     <Line
                         type="monotone"
                         dataKey="driver"
-                        stroke="red"
+                        stroke="#FFBB28"
                         strokeWidth={2}
                         dot={true}
                     />
@@ -268,7 +268,7 @@ export const Analytics = () => {
                     <Line
                         type="monotone"
                         dataKey="buysell"
-                        stroke="yellow"
+                        stroke="#FF8042"
                         strokeWidth={2}
                         dot={true}
                     />
@@ -292,7 +292,7 @@ export const Analytics = () => {
                     <Line
                         type="monotone"
                         dataKey="load"
-                        stroke="#8884d8"
+                        stroke="#0088FE"
                         strokeWidth={2}
                         dot={true}
                     />
@@ -300,7 +300,7 @@ export const Analytics = () => {
                     <Line
                         type="monotone"
                         dataKey="truck"
-                        stroke="#82ca9d"
+                        stroke="#00C49F"
                         strokeWidth={2}
                         dot={true}
                     />
@@ -308,7 +308,7 @@ export const Analytics = () => {
                     <Line
                         type="monotone"
                         dataKey="driver"
-                        stroke="red"
+                        stroke="#FFBB28"
                         strokeWidth={2}
                         dot={true}
                     />
@@ -316,7 +316,7 @@ export const Analytics = () => {
                     <Line
                         type="monotone"
                         dataKey="buysell"
-                        stroke="yellow"
+                        stroke="#FF8042"
                         strokeWidth={2}
                         dot={true}
                     // strokeDasharray="5 5" // Dashed line style

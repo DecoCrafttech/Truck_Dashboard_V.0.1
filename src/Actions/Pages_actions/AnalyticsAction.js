@@ -55,7 +55,7 @@ export const handlendIndividualSelectedAnalysis = (dataParams) => async (dispatc
                         return driverFormat
 
                     case "BuyAndSell":
-                        const buyAndSellFormat = { time: splitTime, buysell: v?.buysell }
+                        const buyAndSellFormat = { time: splitTime, buysell: v?.buy_and_sell }
                         return buyAndSellFormat
 
                     default:
