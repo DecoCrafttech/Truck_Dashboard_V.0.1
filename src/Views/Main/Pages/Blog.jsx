@@ -28,7 +28,7 @@ const Blog = () => {
 
     return (
         <Fragment>
-            <div className="d-flex flex-wrap h-100 placeholder-glow">
+            <div className="d-flex flex-wrap placeholder-glow">
                 <div className="w-100 d-inline-flex justify-content-end">
                     <div className="col-2 text-end">
                         <ButtonComponent
@@ -48,8 +48,8 @@ const Blog = () => {
                     </div>
                 </div>
 
-                <div className="w-100 blog-main-content-height">
-                    <div className="w-100 d-inline-flex flex-wrap align-items-stretch overflowY mt-3 pb-5">
+                <div className="w-100 blog-main-content-height overflowY my-3">
+                    <div className="w-100 d-inline-flex flex-wrap align-items-stretch mt-3 pb-5">
                         {blogState?.blog_glow ?
                             [...Array(6)].map((value, placeholderInd) => (
                                 <div className="col-3 p-1">

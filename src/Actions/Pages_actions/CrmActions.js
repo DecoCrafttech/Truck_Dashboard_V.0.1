@@ -2,7 +2,8 @@ import { handleValidation } from 'Actions/Common_actions/Common_action';
 import axiosInstance from 'Services/axiosInstance';
 import {
     crm_status_entry,
-
+    crm_Before_Sale_entry_state,
+    
     getCrmDashboardRequest,
     getCrmDashboardResponse,
     getCrmDashboardFailure,
@@ -19,6 +20,10 @@ import {
 //                                                 crm status onChange                                                                 //
 export const handleOnchangeCrmStatus = (ipData) => dispatch => {
     dispatch(crm_status_entry(ipData))
+}
+
+export const handleOnchangeCrmBeforeSaleEntry = (ipData) => dispatch => {
+    dispatch(crm_Before_Sale_entry_state(ipData))
 }
 
 
@@ -44,7 +49,7 @@ export const handleGetCrmModal = (params) => async (dispatch) => {
     try {
         dispatch(getCrmModalRequest())
 
-        const { data } = await axiosInstance.post("/get_crm_user_history", params)
+        const { data } = await axiosInstance.post(params?.slected_button === "after_sale" ? "/get_crm_user_history" : "/get_crm_before_sales", params)
         if (data?.error_code === 0) {
             dispatch(getCrmModalResponse(data?.data))
         } else {
@@ -66,6 +71,31 @@ export const handleCrmModalEntry = (params) => async (dispatch) => {
             dispatch(updateCrmStatusEntryRequest())
 
             const { data } = await axiosInstance.post("/update_crm_history", params)
+            if (data?.error_code === 0) {
+                dispatch(updateCrmStatusEntryResponse(data?.data))
+            } else {
+                dispatch(updateCrmStatusEntryFailure(data?.message))
+            }
+        } catch (Err) {
+            dispatch(updateCrmStatusEntryFailure(Err?.message))
+        }
+    } else {
+        dispatch(handleValidation)
+    }
+}
+
+
+//                                                Crm modal status entry endpoint                                                     //
+export const handleCrmBeforeSaleEntry = (params) => async (dispatch) => {
+    if (params?.name &&
+        params?.email_id &&
+        params?.email_id &&
+        params?.location) {
+
+        try {
+            dispatch(updateCrmStatusEntryRequest())
+
+            const { data } = await axiosInstance.post("/crm_before_sales_entry", params)
             if (data?.error_code === 0) {
                 dispatch(updateCrmStatusEntryResponse(data?.data))
             } else {

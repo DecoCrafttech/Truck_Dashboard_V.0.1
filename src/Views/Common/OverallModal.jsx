@@ -1,6 +1,6 @@
 import { handleUpdateModalShow } from "Actions/Common_actions/Common_action";
 import { handleAddBlog, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
-import { handleCrmModalEntry } from "Actions/Pages_actions/CrmActions";
+import { handleCrmBeforeSaleEntry, handleCrmModalEntry } from "Actions/Pages_actions/CrmActions";
 import { handleUpdateFeedbackComplaints } from "Actions/Pages_actions/FeedbackAction";
 import { handleBuyAndSellInputOnChange, handleDeleteBuyAndSell, handleDeleteDriver, handleDeleteLoad, handleDeleteTruck, handlePostOrEditBuyAndSell, handlePostOrEditDriver, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
 import ButtonComponent from "Components/Button/Button";
@@ -86,6 +86,9 @@ export function OverallModel() {
                     case "Edit":
                         return <h6 className='mb-0'>CRM Status Entry</h6>;
 
+                    case "Before_Sale_Entry":
+                        return <h6 className='mb-0'>CRM Before Sale</h6>;
+
                     default:
                         break;
                 }
@@ -107,7 +110,6 @@ export function OverallModel() {
                 if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
                     funBy = JsonJsx?.loadFilterInputs
                 } else {
-                    console.log(restrictDate)
                     funBy = restrictDate
                 }
             }
@@ -170,7 +172,11 @@ export function OverallModel() {
         }
 
         if (servicesState?.modal_from === "CRM") {
-            funBy = JsonJsx?.crmStatusModal
+            if (servicesState?.modal_type === "Edit") {
+                funBy = JsonJsx?.crmStatusModal
+            } else {
+                funBy = JsonJsx?.crmStatusBeforeSaleEntryModal
+            }
         }
 
         return funBy?.map((ipVal, iPInd) => {
@@ -441,6 +447,9 @@ export function OverallModel() {
                         </div>
 
                     case "Edit":
+                        return dynamicInput()
+
+                    case "Before_Sale_Entry":
                         return dynamicInput()
 
                     default:
@@ -760,6 +769,31 @@ export function OverallModel() {
                             />
                         </div>
 
+                    case "Before_Sale_Entry":
+                        return <div className="col-12 d-flex flex-wrap p-1 pb-0">
+                            <div className="col-6 p-1">
+                                <ButtonComponent
+                                    className="btn-secondary w-100 py-2"
+                                    buttonName="Close"
+                                    clickFunction={() => dispatch(handleUpdateModalShow)}
+                                    btnDisable={crmState?.crm_status_entry_spinner}
+                                />
+                            </div>
+                            <div className="col-6 p-1">
+                                <ButtonComponent
+                                    className="btn-danger w-100 py-2"
+                                    buttonName={
+                                        crmState?.crm_status_entry_spinner ?
+                                            <SpinnerComponent />
+                                            :
+                                            "Add"
+                                    }
+                                    clickFunction={() => dispatch(handleCrmBeforeSaleEntry(crmState?.crm_before_sale_entry))}
+                                    btnDisable={crmState?.crm_status_entry_spinner}
+                                />
+                            </div>
+                        </div>
+
                     default:
                         break;
                 }
@@ -773,8 +807,8 @@ export function OverallModel() {
         <ModalComponent
             show={commonState?.modalShow}
             modalSize={
-                servicesState?.modal_type === "Create" || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" || servicesState?.modal_from === "Overall" || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") ?
-                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" && servicesState?.modal_from !== "Overall" || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") ? "lg" : "md"
+                servicesState?.modal_type === "Create" || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" || servicesState?.modal_from === "Overall" || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Before_Sale_Entry") ?
+                    servicesState?.is_mobile_num_verified || servicesState?.modal_from === "Feedback" || servicesState?.modal_from === "Blog" && servicesState?.modal_from !== "Overall" || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Before_Sale_Entry") ? "lg" : "md"
                     :
                     ["Edit", "Filter"].includes(servicesState?.modal_type) ? "lg" : "md"
             }

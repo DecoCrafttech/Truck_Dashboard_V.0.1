@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { initializeFilterDetails } from "./Services_slice"
 
 
 const crmSlice = createSlice({
@@ -13,6 +14,7 @@ const crmSlice = createSlice({
 
         crm_status_entry_spinner: false,
         crm_status_entry: {},
+        crm_before_sale_entry: {},
 
         recall_again: false
     },
@@ -28,6 +30,15 @@ const crmSlice = createSlice({
                 ...state,
                 crm_status_entry: {
                     ...state?.crm_status_entry,
+                    ...action.payload
+                }
+            }
+        },
+        crm_Before_Sale_entry_state(state, action) {
+            return {
+                ...state,
+                crm_before_sale_entry: {
+                    ...state?.crm_before_sale_entry,
                     ...action.payload
                 }
             }
@@ -50,10 +61,21 @@ const crmSlice = createSlice({
             }
         },
         getCrmDashboardResponse(state, action) {
-            return {
+            const data = {
                 ...state,
-                crm_dashboard_data: action.payload?.profile,
                 initalGlow: false
+            }
+
+            if (state?.slected_button === "after_sale") {
+                return {
+                    ...data,
+                    crm_dashboard_data: action.payload?.profile,
+                }
+            } else {
+                return {
+                    ...data,
+                    crm_dashboard_data: action.payload
+                }
             }
         },
         getCrmDashboardFailure(state, action) {
@@ -107,6 +129,14 @@ const crmSlice = createSlice({
                 crm_status_entry_spinner: false
             }
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(initializeFilterDetails, (state, action) => {
+                state.crm_status_entry = {}
+                state.crm_before_sale_entry = {}
+            })
+
     }
 })
 
@@ -115,6 +145,7 @@ const { actions, reducer } = crmSlice;
 export const {
     updateSelectedButton,
     crm_status_entry,
+    crm_Before_Sale_entry_state,
     update_crm_status_entry_user_id,
 
     getCrmDashboardRequest,

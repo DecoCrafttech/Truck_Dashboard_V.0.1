@@ -18,7 +18,7 @@ import {
 import { useSelector } from 'react-redux';
 import { handleFeedbackModalOnChange } from 'Actions/Pages_actions/FeedbackAction';
 import { updateOverallChartFilter, updateSelectedLineChart } from 'Slices/Pages_slice/Analytice_slice';
-import { handleOnchangeCrmStatus } from 'Actions/Pages_actions/CrmActions';
+import { handleOnchangeCrmBeforeSaleEntry, handleOnchangeCrmStatus } from 'Actions/Pages_actions/CrmActions';
 
 
 
@@ -87,7 +87,7 @@ const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
     const state = store.getState();
-    const { dashboardState, servicesState, blogState, commonState, feedbackState, analyticsState } = useSelector((state) => state);
+    const { dashboardState, servicesState, blogState, commonState, feedbackState, analyticsState, crmState } = useSelector((state) => state);
 
     const jsonOnly = {
         sidebarMenus: [
@@ -313,7 +313,7 @@ const JsonData = () => {
             { value: 2, label: 'last 7 days' },
             { value: 3, label: 'this month' }
         ],
-        crm_status_options:[
+        crm_status_options: [
             "HOT",
             "WARM",
             "COLD"
@@ -534,7 +534,7 @@ const JsonData = () => {
                 },
                 isMandatory: true,
                 Err: state?.commonState?.validated && !state?.servicesState?.phone_number ? "Mobile Number Required" : null
-            } || []
+            }
         ],
 
 
@@ -1478,7 +1478,7 @@ const JsonData = () => {
 
 
         //                                                             CRM Modal onchange                                                      //
-        crmStatusModal :[
+        crmStatusModal: [
             {
                 name: "CRM Status",
                 type: "select",
@@ -1509,6 +1509,53 @@ const JsonData = () => {
                 change: (e) => dispatch(handleOnchangeCrmStatus({ message: e.target.value })),
                 isMandatory: false,
                 Err: commonState?.validated && !state?.crmState?.crm_status_entry?.message ? "Owner name required" : ''
+            },
+        ],
+        crmStatusBeforeSaleEntryModal: [
+            {
+                name: "Name",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: crmState?.crm_before_sale_entry?.name || '',
+                change: (e) => dispatch(handleOnchangeCrmBeforeSaleEntry({ name: e.target.value })),
+                isMandatory: true,
+                Err: commonState?.validated && !crmState?.crm_before_sale_entry?.name ? "Name required" : ''
+            },
+            {
+                name: "Email id",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: crmState?.crm_before_sale_entry?.email_id || '',
+                change: (e) => dispatch(handleOnchangeCrmBeforeSaleEntry({ email_id: e.target.value })),
+                isMandatory: true,
+                Err: commonState?.validated && !crmState?.crm_before_sale_entry?.email_id ? "Email id required" : ''
+            },
+            {
+                name: "Phone number",
+                type: "text",
+                category: "input",
+                placeholder: "",
+                value: crmState?.crm_before_sale_entry?.phone_no || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value) && e.target.value.length <= 10) {
+                        dispatch(handleOnchangeCrmBeforeSaleEntry({ phone_no: e.target.value }))
+                    }
+                },
+                isMandatory: true,
+                Err: state?.commonState?.validated && !crmState?.crm_before_sale_entry?.phone_no ? "Mobile Number Required" : null
+            },
+            {
+                name: "Location",
+                type: "text",
+                category: "googleLocation",
+                placeholder: "",
+                value: crmState?.crm_before_sale_entry?.location || '',
+                change: (e) => dispatch(handleOnchangeCrmBeforeSaleEntry({ location: e.target.value })),
+                placedSelectedClick: (slectedLoc) => dispatch(handleOnchangeCrmBeforeSaleEntry({ location: slectedLoc })),
+                isMandatory: true,
+                Err: commonState?.validated && !crmState?.crm_before_sale_entry?.location ? "location required" : ''
             },
         ]
     }

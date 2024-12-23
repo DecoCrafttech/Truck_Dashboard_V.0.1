@@ -8,6 +8,7 @@ import { handleGetCrmDashboard, handleGetCrmModal } from 'Actions/Pages_actions/
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import Img from 'Components/Img/Img';
 import Icons from 'Utils/Icons';
+import { initializeFilterDetails } from 'Slices/Pages_slice/Services_slice';
 
 const Crm = () => {
     const { commonState, crmState } = useSelector((state) => state);
@@ -22,9 +23,9 @@ const Crm = () => {
 
     useEffect(() => {
         if (crmState?.slected_button === "after_sale") {
-            dispatch(handleGetCrmDashboard({ endpoint: "/get_crm_dashboard", data: params }))
+            dispatch(handleGetCrmDashboard({ endpoint: "/get_crm_dashboard", data: params, slected_button: crmState?.slected_button }))
         } else {
-            dispatch(handleGetCrmDashboard({ endpoint: "/get_crm_before_sales", data: params }))
+            dispatch(handleGetCrmDashboard({ endpoint: "/get_crm_before_sales", data: params, slected_button: crmState?.slected_button }))
         }
     }, [commonState?.currentPage, commonState?.pageSize, commonState?.search_clicked, crmState?.slected_button, crmState?.recall_again])
 
@@ -50,23 +51,13 @@ const Crm = () => {
 
             case "before_sale":
                 return <tr className='text-center'>
-                    <th className="table-head">Driver post</th>
-                    <th className="table-head">Buy and sell post</th>
-                    <th className="table-head">Fasttag</th>
-                    <th className="table-head">Insurance</th>
-                    <th className="table-head">Petrol pumb post</th>
-                    <th className="table-head">CRM Deal Value (Hot)</th>
-                    <th className="table-head">CRM Deal Value (Warm)</th>
-                    <th className="table-head">CRM Deal Value (Cold)</th>
-
+                    <th className="table-head">Name</th>
                     <th className="table-head">Entry date</th>
+                    <th className="table-head">CRM Deal Value</th>
                     <th className="table-head">Message</th>
-                    <th className="table-head">Customer Name</th>
-                    <th className="table-head">category</th>
-                    <th className="table-head">Phone Number</th>
                     <th className="table-head">Email</th>
-
-                    <th className="table-head">Feedback</th>
+                    <th className="table-head">Location</th>
+                    <th className="table-head">Phone Number</th>
                     <th className="table-head">View</th>
                 </tr>
 
@@ -101,38 +92,33 @@ const Crm = () => {
                     <td>{crmVal?.buy_and_sell_post}</td>
                     <td>{crmVal?.driver_post}</td>
                     <td className='text-center cursor-pointer'>
-                        <span className='w-100 text-center' onClick={() => dispatch(handleGetCrmModal({ user_id: crmVal?.user_id }))}>
+                        <span className='w-100 text-center' onClick={() => dispatch(handleGetCrmModal({ user_id: crmVal?.user_id, slected_button: crmState?.slected_button }))}>
                             {Icons.eyeIcon}
                         </span>
                     </td>
                 </tr>
 
             case "before_sale":
-                return <tr className='text-center'>
-                    <th className="table-head">Driver post</th>
-                    <th className="table-head">Buy and sell post</th>
-                    <th className="table-head">Fasttag</th>
-                    <th className="table-head">Insurance</th>
-                    <th className="table-head">Petrol pumb post</th>
-                    <th className="table-head">CRM Deal Value (Hot)</th>
-                    <th className="table-head">CRM Deal Value (Warm)</th>
-                    <th className="table-head">CRM Deal Value (Cold)</th>
-
-                    <th className="table-head">Entry date</th>
-                    <th className="table-head">Message</th>
-                    <th className="table-head">Customer Name</th>
-                    <th className="table-head">category</th>
-                    <th className="table-head">Phone Number</th>
-                    <th className="table-head">Email</th>
-
-                    <th className="table-head">Feedback</th>
-                    <th className="table-head">View</th>
+                return <tr className='table-body-tr text-center' key={crmInd}>
+                    <td>{crmVal?.name}</td>
+                    <td className='fs-14'>{crmVal?.CRM_entry_date?.slice(0, 25)}</td>
+                    <td className='cursor-pointer' onClick={() => dispatch(update_crm_status_entry_user_id(crmVal?.sales_id))}>{crmVal?.CRM_value}</td>
+                    <td>{crmVal?.CRM_message}</td>
+                    <td>{crmVal?.email_id}</td>
+                    <td>{crmVal?.location}</td>
+                    <td>{crmVal?.phone_no}</td>
+                    <td className='text-center cursor-pointer'>
+                        <span className='w-100 text-center' onClick={() => dispatch(handleGetCrmModal({ user_id: crmVal?.sales_id, slected_button: crmState?.slected_button }))}>
+                            {Icons.eyeIcon}
+                        </span>
+                    </td>
                 </tr>
 
             default:
                 break;
         }
     }
+    
     return (
         <div className="w-100 h-100 d-flex flex-wrap align-items-center">
             <div className="w-100 card border-0 rounded-4">
@@ -163,6 +149,18 @@ const Crm = () => {
                     </div>
                 </div>
                 <div className="feedback-table-height card-body">
+                    <div className='d-flex flex-wrap justify-content-end p-2 pt-0'>
+                        {
+                            crmState?.slected_button === "before_sale" ?
+                                <ButtonComponent
+                                    buttonName="Add Entry"
+                                    className={`${crmState?.slected_button === "before_sale" ? "btn-danger" : null}`}
+                                    clickFunction={() => dispatch(initializeFilterDetails({ from: "CRM", type: "Before_Sale_Entry" }))}
+                                />
+                                :
+                                null
+                        }
+                    </div>
                     <div className="table-responsive h-100 overflow-scroll">
                         <table className="table table-hover">
                             <thead>

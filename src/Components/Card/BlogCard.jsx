@@ -21,7 +21,7 @@ const BlogCard = ({
                         <Img className='w-100 rounded-3 placeholder placeholder-blog-image' src={blogData?.blog_image_name} />
                     </div>
                     :
-                    <Card.Img className='p-3 rounded-5' src={blogData?.blog_image_name} />
+                    <Img className='p-3 rounded-5' height={"18%"} width={"100%"} src={blogData?.blog_image_name} />
             }
 
             <Card.Body className='pb-1'>
