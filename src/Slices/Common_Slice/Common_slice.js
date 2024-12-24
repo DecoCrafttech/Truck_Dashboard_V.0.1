@@ -256,7 +256,10 @@ const commonSlice = createSlice({
                 ...state,
                 search_clicked: true,
                 apply_filter: false,
-                apply_filter_clicked: false
+                apply_filter_clicked: false,
+                totalCount: 0,
+                pageSize: 10,
+                currentPage: 1
             }
         },
         updateSearchClickedFalse(state, action) {
@@ -282,7 +285,10 @@ const commonSlice = createSlice({
                 ...state,
                 apply_filter_clicked: true,
                 apply_filter: true,
-                search_clicked: false
+                search_clicked: false,
+                totalCount: 0,
+                pageSize: 10,
+                currentPage: 1
             }
         },
         updateApplyFilterClickedFalse(state, action) {
@@ -330,8 +336,6 @@ const commonSlice = createSlice({
             //load
             .addCase(loadGetRequest, (state, action) => {
                 state.totalCount = 0
-                state.pageSize = 10
-                state.currentPage = 1
                 state.modalShow = false
                 state.apply_filter = false
             })
@@ -364,8 +368,6 @@ const commonSlice = createSlice({
             //truck
             .addCase(truckGetRequest, (state, action) => {
                 state.totalCount = 0
-                state.pageSize = 10
-                state.currentPage = 1
                 state.apply_filter = false
                 state.modalShow = false
             })
@@ -390,8 +392,6 @@ const commonSlice = createSlice({
             //driver
             .addCase(driverGetRequest, (state, action) => {
                 state.totalCount = 0
-                state.pageSize = 10
-                state.currentPage = 1
                 state.modalShow = false
                 state.validated = false
             })
@@ -418,8 +418,6 @@ const commonSlice = createSlice({
             //buy and sell
             .addCase(buyAndsellGetRequest, (state, action) => {
                 state.totalCount = 0
-                state.pageSize = 10
-                state.currentPage = 1
                 state.modalShow = false
                 state.validated = false
             })
@@ -452,8 +450,6 @@ const commonSlice = createSlice({
             //blog page
             .addCase(getBlogRequest, (state, action) => {
                 state.totalCount = 0
-                state.pageSize = 10
-                state.currentPage = 1
             })
             .addCase(getBlogResponse, (state, action) => {
                 state.totalCount = action.payload?.total_no_of_data
@@ -485,8 +481,6 @@ const commonSlice = createSlice({
             //feedback
             .addCase(getFeedbackRequest, (state, action) => {
                 state.totalCount = 0
-                state.pageSize = 10
-                state.currentPage = 1
             })
             .addCase(getFeedbackFailure, (state, action) => {
                 state.Err = action.payload
@@ -536,8 +530,6 @@ const commonSlice = createSlice({
             })
             .addCase(getCrmDashboardRequest, (state, action) => {
                 state.totalCount = 0
-                state.pageSize = 10
-                state.currentPage = 1
             })
             .addCase(getCrmDashboardResponse, (state, action) => {
                 state.totalCount = action.payload?.row_count
