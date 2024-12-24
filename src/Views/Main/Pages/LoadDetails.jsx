@@ -62,7 +62,7 @@ const LoadDetails = () => {
                         <p className='m-0 ps-1'>{`showing ${commonState?.currentPage * commonState?.pageSize <= commonState?.totalCount ?
                             commonState?.currentPage * commonState?.pageSize
                             :
-                            (commonState?.currentPage - 1) * commonState?.pageSize + servicesState?.alltrucks_details?.length
+                            (commonState?.currentPage - 1) * commonState?.pageSize + servicesState?.allLoads_details?.length
                             } of ${commonState?.totalCount}`}
                         </p>
                     </div>

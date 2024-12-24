@@ -26,7 +26,7 @@ const LoadCard = ({
 
     function cardDetails(data) {
         return <Fragment>
-            {[{ icon: Icons.materialIcon, value: `${data?.tone} Tone` }, { icon: Icons.numberPlateIcon, value: data?.hi }, { icon: Icons.wheelIcon, value: `${data?.no_of_tyres} Wheels` },
+            {[{ icon: Icons.materialIcon, value: `${data?.tone} Tone` }, { icon: Icons.numberPlateIcon, value: data?.material }, { icon: Icons.wheelIcon, value: `${data?.no_of_tyres} Wheels` },
             { icon: Icons.containerIcon, value: data?.truck_body_type }]
                 .map((val, ind) => (
                     <div className={'col-6'} key={ind}>

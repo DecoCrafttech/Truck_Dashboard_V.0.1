@@ -17,7 +17,7 @@ const analyticsSlice = createSlice({
 
         selected_analytics_glow: false,
         selected_Line_chart: "Load",
-        selected_analytics_data: [],
+        selected_analytics_data: {},
         report_getting_date: new Date().toISOString().split('T')[0],
     },
     reducers: {
@@ -94,7 +94,7 @@ const analyticsSlice = createSlice({
         getIndividualAnalyticsRequest(state, action) {
             return {
                 ...state,
-                selected_analytics_data: [],
+                selected_analytics_data: {},
                 selected_analytics_glow: true
             }
         },

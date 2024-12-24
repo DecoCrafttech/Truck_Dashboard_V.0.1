@@ -16,7 +16,7 @@ export const handlendOverallAnalysis = (dataParams) => async (dispatch) => {
         dispatch(getOverallAnalyticsRequest())
         const { data } = await axiosInstance.post("/get_analytics", dataParams)
         if (data?.error_code === 0) {
-            const analysisData = {...data?.data[0]}
+            const analysisData = { ...data?.data[0] }
             const changeFormat = data?.data[0]?.daily_requirements?.map((v) => {
                 const splitTime = v?.time?.split(":")[0]
                 const newFormat = { ...v, time: splitTime }
@@ -38,6 +38,7 @@ export const handlendIndividualSelectedAnalysis = (dataParams) => async (dispatc
         dispatch(getIndividualAnalyticsRequest())
         const { data } = await axiosInstance.post(dataParams?.endpoint, dataParams?.params)
         if (data?.error_code === 0) {
+            let arrayDatas = []
             const changeFormat = data?.data[0]?.daily_requirements?.map((v) => {
                 const splitTime = v?.time?.split(":")[0]
 
@@ -63,7 +64,27 @@ export const handlendIndividualSelectedAnalysis = (dataParams) => async (dispatc
                 }
             })
 
-            dispatch(getIndividualAnalyticsResponse(changeFormat))
+            switch (dataParams?.from) {
+                case "Load":
+                    arrayDatas = data?.data[0]?.load_dashboard
+                    break
+
+                case "Truck":
+                    arrayDatas = data?.data[0]?.truck_dashboard
+                    break
+
+                case "Driver":
+                    arrayDatas = data?.data[0]?.driver_dashboard
+                    break
+
+                case "BuyAndSell":
+                    arrayDatas = data?.data[0]?.buy_and_sell_dashboard
+                    break
+
+                default:
+                    break;
+            }
+            dispatch(getIndividualAnalyticsResponse({ daily_requirements: changeFormat, data: arrayDatas }))
         } else {
             dispatch(getIndividualAnalyticsFailure(data?.message))
         }

@@ -317,6 +317,43 @@ const JsonData = () => {
             "HOT",
             "WARM",
             "COLD"
+        ],
+        analatics_load_table_head:[
+            "Date",
+            "Phone number",
+            "Name",
+            "Company name",
+            "From",
+            "To",
+            "Material"
+        ],
+        analatics_truck_table_head:[
+            "Date",
+            "Phone number",
+            "Name",
+            "Company name",
+            "From",
+            "To",
+            "Vehicle number" 
+        ],
+        analatics_driver_table_head:[
+            "Date",
+            "Phone number", 
+            "Name",
+            "Company name",
+            "From",
+            "To",
+            "Vehicle number" 
+        ],
+        analatics_buy_sell_table_head:[
+            "Date",
+            "Phone number", 
+            "Name",
+            "Kms driven",
+            "location",
+            "Owner name",
+            "Vehicle number",
+            "Price"
         ]
     }
 

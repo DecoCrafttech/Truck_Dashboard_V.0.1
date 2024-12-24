@@ -69,6 +69,7 @@ const Feedback = () => {
                                     <thead>
                                         <tr>
                                             <th className="table-head">Complaint ID</th>
+                                            <th className="table-head">Entry Type</th>
                                             <th className="table-head">Customer Name</th>
                                             <th className="table-head">Category</th>
                                             <th className="table-head">Phone Number</th>
@@ -82,6 +83,7 @@ const Feedback = () => {
                                             feedbackState?.feeback_data?.map((v, i) => (
                                                 <tr className='table-body-tr'>
                                                     <td>{v?.complaint_id}</td>
+                                                    <td>{v?.entry_type}</td>
                                                     <td>{v?.customer_name}</td>
                                                     <td>{v?.category}</td>
                                                     <td>{v?.phone_no}</td>

@@ -17,11 +17,12 @@ import JsonData from 'Utils/JsonData';
 export const Analytics = () => {
     const { commonState, servicesState, analyticsState } = useSelector((state) => state)
     const { analyticsPieChart, analyticsButtons } = JsonData()?.jsxJson
-    const { overallAnalysis } = JsonData()?.jsonOnly
+    const { overallAnalysis, analatics_load_table_head, analatics_truck_table_head, analatics_driver_table_head, analatics_buy_sell_table_head } = JsonData()?.jsonOnly
     const dispatch = useDispatch()
 
     const parentWidth = 400
     const parentHeight = 300
+    
     //initial render data
     useEffect(() => {
         dispatch(handlendOverallAnalysis({ filter_category: analyticsState?.overall_chart }))
@@ -36,7 +37,6 @@ export const Analytics = () => {
             }))
         }
     }, [commonState?.apply_filter_clicked, commonState?.apply_filter, analyticsState?.clear_filter])
-
 
     //individual data
     useEffect(() => {
@@ -178,7 +178,7 @@ export const Analytics = () => {
     function dynamicLineCharts(chartType) {
         switch (chartType) {
             case "Load":
-                return <LineChart data={analyticsState?.selected_analytics_data}>
+                return <LineChart data={analyticsState?.selected_analytics_data?.daily_requirements}>
                     <CartesianGrid strokeDasharray="3 3" />
 
                     <XAxis
@@ -187,7 +187,7 @@ export const Analytics = () => {
                         type="category"
                     />
 
-                    <YAxis ticks={[5,10,15,20,25,30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
+                    <YAxis ticks={[5, 10, 15, 20, 25, 30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
 
 
                     <Tooltip />
@@ -203,7 +203,7 @@ export const Analytics = () => {
                 </LineChart>
 
             case "Truck":
-                return <LineChart data={analyticsState?.selected_analytics_data}>
+                return <LineChart data={analyticsState?.selected_analytics_data?.daily_requirements}>
                     <CartesianGrid strokeDasharray="3 3" />
 
                     <XAxis
@@ -212,7 +212,7 @@ export const Analytics = () => {
                         type="category"
                     />
 
-                    <YAxis ticks={[5,10,15,20,25,30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
+                    <YAxis ticks={[5, 10, 15, 20, 25, 30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
 
                     <Tooltip />
                     <Legend />
@@ -227,7 +227,7 @@ export const Analytics = () => {
                 </LineChart>
 
             case "Driver":
-                return <LineChart data={analyticsState?.selected_analytics_data}>
+                return <LineChart data={analyticsState?.selected_analytics_data?.daily_requirements}>
                     <CartesianGrid strokeDasharray="3 3" />
 
                     <XAxis
@@ -236,7 +236,7 @@ export const Analytics = () => {
                         type="category"
                     />
 
-                    <YAxis ticks={[5,10,15,20,25,30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
+                    <YAxis ticks={[5, 10, 15, 20, 25, 30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
 
                     <Tooltip />
                     <Legend />
@@ -251,7 +251,7 @@ export const Analytics = () => {
                 </LineChart>
 
             case "BuyAndSell":
-                return <LineChart data={analyticsState?.selected_analytics_data}>
+                return <LineChart data={analyticsState?.selected_analytics_data?.daily_requirements}>
                     <CartesianGrid strokeDasharray="3 3" />
 
                     <XAxis
@@ -260,7 +260,7 @@ export const Analytics = () => {
                         type="category"
                     />
 
-                    <YAxis ticks={[5,10,15,20,25,30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
+                    <YAxis ticks={[5, 10, 15, 20, 25, 30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
 
                     <Tooltip />
                     <Legend />
@@ -284,7 +284,7 @@ export const Analytics = () => {
                         type="category"
                     />
 
-                    <YAxis ticks={[5,10,15,20,25,30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
+                    <YAxis ticks={[5, 10, 15, 20, 25, 30]} label={{ value: 'Post', angle: -90, position: 'insideLeft', offset: 5 }} />
 
                     <Tooltip />
                     <Legend />
@@ -366,6 +366,101 @@ export const Analytics = () => {
         }
         return null;
     };
+
+    function dynamicTableHeader(chartType) {
+        switch (chartType) {
+            case "Load":
+                return <tr>
+                    {analatics_load_table_head?.map((tableHeader, tableHeaderInd) => (
+                        <th className="table-head" key={tableHeaderInd}>{tableHeader}</th>
+                    ))}
+                </tr>
+
+            case "Truck":
+                return <tr>
+                    {analatics_truck_table_head?.map((tableHeader, tableHeaderInd) => (
+                        <th className="table-head" key={tableHeaderInd}>{tableHeader}</th>
+                    ))}
+                </tr>
+
+            case "Driver":
+                return <tr>
+                    {analatics_driver_table_head?.map((tableHeader, tableHeaderInd) => (
+                        <th className="table-head" key={tableHeaderInd}>{tableHeader}</th>
+                    ))}
+                </tr>
+
+            case "BuyAndSell":
+                return <tr>
+                    {analatics_buy_sell_table_head?.map((tableHeader, tableHeaderInd) => (
+                        <th className="table-head" key={tableHeaderInd}>{tableHeader}</th>
+                    ))}
+                </tr>
+
+            default:
+                break;
+        }
+    }
+
+    function dynamicTableBody(chartType) {
+        switch (chartType) {
+            case "Load":
+                return analyticsState?.selected_analytics_data?.data?.map((v, i) => (
+                    <tr className='table-body-tr'>
+                        <td>{v?.updt?.slice(5, 16)}</td>
+                        <td>{v?.contact_no}</td>
+                        <td>{v?.profile_name}</td>
+                        <td>{v?.company_name}</td>
+                        <td>{v?.from_location}</td>
+                        <td>{v?.to_location}</td>
+                        <td>{v?.material}</td>
+                    </tr>
+                ))
+
+            case "Truck":
+                return analyticsState?.selected_analytics_data?.data?.map((v, i) => (
+                    <tr className='table-body-tr'>
+                        <td>{v?.updt?.slice(5, 16)}</td>
+                        <td>{v?.contact_no}</td>
+                        <td>{v?.profile_name}</td>
+                        <td>{v?.company_name}</td>
+                        <td>{v?.from_location}</td>
+                        <td>{v?.to_location}</td>
+                        <td>{v?.vehicle_number}</td>
+                    </tr>
+                ))
+
+            case "Driver":
+                return analyticsState?.selected_analytics_data?.data?.map((v, i) => (
+                    <tr className='table-body-tr'>
+                        <td>{v?.updt?.slice(5, 16)}</td>
+                        <td>{v?.contact_no}</td>
+                        <td>{v?.profile_name}</td>
+                        <td>{v?.company_name}</td>
+                        <td>{v?.from_location}</td>
+                        <td>{v?.to_location}</td>
+                        <td>{v?.vehicle_number}</td>
+                    </tr>
+                ))
+
+            case "BuyAndSell":
+                return analyticsState?.selected_analytics_data?.data?.map((v, i) => (
+                    <tr className='table-body-tr'>
+                        <td>{v?.updt?.slice(5, 16)}</td>
+                        <td>{v?.contact_no}</td>
+                        <td>{v?.profile_name}</td>
+                        <td>{v?.kms_driven}</td>
+                        <td>{v?.location}</td>
+                        <td>{v?.owner_name}</td>
+                        <td>{v?.vehicle_number}</td>
+                        <td>{v?.price}</td>
+                    </tr>
+                ))
+
+            default:
+                break;
+        }
+    }
 
     return (
         <div className='w-100 h-100'>
@@ -510,9 +605,40 @@ export const Analytics = () => {
                                             {dynamicLineCharts(analyticsState?.selected_Line_chart)}
                                         </ResponsiveContainer>
                                 }
-
                             </Card.Body>
                         </Card>
+                    </div>
+
+                    {/* table */}
+                    <div className="w-100 px-2">
+                        <div className='card border-0 rounded-2'>
+                            <div className="card-header rounded-top-2 bg-transparent border-0 d-flex flex-wrap mt-3 px-3">
+                                <div className="col-6">
+                                    <h5>{analyticsState?.selected_Line_chart} Data</h5>
+                                </div>
+                            </div>
+                            <div className="feedback-table-height p-3 card-body">
+                                <div className="table-responsive h-100 overflow-scroll">
+                                    {
+                                        analyticsState?.selected_analytics_data?.data?.length ?
+                                            <table className="table ">
+                                                <thead>
+                                                    {dynamicTableHeader(analyticsState?.selected_Line_chart)}
+                                                </thead>
+                                                <tbody>
+                                                    {dynamicTableBody(analyticsState?.selected_Line_chart)}
+                                                </tbody>
+                                            </table>
+                                            :
+                                            <div className="d-flex flex-wrap h-100 w-100 align-items-center justify-content-center">
+                                                <div className="col-8 text-center">
+                                                    <p>No Data Found</p>
+                                                </div>
+                                            </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
