@@ -5,7 +5,7 @@ import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogRes
 import { getCrmDashboardFailure, getCrmDashboardRequest, getCrmDashboardResponse, getCrmModalFailure, getCrmModalRequest, update_crm_status_entry_user_id, updateCrmStatusEntryFailure, updateCrmStatusEntryResponse } from "Slices/Pages_slice/Crm_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
 import { getFeedbackFailure, getFeedbackRequest, getFeedbackResponse, updateFeedbackModal, updateFeedbackStatusFailure, updateFeedbackStatusResponse } from "Slices/Pages_slice/Feedback_slice";
-import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellPostFailure, buyAndsellPostResponse, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
+import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellImageDeleteFailure, buyAndsellPostFailure, buyAndsellPostResponse, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
     name: 'commonSlice',
@@ -471,6 +471,10 @@ const commonSlice = createSlice({
             })
             .addCase(updateAddBlogResponse, (state, action) => {
                 state.modalShow = false
+            })
+            .addCase(buyAndsellImageDeleteFailure, (state, action) => {
+                state.Err = action.payload
+                state.Toast_Type = "error"
             })
 
             //blog

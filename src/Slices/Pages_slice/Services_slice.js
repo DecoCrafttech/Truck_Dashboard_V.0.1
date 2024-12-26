@@ -41,6 +41,8 @@ const servicesSlice = createSlice(({
         buyAndsellDelete_id: null,
         new_edit_buyAndsell_card: {},
         buyAndsell_filter_card: {},
+
+        deletion_image_cdn_path: null
     },
     reducers: {
         updateCreateModalDetails(state, action) {
@@ -74,6 +76,7 @@ const servicesSlice = createSlice(({
                     break;
             }
         },
+
         updateEditDetails(state, action) {
             let obj = {
                 ...state,
@@ -85,52 +88,50 @@ const servicesSlice = createSlice(({
                 }
             }
 
+            let selectedVehicle = []
+            selectedVehicle = state?.user_vehicle_list?.filter((v) => v.label === action.payload?.data?.vehicle_number)
+            if (!selectedVehicle?.length) {
+                selectedVehicle = [{ value: 1, label: action.payload?.data?.vehicle_number }]
+            }
+
             switch (action.payload?.from) {
                 case "Load":
                     obj.new_edit_load_card = action.payload?.data
                     return obj
 
                 case "Truck":
-                    let selectedVehicle = []
-                    if (action.payload?.from === "Truck" && action.payload?.type === "Edit") {
-                        selectedVehicle = state?.user_vehicle_list?.filter((v) => v.label === action.payload?.data?.vehicle_number)
-                    }
-
                     obj.new_edit_truck_card = {
                         ...state?.new_edit_truck_card,
                         ...action.payload?.data,
-                        vehicle_number_selected: selectedVehicle
+                        vehicle_number: selectedVehicle,
+                        vehicle_number_selected: action.payload?.data?.vehicle_number
                     }
                     return obj
 
                 case "Driver":
-                    let selectedVehicleDriver = []
-                    if (action.payload?.from === "Driver" && action.payload?.type === "Edit") {
-                        selectedVehicleDriver = state?.user_vehicle_list?.filter((v) => v.label === action.payload?.data?.vehicle_number)
-                    }
                     obj.new_edit_driver_card = {
                         ...state?.new_edit_driver_card,
                         ...action.payload?.data,
-                        vehicle_number_selected: selectedVehicleDriver,
+                        vehicle_number: selectedVehicle,
+                        vehicle_number_selected: action.payload?.data?.vehicle_number
                     }
                     return obj
 
                 case "BuyAndSell":
-                    let selectedVehicleBuyAndSell = []
-                    if (action.payload?.from === "BuyAndSell" && action.payload?.type === "Edit") {
-                        selectedVehicleBuyAndSell = state?.user_vehicle_list?.filter((v) => v.label === action.payload?.data?.vehicle_number)
-                    }
-
                     obj.new_edit_buyAndsell_card = {
                         ...state?.new_edit_buyAndsell_card,
                         ...action.payload?.data,
-
-                        vehicle_number_selected: selectedVehicleBuyAndSell,
+                        blog_image_show_ui: action.payload?.data?.images,
+                        blog_image_send_api: [],
+                        vehicle_number: selectedVehicle,
+                        vehicle_number_selected: action.payload?.data?.vehicle_number,
+                        existing_image_from_response: action.payload?.data?.images,
+                        edit: true
                     }
                     return obj
 
                 default:
-                    break;
+                    return state;
             }
         },
         updateDeleteDetails(state, action) {
@@ -346,9 +347,6 @@ const servicesSlice = createSlice(({
             }
         },
 
-
-
-
         //                                                                                                 truck api's                                                         //
         //get truck api
         truckGetRequest(state, action) {
@@ -442,9 +440,6 @@ const servicesSlice = createSlice(({
             }
         },
 
-
-
-
         //                                                            driver api's                                                         //
         //get driver api
         driverGetRequest(state, action) {
@@ -537,9 +532,6 @@ const servicesSlice = createSlice(({
             }
         },
 
-
-
-
         //                                                            buy and sell api's                                                         //
         //get buy and sell api
         buyAndsellGetRequest(state, action) {
@@ -631,6 +623,42 @@ const servicesSlice = createSlice(({
                 spinner_glow: false
             }
         },
+
+        //delete buy and sell image
+        buyAndsellImageDeleteRequest(state, action) {
+            return {
+                ...state,
+                deletion_image_cdn_path: action?.payload
+            }
+        },
+        buyAndsellImageDeleteResponse(state, action) {
+            let images = state?.new_edit_buyAndsell_card?.blog_image_show_ui?.filter((v) => v !== action?.payload);
+            let show_ui_img = []
+
+            if (state?.new_edit_buyAndsell_card?.blog_image_send_api) {
+                show_ui_img = [...state?.new_edit_buyAndsell_card?.blog_image_send_api, ...images]
+            } else {
+                show_ui_img = images
+            }
+
+            let newObjAfterImageRemoval = {
+                ...state?.new_edit_buyAndsell_card,
+                existing_image_from_response: images,
+                blog_image_show_ui: show_ui_img, 
+            }
+
+            return {
+                ...state,
+                new_edit_buyAndsell_card: { ...newObjAfterImageRemoval },
+                deletion_image_cdn_path: null
+            }
+        },
+        buyAndsellImageDeleteFailure(state, action) {
+            return {
+                ...state,
+                deletion_image_cdn_path: null
+            }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -669,12 +697,9 @@ const servicesSlice = createSlice(({
                 state.modal_from = "CRM"
                 state.modal_type = "Edit"
             })
-            
+
     }
 }))
-
-
-
 
 const { actions, reducer } = servicesSlice;
 
@@ -750,7 +775,9 @@ export const {
     buyAndsellDeleteRequest,
     buyAndsellDeleteResponse,
     buyAndsellDeleteFailure,
-
+    buyAndsellImageDeleteRequest,
+    buyAndsellImageDeleteResponse,
+    buyAndsellImageDeleteFailure,
 
 } = actions;
 

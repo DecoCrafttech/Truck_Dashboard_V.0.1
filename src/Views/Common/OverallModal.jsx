@@ -2,7 +2,7 @@ import { handleUpdateModalShow } from "Actions/Common_actions/Common_action";
 import { handleAddBlog, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
 import { handleCrmBeforeSaleEntry, handleCrmModalEntry } from "Actions/Pages_actions/CrmActions";
 import { handleUpdateFeedbackComplaints } from "Actions/Pages_actions/FeedbackAction";
-import { handleBuyAndSellInputOnChange, handleDeleteBuyAndSell, handleDeleteDriver, handleDeleteLoad, handleDeleteTruck, handlePostOrEditBuyAndSell, handlePostOrEditDriver, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
+import { handleBuyAndSellInputOnChange, handleDeleteBuyAndSell, handleDeleteDriver, handleDeleteImage, handleDeleteLoad, handleDeleteTruck, handlePostOrEditBuyAndSell, handlePostOrEditDriver, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
 import ButtonComponent from "Components/Button/Button";
 import BlogCard from "Components/Card/BlogCard";
 import BuyandSellCard from "Components/Card/BuyandSellCard";
@@ -25,8 +25,6 @@ import { resetOverallChartFilter } from "Slices/Pages_slice/Analytice_slice";
 import { ResetbuyAndsellFilterData, ResetLoadFilterData, ResetTruckFilterData } from "Slices/Pages_slice/Services_slice";
 import Icons from "Utils/Icons";
 import JsonData from "Utils/JsonData";
-
-
 
 export function OverallModel() {
     const { commonState, servicesState, blogState, feedbackState, crmState } = useSelector((state) => state);
@@ -244,7 +242,7 @@ export function OverallModel() {
                 case "input":
                     return ipVal?.type === "file" ?
                         <Fragment>
-                            <div className='cursor-pointer col-12' onClick={() => document.getElementById('file_upload').click()} key={iPInd}>
+                            <div className={`cursor-pointer col-12 ${ipVal?.value?.length >= 3 ? 'pe-none' : ''}`} onClick={() => document.getElementById('file_upload').click()} key={iPInd}>
                                 <Input
                                     type={ipVal?.type}
                                     change={ipVal?.change}
@@ -260,7 +258,7 @@ export function OverallModel() {
 
                                 <div className='border py-2 rounded-2 col-12 text-center'>
                                     <span className='me-2'>{Icons.fileUploadIcon}</span>
-                                    <span className='text-secondary fs-15'>Click here to choose image</span>
+                                    <span className='text-secondary fs-15'>{ipVal?.value?.length >= 3 ? "Only 3 images can be selectable" : "Click here to choose image" }</span>
                                 </div>
                             </div>
 
@@ -274,38 +272,62 @@ export function OverallModel() {
                                         filesize,
                                     } = data;
                                     return (
-                                        <div className="file-atc-box w-100" key={id}>
-                                            {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ? (
+                                        typeof data === "string" ?
+                                            <div className="file-atc-box w-100" key={id}>
                                                 <div className="file-image">
-                                                    {" "}
-                                                    <img src={fileimage} alt="" />
+                                                    <img src={data} alt="" />
                                                 </div>
-                                            ) : (
-                                                <div className="file-image">
-                                                    <i className="far fa-file-alt"></i>
-                                                </div>
-                                            )}
-                                            <div className="file-detail row">
-                                                <h6>{filename}</h6>
-                                                <div className="col-9">
-                                                    <p>
-                                                        <span>Size : {filesize}</span>,
-                                                        <span className="ps-1 ml-2">
-                                                            Modified Time : {datetime}
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                                <div className="file-actions col-3">
-                                                    <button
-                                                        type="button"
-                                                        className="file-action-btn"
-                                                        onClick={() => DeleteSelectFile(id)}
-                                                    >
-                                                        Delete
-                                                    </button>
+                                                <div className="file-detail row">
+                                                    <div className="col-9">
+                                                        <h6>{data?.split("/")[data?.split("/")?.length - 1]}</h6>
+                                                    </div>
+                                                    <div className="file-actions col-3">
+                                                        <ButtonComponent
+                                                            type="button"
+                                                            className="file-action-btn w-100 text-end"
+                                                            clickFunction={() => dispatch(handleDeleteImage({ user_id: servicesState?.new_edit_buyAndsell_card?.user_id, buy_sell_id: servicesState?.new_edit_buyAndsell_card?.buy_sell_id, image: data }))}
+                                                            buttonName={
+                                                                servicesState?.deletion_image_cdn_path === data ?
+                                                                    <SpinnerComponent />
+                                                                    :
+                                                                    "Delete"
+                                                            }
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            :
+                                            <div className="file-atc-box w-100" key={id}>
+                                                {filename.match(/.(jpg|jpeg|png|gif|svg)$/i) ? (
+                                                    <div className="file-image">
+                                                        {" "}
+                                                        <img src={fileimage} alt="" />
+                                                    </div>
+                                                ) : (
+                                                    <div className="file-image">
+                                                        <i className="far fa-file-alt"></i>
+                                                    </div>
+                                                )}
+                                                <div className="file-detail row">
+                                                    <h6>{filename}</h6>
+                                                    <div className="col-9">
+                                                        <p>
+                                                            <span>Size : {filesize}</span>,
+                                                            <span className="ps-1 ml-2">
+                                                                Modified Time : {datetime}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                    <div className="file-actions col-3">
+                                                        <ButtonComponent
+                                                            type="button"
+                                                            className="file-action-btn w-100 text-end"
+                                                            clickFunction={() => DeleteSelectFile(id)}
+                                                            buttonName="Delete"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
                                     );
                                 })}
                             </div>
@@ -634,7 +656,6 @@ export function OverallModel() {
                                     btnDisable={servicesState?.spinner_glow}
                                 />
                             </div>
-
 
                     case "Filter":
                         return <div className='col-12 d-flex flex-wrap px-3'>

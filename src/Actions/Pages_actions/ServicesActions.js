@@ -60,7 +60,9 @@ import {
     buyAndsellDeleteRequest,
     buyAndsellDeleteResponse,
     buyAndsellDeleteFailure,
-
+    buyAndsellImageDeleteRequest,
+    buyAndsellImageDeleteResponse,
+    buyAndsellImageDeleteFailure,
 
 } from 'Slices/Pages_slice/Services_slice';
 
@@ -277,7 +279,7 @@ export const handleOnchangeTruckFilter = (inputData) => dispatch => {
 
 export const handlePostOrEditTruck = (servicesState) => async (dispatch) => {
     if (servicesState?.user_data?.user_id) {
-        if (servicesState?.new_edit_truck_card?.vehicle_number_selected?.length &&
+        if (servicesState?.new_edit_truck_card?.vehicle_number?.length &&
             servicesState?.new_edit_truck_card?.company_name &&
             servicesState?.new_edit_truck_card?.contact_no &&
             servicesState?.new_edit_truck_card?.name_of_the_transport &&
@@ -371,7 +373,7 @@ export const handleOnchangeDriverFilter = (inputData) => dispatch => {
 
 export const handlePostOrEditDriver = (servicesState) => async (dispatch) => {
     if (servicesState?.user_data?.user_id) {
-        if (servicesState?.new_edit_driver_card?.vehicle_number_selected?.length &&
+        if (servicesState?.new_edit_driver_card?.vehicle_number?.length &&
             servicesState?.new_edit_driver_card?.company_name &&
             servicesState?.new_edit_driver_card?.contact_no &&
             servicesState?.new_edit_driver_card?.driver_name &&
@@ -464,7 +466,7 @@ export const handleOnchangeBuyAndSellFilter = (inputData) => dispatch => {
 export const handlePostOrEditBuyAndSell = (servicesState) => async (dispatch) => {
     if (servicesState?.user_data?.user_id) {
 
-        if (servicesState?.new_edit_buyAndsell_card?.vehicle_number_selected &&
+        if (servicesState?.new_edit_buyAndsell_card?.vehicle_number?.length &&
             servicesState?.new_edit_buyAndsell_card?.model &&
             servicesState?.new_edit_buyAndsell_card?.brand &&
             servicesState?.new_edit_buyAndsell_card?.owner_name &&
@@ -492,15 +494,23 @@ export const handlePostOrEditBuyAndSell = (servicesState) => async (dispatch) =>
             formData.append("vehicle_number", servicesState?.new_edit_buyAndsell_card?.vehicle_number_selected);
             formData.append("truck_body_type", servicesState?.new_edit_buyAndsell_card?.truck_body_type)
             formData.append("no_of_tyres", servicesState?.new_edit_buyAndsell_card?.no_of_tyres)
-            formData.append("tonnage", servicesState?.new_edit_buyAndsell_card?.tonnage !== '' ? `${servicesState?.new_edit_buyAndsell_card?.tonnage} Ton` : '')
+            formData.append("tonnage", servicesState?.new_edit_buyAndsell_card?.tonnage !== '' ? `${servicesState?.new_edit_buyAndsell_card?.tonnage?.split(" ")[0]} Ton` : '')
 
             if (servicesState?.new_edit_buyAndsell_card?.buy_sell_id) {
                 formData.append("buy_sell_id", servicesState?.new_edit_buyAndsell_card?.buy_sell_id);
             }
 
-            if (servicesState?.new_edit_buyAndsell_card?.blog_image_send_api.length > 0) {
-                for (let i = 0; i < servicesState?.new_edit_buyAndsell_card?.blog_image_send_api.length; i++) {
-                    formData.append(`truck_image${i + 1}`, servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i]);
+            if (servicesState?.new_edit_buyAndsell_card?.edit) {
+                const totalLen = servicesState?.new_edit_buyAndsell_card?.existing_image_from_response?.length + servicesState?.new_edit_buyAndsell_card?.blog_image_send_api?.length
+
+                for (let i = servicesState?.new_edit_buyAndsell_card?.existing_image_from_response?.length; i < totalLen; i++) {
+                    formData.append(`truck_image${i + 1}`, servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[totalLen - (i + 1)]);
+                }
+            } else {
+                if (servicesState?.new_edit_buyAndsell_card?.blog_image_send_api?.length > 0) {
+                    for (let i = 0; i < servicesState?.new_edit_buyAndsell_card?.blog_image_send_api?.length; i++) {
+                        formData.append(`truck_image${i + 1}`, servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i]);
+                    }
                 }
             }
 
@@ -542,4 +552,27 @@ export const handleDeleteBuyAndSell = (servicesState) => async (dispatch) => {
     }
 
 
+}
+
+
+//delete buy and sell image
+export const handleDeleteImage = (deletionData) => async (dispatch) => {
+    const params = {
+        user_id: deletionData?.user_id,
+        buy_sell_id: deletionData?.buy_sell_id,
+        image_url: deletionData?.image
+    }
+
+    try {
+        dispatch(buyAndsellImageDeleteRequest(deletionData?.image))
+        const { data } = await axiosInstance.post("/remove_buy_and_sell_image ", params)
+
+        if (data?.error_code === 0) {
+            dispatch(buyAndsellImageDeleteResponse(deletionData?.image))
+        } else {
+            dispatch(buyAndsellImageDeleteResponse(data?.message))
+        }
+    } catch (Err) {
+        dispatch(buyAndsellImageDeleteFailure(Err?.message))
+    }
 }

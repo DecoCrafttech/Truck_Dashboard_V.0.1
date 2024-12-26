@@ -318,7 +318,7 @@ const JsonData = () => {
             "WARM",
             "COLD"
         ],
-        analatics_load_table_head:[
+        analatics_load_table_head: [
             "Date",
             "Phone number",
             "Name",
@@ -327,27 +327,27 @@ const JsonData = () => {
             "To",
             "Material"
         ],
-        analatics_truck_table_head:[
+        analatics_truck_table_head: [
             "Date",
             "Phone number",
             "Name",
             "Company name",
             "From",
             "To",
-            "Vehicle number" 
+            "Vehicle number"
         ],
-        analatics_driver_table_head:[
+        analatics_driver_table_head: [
             "Date",
-            "Phone number", 
+            "Phone number",
             "Name",
             "Company name",
             "From",
             "To",
-            "Vehicle number" 
+            "Vehicle number"
         ],
-        analatics_buy_sell_table_head:[
+        analatics_buy_sell_table_head: [
             "Date",
-            "Phone number", 
+            "Phone number",
             "Name",
             "Kms driven",
             "location",
@@ -768,7 +768,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_truck_card?.vehicle_number_selected || [],
+                value: state?.servicesState?.new_edit_truck_card?.vehicle_number || [],
                 options: state?.servicesState?.user_vehicle_list,
                 change: (value) => dispatch(handleTruckInputOnChange({ vehicle_number: value, vehicle_number_selected: value[0]?.label })),
                 isMandatory: true,
@@ -991,7 +991,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_driver_card?.vehicle_number_selected || [],
+                value: state?.servicesState?.new_edit_driver_card?.vehicle_number || [],
                 options: state?.servicesState?.user_vehicle_list,
                 change: (value) => dispatch(handleDriverInputOnChange({ vehicle_number: value, vehicle_number_selected: value[0]?.label })),
                 isMandatory: true,
@@ -1180,7 +1180,7 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_buyAndsell_card?.vehicle_number_selected || [],
+                value: state?.servicesState?.new_edit_buyAndsell_card?.vehicle_number || [],
                 options: state?.servicesState?.user_vehicle_list,
                 change: (value) => dispatch(handleBuyAndSellInputOnChange({ vehicle_number: value, vehicle_number_selected: value[0]?.label })),
                 isMandatory: true,
@@ -1296,6 +1296,7 @@ const JsonData = () => {
                             if (myImages) {
                                 makeImagesList = [...myImages, ...makeImagesList];
                             }
+
                             dispatch(handleBuyAndSellInputOnChange({ blog_image_show_ui: makeImagesList, blog_image_send_api: e.target.files }));
                         })
                         .catch((error) => console.error('Error reading files:', error));
