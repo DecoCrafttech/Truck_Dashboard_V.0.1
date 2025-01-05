@@ -47,7 +47,8 @@ const crmSlice = createSlice({
             return {
                 ...state,
                 crm_status_entry: {
-                    user_id: action.payload
+                    user_id: action.payload,
+                    sales_id: action.payload
                 }
             }
         },

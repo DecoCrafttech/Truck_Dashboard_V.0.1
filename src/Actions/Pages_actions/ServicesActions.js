@@ -63,8 +63,12 @@ import {
     buyAndsellImageDeleteRequest,
     buyAndsellImageDeleteResponse,
     buyAndsellImageDeleteFailure,
+    updateBuyAndSellDetailGetRequest,
+    updateBuyAndSellDetailGetResponse,
+    updateBuyAndSellDetailGetFailure,
 
 } from 'Slices/Pages_slice/Services_slice';
+
 
 export const handleCreateModal = (from, type) => dispatch => {
     dispatch(updateCreateModalDetails({ from, type }))
@@ -287,7 +291,7 @@ export const handlePostOrEditTruck = (servicesState) => async (dispatch) => {
             servicesState?.new_edit_truck_card?.truck_brand_name &&
             servicesState?.new_edit_truck_card?.truck_size &&
             servicesState?.new_edit_truck_card?.from_location &&
-            servicesState?.new_edit_truck_card?.to_location &&
+            servicesState?.new_edit_truck_card?.to_location?.length &&
             servicesState?.new_edit_truck_card?.truck_body_type &&
             servicesState?.new_edit_truck_card?.no_of_tyres) {
             dispatch(TruckPostRequest())
@@ -298,7 +302,7 @@ export const handlePostOrEditTruck = (servicesState) => async (dispatch) => {
                     ...servicesState?.new_edit_truck_card,
                     vehicle_number: servicesState?.new_edit_truck_card?.vehicle_number_selected,
                     from: servicesState?.new_edit_truck_card?.from_location,
-                    to: servicesState?.new_edit_truck_card?.to_location,
+                    to: servicesState?.new_edit_truck_card?.to_location?.map((v) => v?.label),
                     truck_name: servicesState?.new_edit_truck_card?.truck_brand_name,
                     user_id: servicesState?.user_data?.user_id,
                     truck_id: servicesState?.new_edit_truck_card?.truck_id,
@@ -552,6 +556,21 @@ export const handleDeleteBuyAndSell = (servicesState) => async (dispatch) => {
     }
 
 
+}
+
+export const handleBuyAndSellViewDetails = buy_sell_id => async (dispatch) => {
+    try {
+        dispatch(updateBuyAndSellDetailGetRequest())
+        const { data } = await axiosInstance.post("/buy_sell_id_details", { buy_sell_id })
+
+        if (data?.error_code === 0) {
+            dispatch(updateBuyAndSellDetailGetResponse(data?.data[0]))
+        } else {
+            dispatch(updateBuyAndSellDetailGetFailure(data?.message))
+        }
+    } catch (Err) {
+        dispatch(updateBuyAndSellDetailGetFailure(Err?.message))
+    }
 }
 
 

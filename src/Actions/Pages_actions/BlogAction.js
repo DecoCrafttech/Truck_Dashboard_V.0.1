@@ -75,7 +75,11 @@ export const handleAddBlog = params => async (dispatch) => {
             fd.append("heading2", params?.heading2)
             fd.append("blog_content", params?.blog_content)
             fd.append("blog_image", params?.blog_image_send_api[0]) 
+            if(params?.blog_id){
+                fd.append("blog_id", params?.blog_id)
+            }
             dispatch(updateAddBlogRequest())
+            
             const { data } = await axiosInstance.post("/blog_post_entry", fd)
 
             if (data.error_code === 0) {

@@ -358,6 +358,41 @@ const JsonData = () => {
     }
 
     const jsxJson = {
+        buy_sell_carousel_settings: {
+            // customPaging: function (i) {
+            //     return (
+            //         <a className='p-1 row justify-content-center align-items-center'>
+            //             <img src={Images[i]} />
+            //         </a>
+            //     );
+            // },
+            dots: true,
+            dotsClass: "slick-dots slick-thumb",
+            infinite: true,
+            speed: 500,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        infinite: false,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ],
+            swipeToSlide: true,
+        },
+
         //                                                              Analytics                                                            //
         analyticsOverallLineChartFilter: [
             {
@@ -518,7 +553,7 @@ const JsonData = () => {
                 category: "textbox",
                 placeholder: "",
                 value: blogState?.blog_edit_data?.blog_content,
-                change: (e) => dispatch(handleBlogInputOnChange({ blog_content: e.target.value })),
+                change: (value) => dispatch(handleBlogInputOnChange({ blog_content: value })),
                 error: commonState?.validated && !blogState?.blog_edit_data?.blog_content ? "Blog content required" : null,
                 isMandatory: true
             },
@@ -530,7 +565,7 @@ const JsonData = () => {
                 value: blogState?.blog_edit_data?.blog_image_show_ui || [],
                 change: (e) => {
                     // -- For Multiple File Input
-                    let myImages = state?.blogState?.blog_edit_data?.blog_image_show_ui;
+                    let myImages = state?.servicesState?.blog_edit_data?.blog_image_show_ui;
                     let makeImagesList = [];
 
                     // Use `Promise.all` to handle async file reading
@@ -542,11 +577,10 @@ const JsonData = () => {
                             if (myImages) {
                                 makeImagesList = [...myImages, ...makeImagesList];
                             }
-                            dispatch(handleBlogInputOnChange({ blog_image_show_ui: makeImagesList, blog_image_send_api: e.target.files }))
+
+                            dispatch(handleBlogInputOnChange({ blog_image_show_ui: makeImagesList, blog_image_send_api: e.target.files }));
                         })
                         .catch((error) => console.error('Error reading files:', error));
-
-
                 },
                 error: commonState?.validated && !blogState?.blog_edit_data?.blog_image_show_ui ? "Blog Image required" : null,
                 isMandatory: true
@@ -838,22 +872,22 @@ const JsonData = () => {
                 type: "text",
                 category: "googleLocation",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_truck_card?.from_location || '',
+                value: servicesState?.new_edit_truck_card?.from_location || '',
                 change: (e) => dispatch(handleTruckInputOnChange({ from_location: e.target.value })),
                 placedSelectedClick: (slectedLoc) => dispatch(handleTruckInputOnChange({ from_location: slectedLoc })),
                 isMandatory: true,
-                Err: commonState?.validated && !state?.servicesState?.new_edit_truck_card?.from_location ? "From location required" : ''
+                Err: commonState?.validated && !servicesState?.new_edit_truck_card?.from_location ? "From location required" : ''
             },
             {
                 name: "To",
-                type: "text",
-                category: "googleLocation",
+                type: "select",
+                category: "select",
                 placeholder: "",
-                value: state?.servicesState?.new_edit_truck_card?.to_location || [],
-                change: (e) => dispatch(handleTruckInputOnChange({ to_location: e.target.value })),
-                placedSelectedClick: (slectedLoc) => dispatch(handleTruckInputOnChange({ to_location: slectedLoc })),
+                value: servicesState?.new_edit_truck_card?.to_location || [],
+                options: jsonOnly.states,
+                change: (value) => dispatch(handleTruckInputOnChange({ to_location: value })),
                 isMandatory: true,
-                Err: commonState?.validated && !state?.servicesState?.new_edit_truck_card?.to_location ? "To location required" : ''
+                Err: commonState?.validated && !servicesState?.new_edit_truck_card?.to_location?.length ? "To location required" : ''
             },
             {
                 name: "Truck Body Type",

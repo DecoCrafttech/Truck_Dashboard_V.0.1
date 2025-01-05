@@ -3,7 +3,7 @@ import axiosInstance from 'Services/axiosInstance';
 import {
     crm_status_entry,
     crm_Before_Sale_entry_state,
-    
+
     getCrmDashboardRequest,
     getCrmDashboardResponse,
     getCrmDashboardFailure,
@@ -49,7 +49,7 @@ export const handleGetCrmModal = (params) => async (dispatch) => {
     try {
         dispatch(getCrmModalRequest())
 
-        const { data } = await axiosInstance.post(params?.slected_button === "after_sale" ? "/get_crm_user_history" : "/get_crm_before_sales", params)
+        const { data } = await axiosInstance.post(params?.slected_button === "after_sale" ? "/get_crm_user_history" : "/get_crm_before_sale_status_history", params)
         if (data?.error_code === 0) {
             dispatch(getCrmModalResponse(data?.data))
         } else {
@@ -63,14 +63,14 @@ export const handleGetCrmModal = (params) => async (dispatch) => {
 
 //                                                Crm modal status entry endpoint                                                     //
 export const handleCrmModalEntry = (params) => async (dispatch) => {
-    if (params?.crm_status &&
-        params?.entry_date &&
-        params?.message) {
+    if (params?.data?.crm_status &&
+        params?.data?.entry_date &&
+        params?.data?.message) {
 
         try {
             dispatch(updateCrmStatusEntryRequest())
 
-            const { data } = await axiosInstance.post("/update_crm_history", params)
+            const { data } = await axiosInstance.post(params?.endpoint, params?.data)
             if (data?.error_code === 0) {
                 dispatch(updateCrmStatusEntryResponse(data?.data))
             } else {

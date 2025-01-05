@@ -28,7 +28,7 @@ const LoadDetails = () => {
         no_of_tyres: "",
         description: "",
         page_no: commonState?.currentPage || 1,
-        search_val: commonState?.search_clicked ? commonState?.search_value || "" : "",
+        search_val: commonState?.search_clicked ? commonState?.search_value?.trim() || "" : "",
         data_limit: commonState?.pageSize || 10
     }
 

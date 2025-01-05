@@ -5,7 +5,6 @@ import Img from 'Components/Img/Img'
 import LinkComponent from 'Components/Router_components/LinkComponent'
 import React, { Fragment } from 'react'
 import { Card } from 'react-bootstrap'
-
 import Icons from 'Utils/Icons'
 
 
@@ -40,7 +39,7 @@ const BuyandSellCard = ({
                         </h6>
                     </div>
                     <div className="col-6 text-end">
-                        <LinkComponent to="/" title="View details" className="text-decoration-none me-4" />
+                        <LinkComponent to={`/dashboard/services/buy_sell_details/view_details?buy_sell_id=${buy_sell_data?.buy_sell_id}`} title="View details" className="text-decoration-none me-4" />
                     </div>
                 </div>
             }

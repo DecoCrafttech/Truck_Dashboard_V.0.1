@@ -13,6 +13,8 @@ import { PieChart, Pie, Cell } from "recharts";
 import { updateOverallAnalysis, updateReportDate } from 'Slices/Pages_slice/Analytice_slice';
 import Icons from 'Utils/Icons';
 import JsonData from 'Utils/JsonData';
+import { DownloadPDF } from 'ResuableFunctions/PdfConvertor';
+import { updateToast } from 'Slices/Common_Slice/Common_slice';
 
 export const Analytics = () => {
     const { commonState, servicesState, analyticsState } = useSelector((state) => state)
@@ -22,7 +24,7 @@ export const Analytics = () => {
 
     const parentWidth = 400
     const parentHeight = 300
-    
+
     //initial render data
     useEffect(() => {
         dispatch(handlendOverallAnalysis({ filter_category: analyticsState?.overall_chart }))
@@ -462,6 +464,33 @@ export const Analytics = () => {
         }
     }
 
+    function handleDownloadReport(chartType) {
+        if (analyticsState?.selected_analytics_data?.data?.length) {
+            switch (chartType) {
+                case "Load":
+                    DownloadPDF({ reportTitle: "Load Details", data: analyticsState?.selected_analytics_data?.data, pdfType: "landscape" })
+                    break;
+
+                case "Truck":
+                    DownloadPDF({ reportTitle: "Truck Details", data: analyticsState?.selected_analytics_data?.data, pdfType: "landscape" })
+                    break;
+
+                case "Driver":
+                    DownloadPDF({ reportTitle: "Driver Details", data: analyticsState?.selected_analytics_data?.data, pdfType: "landscape" })
+                    break;
+
+                case "BuyAndSell":
+                    DownloadPDF({ reportTitle: "Buy and sell Details", data: analyticsState?.selected_analytics_data?.data, pdfType: "landscape" })
+                    break;
+
+                default:
+                    break;
+            }
+        } else {
+            dispatch(updateToast({ message: "No records found for download", type: "error" }))
+        }
+    }
+
     return (
         <div className='w-100 h-100'>
             <div className="container-fluid h-100 overflowY">
@@ -587,6 +616,7 @@ export const Analytics = () => {
                                             buttonName={Icons?.downloadIcon}
                                             title="Download report"
                                             className="btn btn-transparent"
+                                            clickFunction={() => handleDownloadReport(analyticsState?.selected_Line_chart)}
                                         />
                                     </div>
                                 </div>

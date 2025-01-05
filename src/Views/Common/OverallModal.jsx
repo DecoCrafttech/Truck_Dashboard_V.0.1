@@ -1,5 +1,5 @@
 import { handleUpdateModalShow } from "Actions/Common_actions/Common_action";
-import { handleAddBlog, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
+import { handleAddBlog, handleBlogInputOnChange, handleDeleteBlogApi } from "Actions/Pages_actions/BlogAction";
 import { handleCrmBeforeSaleEntry, handleCrmModalEntry } from "Actions/Pages_actions/CrmActions";
 import { handleUpdateFeedbackComplaints } from "Actions/Pages_actions/FeedbackAction";
 import { handleBuyAndSellInputOnChange, handleDeleteBuyAndSell, handleDeleteDriver, handleDeleteImage, handleDeleteLoad, handleDeleteTruck, handlePostOrEditBuyAndSell, handlePostOrEditDriver, handlePostOrEditLoad, handlePostOrEditTruck, handlePostVerification } from "Actions/Pages_actions/ServicesActions";
@@ -19,6 +19,7 @@ import Textbox from "Components/Input/textbox";
 import ModalComponent from "Components/Modal/Modal";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { Fragment } from "react";
+import ReactQuill from "react-quill";
 import { useSelector } from "react-redux";
 import { updateApplyFilterClickedTrue, updateModalShow } from "Slices/Common_Slice/Common_slice";
 import { resetOverallChartFilter } from "Slices/Pages_slice/Analytice_slice";
@@ -31,18 +32,52 @@ export function OverallModel() {
     const dispatch = useDispatch();
     const JsonJsx = JsonData()?.jsxJson;
 
+    const modules = {
+        toolbar: [
+            [{ header: [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            ['link'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['clean']
+        ],
+    };
+
+    const formats = [
+        'header',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'link',
+        'list',
+    ];
+
     function DeleteSelectFile(id) {
-        const result = servicesState?.new_edit_buyAndsell_card?.blog_image_show_ui.filter((data) => data.id !== id);
+        if (servicesState?.modal_from === "BuyAndSell") {
+            const result = servicesState?.new_edit_buyAndsell_card?.blog_image_show_ui.filter((data) => data.id !== id);
 
-        const overallFile = result.map((data) => data.filename);
-        var newImages = [];
-        for (let i = 0; i < servicesState?.new_edit_buyAndsell_card?.blog_image_send_api.length; i++) {
-            if (overallFile.includes(servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i].name)) {
-                newImages[newImages.length] = servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i];
+            const overallFile = result.map((data) => data.filename);
+            var newImages = [];
+            for (let i = 0; i < servicesState?.new_edit_buyAndsell_card?.blog_image_send_api.length; i++) {
+                if (overallFile.includes(servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i].name)) {
+                    newImages[newImages.length] = servicesState?.new_edit_buyAndsell_card?.blog_image_send_api[i];
+                }
             }
-        }
 
-        dispatch(handleBuyAndSellInputOnChange({ blog_image_show_ui: result, blog_image_send_api: newImages }));
+            dispatch(handleBuyAndSellInputOnChange({ blog_image_show_ui: result, blog_image_send_api: newImages }));
+        } else {
+            const result = blogState?.blog_edit_data?.blog_image_show_ui.filter((data) => data.id !== id);
+
+            const overallFile = result.map((data) => data.filename);
+            var newImages = [];
+            for (let i = 0; i < blogState?.blog_edit_data?.blog_image_send_api.length; i++) {
+                if (overallFile.includes(blogState?.blog_edit_data?.blog_image_send_api[i].name)) {
+                    newImages[newImages.length] = blogState?.blog_edit_data?.blog_image_send_api[i];
+                }
+            }
+
+            dispatch(handleBlogInputOnChange({ blog_image_show_ui: result, blog_image_send_api: newImages }));
+        }
     }
 
     function modalHeaderFun() {
@@ -184,8 +219,9 @@ export function OverallModel() {
                         {
                             servicesState?.modal_type === "Filter" && ipVal?.name === "To" ||
                                 ((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") &&
-                                    (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ||
-                                ipVal?.name === "State list" ?
+                                    (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") &&
+                                    ipVal?.name === "Vehicle Number") || ipVal?.name === "State list" ||
+                                ipVal?.name === "To" && servicesState?.modal_from === "Truck" ?
                                 <Fragment>
                                     <ReactDropdownSelect
                                         multi={!((servicesState?.modal_type === "Create" || servicesState?.modal_type === "Edit") && (servicesState?.modal_from === "Truck" || servicesState?.modal_from === "Driver" || servicesState?.modal_from === "BuyAndSell") && ipVal?.name === "Vehicle Number") ? true : false}
@@ -258,7 +294,7 @@ export function OverallModel() {
 
                                 <div className='border py-2 rounded-2 col-12 text-center'>
                                     <span className='me-2'>{Icons.fileUploadIcon}</span>
-                                    <span className='text-secondary fs-15'>{ipVal?.value?.length >= 3 ? "Only 3 images can be selectable" : "Click here to choose image" }</span>
+                                    <span className='text-secondary fs-15'>{ipVal?.value?.length >= 3 ? "Only 3 images can be selectable" : "Click here to choose image"}</span>
                                 </div>
                             </div>
 
@@ -351,19 +387,30 @@ export function OverallModel() {
 
                 case "textbox":
                     return <div className='col-12 p-1 mt-2'>
-                        <Textbox
-                            value={ipVal?.value}
-                            change={ipVal?.change}
-                            cols={10}
-                            rows={5}
-                            className=""
-                            label={ipVal?.name}
-                            labelClassName="text-secondary mb-0 fs-14"
-                            mandatory={ipVal?.isMandatory}
-                            inputError={ipVal?.Err}
-                            disabled={ipVal?.disabled}
-                        />
-
+                        {
+                            servicesState?.modal_from === "Blog" ?
+                                ipVal && (
+                                    <ReactQuill
+                                        value={ipVal.value}
+                                        onChange={ipVal.change}
+                                        modules={modules}
+                                        formats={formats}
+                                    />
+                                )
+                                :
+                                <Textbox
+                                    value={ipVal?.value}
+                                    change={ipVal?.change}
+                                    cols={10}
+                                    rows={5}
+                                    className=""
+                                    label={ipVal?.name}
+                                    labelClassName="text-secondary mb-0 fs-14"
+                                    mandatory={ipVal?.isMandatory}
+                                    inputError={ipVal?.Err}
+                                    disabled={ipVal?.disabled}
+                                />
+                        }
                         <div className='text-danger pt-2 ps-1 fs-15'>
                             {ipVal?.Err}
                         </div>
@@ -686,7 +733,14 @@ export function OverallModel() {
                         return <div className='col-12 p-2'>
                             <ButtonComponent
                                 className="btn-danger w-100 py-2"
-                                buttonName="Edit Blog"
+                                buttonName={
+                                    blogState?.blog_modal_spinner ?
+                                        <SpinnerComponent />
+                                        :
+                                        "Edit Blog"
+                                }
+                                clickFunction={() => dispatch(handleAddBlog(blogState?.blog_edit_data))}
+                                btnDisable={blogState?.blog_modal_spinner}
                             />
                         </div>
 
@@ -785,7 +839,7 @@ export function OverallModel() {
                                         :
                                         "Save Status"
                                 }
-                                clickFunction={() => dispatch(handleCrmModalEntry(crmState?.crm_status_entry))}
+                                clickFunction={() => dispatch(handleCrmModalEntry({ data: crmState?.crm_status_entry, endpoint: crmState?.slected_button === "before_sale" ? "/crm_before_sale_status_entry " : "/update_crm_history" }))}
                                 btnDisable={crmState?.crm_status_entry_spinner}
                             />
                         </div>
@@ -844,8 +898,15 @@ export function OverallModel() {
             modalFooterClassname="border-0"
             modalFooter={modalFooterFun()}
             modalClassname={
-                servicesState?.modal_type === "Create" || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Edit") ?
-                    servicesState?.is_mobile_num_verified || (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") ? "buyAndSell_model_height" : "md"
+                servicesState?.modal_type === "Create" ||
+                    (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") ||
+                    (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Edit") ||
+                    (servicesState?.modal_from === "Blog" && servicesState?.modal_type === "Delete") ?
+
+                    servicesState?.is_mobile_num_verified ||
+                        (servicesState?.modal_from === "CRM" && servicesState?.modal_type === "Create") ||
+                        (servicesState?.modal_from === "Blog" && servicesState?.modal_type === "Delete") ?
+                        "buyAndSell_model_height" : "md"
                     :
                     ["Edit", "Create"].includes(servicesState?.modal_type) ? "buyAndSell_model_height" : ''
             }

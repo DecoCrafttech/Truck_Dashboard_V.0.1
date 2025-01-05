@@ -305,8 +305,6 @@ const commonSlice = createSlice({
             //dashboard
             .addCase(getDashboardRequest, (state, action) => {
                 state.totalCount = 0
-                state.pageSize = 10
-                state.currentPage = 1
             })
             .addCase(getDashboardResponse, (state, action) => {
                 state.totalCount = action.payload?.row_count

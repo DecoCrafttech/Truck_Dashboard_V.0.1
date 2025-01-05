@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { handleDeleteBlog, handleEditBlog } from 'Actions/Pages_actions/BlogAction'
 import ButtonComponent from 'Components/Button/Button'
 import { useDispatch } from 'Components/CustomHooks'
@@ -11,8 +12,12 @@ const BlogCard = ({
     is_delete_card
 
 }) => {
- 
+
     const dispatch = useDispatch()
+
+
+    const sanitizedContent = DOMPurify.sanitize(blogData?.blog_content || '');
+
     return (
         <Card className='border-0 rounded-3 h-100'>
             {
@@ -21,12 +26,15 @@ const BlogCard = ({
                         <Img className='w-100 rounded-3 placeholder placeholder-blog-image' src={blogData?.blog_image_name} />
                     </div>
                     :
-                    <Img className='p-3 rounded-5' height={"18%"} width={"100%"} src={blogData?.blog_image_name} />
+                    <Img className='p-3 rounded-5' height="250px" width="100%" src={blogData?.blog_image_name} />
             }
 
             <Card.Body className='pb-1'>
                 <h6 className={placeholder ? 'placeholder w-75 py-3 rounded-2' : ''}>{blogData?.heading1}</h6>
-                <p className={placeholder ? 'placeholder w-100 py-4 pb-5 rounded-2' : 'mb-0 text-secondary'}>{blogData?.blog_content}</p>
+                <p className={placeholder ? 'placeholder w-100 py-4 pb-5 rounded-2' : 'mb-0 text-secondary'}
+                    dangerouslySetInnerHTML={{
+                        __html: sanitizedContent.slice(0, 100) + (sanitizedContent.length > 100 ? '...' : ''),
+                    }} ></p>
             </Card.Body>
 
             {

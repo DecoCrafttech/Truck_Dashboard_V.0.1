@@ -4,6 +4,7 @@ import { useDispatch } from 'Components/CustomHooks'
 import React, { Fragment } from 'react'
 import { Card } from 'react-bootstrap'
 import Icons from 'Utils/Icons'
+import JsonData from 'Utils/JsonData'
 
 const TruckCard = ({
     placeholder,
@@ -11,14 +12,37 @@ const TruckCard = ({
     is_delete_card
 }) => {
     const dispatch = useDispatch();
+    const { states } = JsonData()?.jsonOnly
 
     function locationFun(from, to) {
         return <Fragment>
             {[{ icon: Icons.greenLocationIcon, location: from }, { icon: Icons.redLocationIcon, location: to }]
                 .map((value, index) => (
-                    <p className={`${placeholder ? 'placeholder py-2 pb-3 rounded-1 col-7' : ''} fs-13 mb-2 ${index === 0 && !placeholder ? 'location-dotted' : ''}`} key={index}>
+                    <p className={`${placeholder ? 'placeholder py-2 pb-3 rounded-1 col-7' : ''} info-icon fs-13 mb-2 ${index === 0 && !placeholder ? 'location-dotted' : ''}`} key={index}>
                         {placeholder ? null : <span className='me-1'>{value.icon}</span>}
-                        {value.location}
+
+                        {value?.location ?
+                            Array.isArray(value?.location) ?
+                                `${value.location[0]}...`
+                                :
+                                typeof value.location === "string" ?
+                                    value.location
+                                    :
+                                    value.location[0]
+                            :
+                            null}
+
+                        <div className="info-hover-text d-none bg-secondary-subtle p-1 mt-3 px-2 text-break">
+                            {value?.location ?
+                                Array.isArray(value?.location)
+                                    ? value?.location?.join(", ")
+                                    : typeof value?.location === "string"
+                                        ? value?.location
+                                        : ""
+                                :
+                                null
+                            }
+                        </div>
                     </p>
                 ))}
         </Fragment>
@@ -48,6 +72,18 @@ const TruckCard = ({
         </Fragment>
     }
 
+    function handleEditData(truck_data) {
+        let selectedList = []
+        for (let i = 0; i < states?.length; i++) {
+            for (let j = 0; j < truck_data?.to_location?.length; j++) {
+                if (states[i]?.label === truck_data?.to_location[j]) {
+                    selectedList[selectedList.length] = states[i]
+                }
+            }
+        }
+
+        dispatch(handleEditModal({ from: "Truck", type: "Edit", data: { ...truck_data, to_location: selectedList } }))
+    }
 
     return (
         <div className={`${is_delete_card ? "col-12" : "col-12 col-sm-6 col-lg-4"} p-2 d-inline-flex`}>
@@ -122,7 +158,7 @@ const TruckCard = ({
                                 <ButtonComponent
                                     className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                                     buttonName={placeholder ? "" : 'Edit'}
-                                    clickFunction={() => dispatch(handleEditModal({ from: "Truck", type: "Edit", data: truck_data }))}
+                                    clickFunction={() => handleEditData(truck_data)}
                                 />
                             </div>
                         </Card.Footer>

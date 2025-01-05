@@ -16,7 +16,7 @@ const Crm = () => {
 
     const params = {
         page_no: commonState?.currentPage || 1,
-        search_val: commonState?.search_clicked ? commonState?.search_value || "" : "",
+        search_val: commonState?.search_clicked ? commonState?.search_value?.trim() || "" : "",
         data_limit: commonState?.pageSize || 10
     }
 
@@ -107,7 +107,7 @@ const Crm = () => {
                     <td>{crmVal?.location}</td>
                     <td>{crmVal?.phone_no}</td>
                     <td className='text-center cursor-pointer'>
-                        <span className='w-100 text-center' onClick={() => dispatch(handleGetCrmModal({ user_id: crmVal?.sales_id, slected_button: crmState?.slected_button }))}>
+                        <span className='w-100 text-center' onClick={() => dispatch(handleGetCrmModal({ user_id: crmVal?.sales_id, sales_id: crmVal?.sales_id, slected_button: crmState?.slected_button }))}>
                             {Icons.eyeIcon}
                         </span>
                     </td>
@@ -117,7 +117,7 @@ const Crm = () => {
                 break;
         }
     }
-    
+
     return (
         <div className="w-100 h-100 d-flex flex-wrap align-items-center">
             <div className="w-100 card border-0 rounded-4">

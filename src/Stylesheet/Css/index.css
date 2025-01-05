@@ -175,6 +175,29 @@
   padding: .5rem;
 }
 
+.info-icon {
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+
+}
+
+.info-icon:hover>.info-hover-text {
+  position: absolute;
+  top: 0.5rem;
+  left: 20rem;
+  display: inline-block !important;
+  width: 22rem;
+  border-radius: 5px;
+  font-size: 15px;
+  white-space: normal;
+  /* Allow text wrapping */
+  transform: translateX(-90%);
+  z-index: 1050 !important;
+  word-break: break-word;
+  /* Optional: Ensure long words break correctly */
+}
+
 .location-dotted {
   position: relative;
 }
@@ -266,6 +289,17 @@ th {
   width: 100%
 }
 
+.blogDetailView {
+  height: 45rem;
+  overflow-y: scroll;
+}
+
+.buy_sell_slider_container .slick-arrow.slick-prev::before {
+  color: black !important;
+}
+.buy_sell_slider_container .slick-arrow.slick-next::before {
+  color: black !important;
+}
 
 .verified-bg {
   background-color: #0AA50E;
@@ -439,7 +473,7 @@ th {
   overflow-y: scroll !important;
 }
 
-.crm_model_no_data_height{
+.crm_model_no_data_height {
   height: 35rem !important;
   overflow-y: hidden !important;
 }
@@ -545,7 +579,6 @@ th {
 .ltn__404-area-2 .error-404-inner {
   padding: 150px 0 170px;
 }
-
 
 .recharts-layer.recharts-pie-sector path:focus {
   outline: none !important;

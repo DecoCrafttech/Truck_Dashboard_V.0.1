@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useCustomNavigate, useDispatch } from 'Components/CustomHooks'
 import Icons from 'Utils/Icons'
@@ -56,14 +56,46 @@ const UserProfileDetails = () => {
     function userDetailsTwo() {
         return [{ key: "Mail ID", value: dashboardState?.profile_data?.email }, { key: "State", value: dashboardState?.profile_data?.state }, { key: "Category", value: dashboardState?.profile_data?.category }]
             .map((value, index) => (
-                <div className='col-12 d-inline-flex mb-2' key={index}>
-                    <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
-                        <h6 className='text-secondary fw-bold'>{value.key}</h6>
+                value.key === "State" ?
+                    <div className='col-12 d-inline-flex mb-2 info-icon ' key={index}>
+                        <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
+                            <h6 className='text-secondary fw-bold'>{value.key}</h6>
+                        </div>
+                        <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4 text-secondary">
+                            {value?.value ?
+                                Array.isArray(value?.value) ?
+                                    `${value.value[0]}...`
+                                    :
+                                    typeof value.value === "string" ?
+                                        value.value
+                                        :
+                                        value.value[0]
+                                :
+                                null
+                            }
+                        </div>
+                        <div className="info-hover-text d-none bg-secondary-subtle p-1 mt-3 px-2 text-break">
+                            {value?.value ?
+                                Array.isArray(value?.value)
+                                    ? value?.value?.join(", ")
+                                    : typeof value?.value === "string"
+                                        ? value?.value
+                                        : ""
+                                :
+                                null
+                            }
+                        </div>
                     </div>
-                    <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
-                        <h6 className='text-secondary'>{value.value}</h6>
+                    :
+
+                    <div className='col-12 d-inline-flex mb-2' key={index}>
+                        <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
+                            <h6 className='text-secondary fw-bold'>{value.key}</h6>
+                        </div>
+                        <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
+                            <h6 className='text-secondary'>{value.value}</h6>
+                        </div>
                     </div>
-                </div>
             ))
     }
 

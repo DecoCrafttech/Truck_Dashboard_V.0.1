@@ -23,7 +23,11 @@ const servicesSlice = createSlice(({
         updateEditBlog(state, action) {
             return {
                 ...state,
-                blog_edit_data: action.payload,
+                blog_edit_data: {
+                    ...action.payload,
+                    blog_image_show_ui: [action.payload?.blog_image_name],
+                    blog_image_send_api: [action.payload?.blog_image_name],
+                },
             }
         },
         updateDeleteBlog(state, action) {

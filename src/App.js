@@ -21,6 +21,7 @@ import Blog from "Views/Main/Pages/Blog";
 import Login from "Views/Common/Login";
 import Error from "Views/Common/error";
 import { Analytics } from "Views/Main/Pages/Analytics";
+import BuySellDetailsPage from "Views/Main/Pages/BuySellDetailsPage";
 
 
 const App = () => {
@@ -61,7 +62,6 @@ const App = () => {
     <HelmetProvider>
       <ToastContainer theme='light' />
       <Routes>
-
         <Route path="/" element={<Login />} />
 
         <Route path="/dashboard" element={<Layout />}>
@@ -74,7 +74,10 @@ const App = () => {
             <Route path="load_details" element={<LoadDetails />} />
             <Route path="truck_details" element={<TruckDetails />} />
             <Route path="driver_details" element={<DriverDetails />} />
-            <Route path="buy_sell_details" element={<BuySellDetails />} />
+            <Route path="buy_sell_details">
+              <Route index element={<BuySellDetails />} />
+              <Route path="view_details" element={<BuySellDetailsPage />} />
+            </Route>
             <Route path="insurance" element={<p>hi</p>} />
             <Route path="fast_tag" element={<p>hi</p>} />
           </Route>

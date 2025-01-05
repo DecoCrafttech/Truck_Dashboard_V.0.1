@@ -41,6 +41,7 @@ const servicesSlice = createSlice(({
         buyAndsellDelete_id: null,
         new_edit_buyAndsell_card: {},
         buyAndsell_filter_card: {},
+        buyAndSell_detail_view: {},
 
         deletion_image_cdn_path: null
     },
@@ -253,7 +254,7 @@ const servicesSlice = createSlice(({
             }
         },
 
-        //                                                             load api's                                                         //
+        //                                                                                                load api's                                                         //
         //get load api
         loadGetRequest(state, action) {
             return {
@@ -440,7 +441,7 @@ const servicesSlice = createSlice(({
             }
         },
 
-        //                                                            driver api's                                                         //
+        //                                                                                                  driver api's                                                         //
         //get driver api
         driverGetRequest(state, action) {
             return {
@@ -532,7 +533,7 @@ const servicesSlice = createSlice(({
             }
         },
 
-        //                                                            buy and sell api's                                                         //
+        //                                                                                                buy and sell api's                                                         //
         //get buy and sell api
         buyAndsellGetRequest(state, action) {
             return {
@@ -577,6 +578,25 @@ const servicesSlice = createSlice(({
             return {
                 ...state,
                 buyAndsell_filter_card: {}
+            }
+        },
+        updateBuyAndSellDetailGetRequest(state, action) {
+            return {
+                ...state,
+                buyAndsell_glow: true
+            }
+        },
+        updateBuyAndSellDetailGetResponse(state, action) {
+            return {
+                ...state,
+                buyAndSell_detail_view: action.payload,
+                buyAndsell_glow: false
+            }
+        },
+        updateBuyAndSellDetailGetFailure(state, action) {
+            return {
+                ...state,
+                buyAndsell_glow: false
             }
         },
 
@@ -644,7 +664,7 @@ const servicesSlice = createSlice(({
             let newObjAfterImageRemoval = {
                 ...state?.new_edit_buyAndsell_card,
                 existing_image_from_response: images,
-                blog_image_show_ui: show_ui_img, 
+                blog_image_show_ui: show_ui_img,
             }
 
             return {
@@ -778,6 +798,9 @@ export const {
     buyAndsellImageDeleteRequest,
     buyAndsellImageDeleteResponse,
     buyAndsellImageDeleteFailure,
+    updateBuyAndSellDetailGetRequest,
+    updateBuyAndSellDetailGetResponse,
+    updateBuyAndSellDetailGetFailure,
 
 } = actions;
 
