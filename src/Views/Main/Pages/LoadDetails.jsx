@@ -99,12 +99,12 @@ const LoadDetails = () => {
                     <Card.Body className='h-100 overflowY w-100 rounded placeholder-glow'>
                         {servicesState?.load_glow ?
                             [...Array(6)].map((value, placeholderInd) => (
-                                <LoadCard placeholder={servicesState?.load_glow} key={placeholderInd} />
+                                <LoadCard placeholder={servicesState?.load_glow} key={placeholderInd}/>
                             ))
                             :
                             servicesState?.allLoads_details?.length ?
                                 servicesState?.allLoads_details.map((loads, loadInd) => (
-                                    <LoadCard placeholder={servicesState?.load_glow} load={loads} key={loadInd} />
+                                    <LoadCard placeholder={servicesState?.load_glow} load={loads} key={loadInd} commonState={commonState} />
                                 ))
                                 :
                                 <div className='w-100 blog-main-content-height d-inline-flex align-items-center justify-content-center'>

@@ -90,7 +90,7 @@ const JsonData = () => {
     const { dashboardState, servicesState, blogState, commonState, feedbackState, analyticsState, crmState } = useSelector((state) => state);
 
     const jsonOnly = {
-        sidebarMenus: [
+        sidebarMenusAdmin: [
             {
                 icon: Icons.dashboardIcon,
                 name: "Dashboard",
@@ -184,6 +184,33 @@ const JsonData = () => {
                 in: 5
             }
         ],
+        sidebarMenusSeoSpecialist: [
+            {
+                icon: Icons.blogIcon,
+                name: "Blog",
+                route: "/dashboard/blog",
+                route_name: "blog",
+                type: "link",
+                in: 1
+            }
+        ],
+        sidebarMenusEmployee: [
+            {
+                icon: Icons.subServivesIcon,
+                name: "Insurance",
+                route: "/dashboard/services/insurance",
+                route_name: "insurance",
+                in: 24
+            },
+            {
+                icon: Icons.subServivesIcon,
+                name: "Fast Tag",
+                route: "/dashboard/services/fast_tag",
+                route_name: "fast_tag",
+                in: 24
+            }
+        ],
+
         services: [
             "All",
             "Lorry Owner",

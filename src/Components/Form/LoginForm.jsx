@@ -10,7 +10,7 @@ import SpinnerComponent from 'Components/Spinner/Spinner';
 import { handleEyeFunction, handleLogin, handleLoginCredentials, handleValidation } from 'Actions/Common_actions/Common_action';
 
 const LoginForm = () => {
-    const { usernamee, passwordd, eyeOpen, buttonSpinner, validated, token, user_id } = useSelector((state) => state.commonState);
+    const { usernamee, passwordd, eyeOpen, buttonSpinner, validated, token, user_id, user_role } = useSelector((state) => state.commonState);
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
 
@@ -25,17 +25,28 @@ const LoginForm = () => {
             let username = usernamee
             let password = passwordd
             const basicAuth = { username, password };
-            dispatch(handleLogin(basicAuth,navigate))
+            dispatch(handleLogin(basicAuth, navigate))
         } else {
             dispatch(handleValidation)
         }
     };
 
-    // useEffect(() => {
-    //     if (user_id) {
-    //         navigate("/dashboard/home")
-    //     }
-    // }, [token, user_id, dispatch])
+    useEffect(() => {
+        if (user_id && user_role) {
+            switch (user_role) {
+                case "admin":
+                    navigate("/dashboard/home")
+                    break;
+
+                case "admin":
+                    navigate("/dashboard/home")
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }, [token, user_id, user_role, dispatch])
 
 
     return (

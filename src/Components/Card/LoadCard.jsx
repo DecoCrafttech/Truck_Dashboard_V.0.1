@@ -8,7 +8,8 @@ import Icons from 'Utils/Icons'
 const LoadCard = ({
     placeholder,
     load,
-    is_delete_card
+    is_delete_card,
+    commonState
 }) => {
     const dispatch = useDispatch();
 
@@ -118,6 +119,7 @@ const LoadCard = ({
                                     className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                                     buttonName={placeholder ? "" : 'Delete'}
                                     clickFunction={() => dispatch(handleDeleteModal({ from: "Load", type: "Delete", data: load }))}
+                                    btnDisable={["admin"].includes(commonState?.user_role)}
                                 />
                             </div>
                             <div className="col px-1">
@@ -125,6 +127,7 @@ const LoadCard = ({
                                     className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                                     buttonName={placeholder ? "" : 'Edit'}
                                     clickFunction={() => dispatch(handleEditModal({ from: "Load", type: "Edit", data: load }))}
+                                    btnDisable={["admin"].includes(commonState?.user_role)}
                                 />
                             </div>
                         </Card.Footer>

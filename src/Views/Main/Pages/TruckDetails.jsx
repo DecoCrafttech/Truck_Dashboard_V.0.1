@@ -107,7 +107,7 @@ const TruckDetails = () => {
                             :
                             servicesState?.alltrucks_details.map((truckData, truckInd) => (
                                 <Fragment key={truckInd}>
-                                    <TruckCard placeholder={servicesState?.truck_glow} truck_data={truckData} key={truckInd} />
+                                    <TruckCard placeholder={servicesState?.truck_glow} truck_data={truckData} key={truckInd} commonState={commonState} />
                                 </Fragment>
                             ))
                         }

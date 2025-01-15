@@ -8,7 +8,8 @@ import Icons from 'Utils/Icons'
 const DriverCard = ({
     placeholder,
     driver_data,
-    is_delete_card
+    is_delete_card,
+    commonState
 }) => {
     const dispatch = useDispatch()
 
@@ -116,6 +117,7 @@ const DriverCard = ({
                                     className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                                     buttonName={placeholder ? "" : 'Delete'}
                                     clickFunction={() => dispatch(handleDeleteModal({ from: "Driver", type: "Delete", data: driver_data }))}
+                                    btnDisable={["admin"].includes(commonState?.user_role)}
                                 />
                             </div>
                             <div className="col px-1">
@@ -123,6 +125,7 @@ const DriverCard = ({
                                     className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                                     buttonName={placeholder ? "" : 'Edit'}
                                     clickFunction={() => dispatch(handleEditModal({ from: "Driver", type: "Edit", data: driver_data }))}
+                                    btnDisable={["admin"].includes(commonState?.user_role)}
                                 />
                             </div>
                         </Card.Footer>

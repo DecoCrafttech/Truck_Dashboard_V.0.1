@@ -22,6 +22,7 @@ import Login from "Views/Common/Login";
 import Error from "Views/Common/error";
 import { Analytics } from "Views/Main/Pages/Analytics";
 import BuySellDetailsPage from "Views/Main/Pages/BuySellDetailsPage";
+import ComingSoon from "Views/Common/coming-soon";
 
 
 const App = () => {
@@ -78,14 +79,13 @@ const App = () => {
               <Route index element={<BuySellDetails />} />
               <Route path="view_details" element={<BuySellDetailsPage />} />
             </Route>
-            <Route path="insurance" element={<p>hi</p>} />
-            <Route path="fast_tag" element={<p>hi</p>} />
+            <Route path="insurance" element={<ComingSoon page_title="Insurance Page" />} />
+            <Route path="fast_tag" element={<ComingSoon page_title="Fast Tag Page"/>} />
           </Route>
           <Route path="blog" element={<Blog />} />
           <Route path="feedback_complaints" element={<Feedback />} />
           <Route path="crm" element={<Crm />} />
         </Route>
-
 
         {/* page not found  */}
         <Route path="*" element={<Error />} />

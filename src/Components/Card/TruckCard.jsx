@@ -9,7 +9,8 @@ import JsonData from 'Utils/JsonData'
 const TruckCard = ({
     placeholder,
     truck_data,
-    is_delete_card
+    is_delete_card,
+    commonState
 }) => {
     const dispatch = useDispatch();
     const { states } = JsonData()?.jsonOnly
@@ -152,6 +153,7 @@ const TruckCard = ({
                                     className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                                     buttonName={placeholder ? "" : 'Delete'}
                                     clickFunction={() => dispatch(handleDeleteModal({ from: "Truck", type: "Delete", data: truck_data }))}
+                                    btnDisable={["admin"].includes(commonState?.user_role)}
                                 />
                             </div>
                             <div className="col px-1">
@@ -159,6 +161,7 @@ const TruckCard = ({
                                     className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                                     buttonName={placeholder ? "" : 'Edit'}
                                     clickFunction={() => handleEditData(truck_data)}
+                                    btnDisable={["admin"].includes(commonState?.user_role)}
                                 />
                             </div>
                         </Card.Footer>

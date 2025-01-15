@@ -105,7 +105,7 @@ const DriverDetails = () => {
                             :
                             servicesState?.alldrivers_details.map((driverData, driverInd) => (
                                 <Fragment key={driverInd}>
-                                    <DriverCard placeholder={servicesState?.driver_glow} driver_data={driverData} />
+                                    <DriverCard placeholder={servicesState?.driver_glow} driver_data={driverData} commonState={commonState}/>
                                 </Fragment>
                             ))
                         }

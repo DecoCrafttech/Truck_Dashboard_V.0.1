@@ -17,7 +17,7 @@ import TruckCard from 'Components/Card/TruckCard'
 import DriverCard from 'Components/Card/DriverCard'
 
 const UserProfileDetails = () => {
-    const { dashboardState } = useSelector((state) => state)
+    const { dashboardState, commonState } = useSelector((state) => state)
     const navigate = useCustomNavigate()
     const dispatch = useDispatch()
     const queryParams = new URLSearchParams(window.location.search);
@@ -318,7 +318,7 @@ const UserProfileDetails = () => {
                                     :
                                     dashboardState?.dashboard_profile_data?.load_data && dashboardState?.dashboard_profile_data?.load_data?.length ?
                                         dashboardState?.dashboard_profile_data?.load_data?.map((loadVal, loadInd) => (
-                                            <LoadCard placeholder={dashboardState?.profileGlow} load={loadVal} key={loadInd} />
+                                            <LoadCard placeholder={dashboardState?.profileGlow} load={loadVal} key={loadInd} commonState={commonState} />
                                         ))
                                         :
                                         <div className='w-100 py-5 d-inline-flex align-items-center justify-content-center'>
@@ -344,7 +344,7 @@ const UserProfileDetails = () => {
                                     :
                                     dashboardState?.dashboard_profile_data?.truck_data && dashboardState?.dashboard_profile_data?.truck_data?.length ?
                                         dashboardState?.dashboard_profile_data?.truck_data?.map((truckData, truckInd) => (
-                                            <TruckCard placeholder={dashboardState?.profileGlow} truck_data={truckData} key={truckInd} />
+                                            <TruckCard placeholder={dashboardState?.profileGlow} truck_data={truckData} key={truckInd} commonState={commonState} />
                                         ))
                                         :
                                         <div className='w-100 py-5 d-inline-flex align-items-center justify-content-center'>
@@ -370,7 +370,7 @@ const UserProfileDetails = () => {
                                     :
                                     dashboardState?.dashboard_profile_data?.driver_data && dashboardState?.dashboard_profile_data?.driver_data?.length ?
                                         dashboardState?.dashboard_profile_data?.driver_data?.map((driverVal, driverInd) => (
-                                            <DriverCard placeholder={dashboardState?.driver_glow} driver_data={driverVal} key={driverInd} />
+                                            <DriverCard placeholder={dashboardState?.driver_glow} driver_data={driverVal} key={driverInd} commonState={commonState} />
                                         ))
                                         :
                                         <div className='w-100 py-5 d-inline-flex align-items-center justify-content-center'>
@@ -396,7 +396,7 @@ const UserProfileDetails = () => {
                                     :
                                     dashboardState?.dashboard_profile_data?.buy_sell_data && dashboardState?.dashboard_profile_data?.buy_sell_data?.length ?
                                         dashboardState?.dashboard_profile_data?.buy_sell_data?.map((buyAndSellData, buyAndSellInd) => (
-                                            <BuyandSellCard placeholder={dashboardState?.profileGlow} buy_sell_data={buyAndSellData} key={buyAndSellInd} />
+                                            <BuyandSellCard placeholder={dashboardState?.profileGlow} buy_sell_data={buyAndSellData} key={buyAndSellInd} commonState={commonState} />
                                         ))
                                         :
                                         <div className='w-100 py-5 d-inline-flex align-items-center justify-content-center'>

@@ -9,6 +9,7 @@ import store from 'StoreIndex';
 import JsonData from 'Utils/JsonData';
 import Images from 'Utils/Image';
 import { OverallModel } from 'Views/Common/OverallModal';
+import { updateToast } from 'Slices/Common_Slice/Common_slice';
 
 const Layout = () => {
     const state = store.getState()
@@ -16,7 +17,7 @@ const Layout = () => {
     const navigate = useCustomNavigate();
     const location = CustomUseLocationHook();
     const handleCanvasOpenOrClose = () => dispatch(handleUpdateCanvasShow)
-    const menuOptions = JsonData()?.jsonOnly?.sidebarMenus;
+    const menuOptions = JsonData()?.jsonOnly?.sidebarMenusAdmin;
 
     useEffect(() => {
         if (state?.commonState?.innerWidth >= 1200 && state?.commonState?.canvasShow) {
@@ -32,6 +33,22 @@ const Layout = () => {
         }
     }, [state?.commonState?.user_id])
 
+
+    // Restrict roles 
+    useEffect(() => {
+        if (state?.commonState?.user_role === "seo_specialist") {
+            if (!["Blog"]?.includes(state?.commonState?.currentMenuName)) {
+                dispatch(updateToast({ type: "error", message: "Access denied" }))
+                navigate("/dashboard/blog")
+            }
+        }
+        else if (state?.commonState?.user_role === "employee") {
+            if (!["Insurance", "Fast Tag"]?.includes(state?.commonState?.currentMenuName)) {
+                dispatch(updateToast({ type: "error", message: "Access denied" }))
+                navigate("/dashboard/services/insurance")
+            }
+        }
+    }, [state?.commonState?.user_role, state?.commonState?.currentMenuName])
 
     return (
         <Fragment>

@@ -92,7 +92,6 @@ export const handleLogin = (basicAuth, navigate) => async (dispatch) => {
 
         if (data.error_code === 0) {
             dispatch(loginResponse(data))
-            navigate("/dashboard/home")
         } else {
             dispatch(updateToast({ message: data?.message, type: "error" }))
         }

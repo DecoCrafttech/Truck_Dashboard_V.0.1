@@ -109,7 +109,7 @@ const BuySellDetails = () => {
                             :
                             servicesState?.allbuyAndsell_details.map((buyAndSellData, buyAndSellInd) => (
                                 <Fragment key={buyAndSellInd}>
-                                    <BuyandSellCard placeholder={servicesState?.buyAndsell_glow} buy_sell_data={buyAndSellData} />
+                                    <BuyandSellCard placeholder={servicesState?.buyAndsell_glow} buy_sell_data={buyAndSellData} commonState={commonState} />
                                 </Fragment>
                             ))
                         }

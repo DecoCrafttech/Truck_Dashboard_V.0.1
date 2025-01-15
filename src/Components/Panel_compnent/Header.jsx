@@ -3,15 +3,16 @@ import ButtonComponent from 'Components/Button/Button';
 import Icons from 'Utils/Icons';
 
 import { useSelector } from 'react-redux';
-import { useCustomNavigate } from '../CustomHooks';
+import { useDispatch } from 'Components/CustomHooks';
 import HeaderCard from 'Components/Card/HeaderCard';
+import { handleLogout } from 'Actions/Common_actions/Common_action';
 
 const Header = ({
   offcanvasOn,
   offcanvasOnButton
 }) => {
   const { currentMenuName } = useSelector((state) => state.commonState);
-  const navigate = useCustomNavigate();
+  const dispatch = useDispatch()
 
 
   const headerContentFunc = () => {
@@ -27,11 +28,11 @@ const Header = ({
             <ButtonComponent
               type="button"
               className="px-3 me-xl-2"
-              clickFunction={() => navigate("/home")}
+              clickFunction={() => dispatch(handleLogout())}
               buttonName={
                 <span>
-                  {Icons.homeIcon}
-                  <span className='ms-2'>Home</span>
+                  {Icons.logoutLocon}
+                  <span className='ms-2 d-none d-sm-inline-block'>Logout</span>
                 </span>
               }
             />

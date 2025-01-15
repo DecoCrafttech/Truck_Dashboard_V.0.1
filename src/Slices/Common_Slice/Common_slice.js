@@ -27,7 +27,8 @@ const commonSlice = createSlice({
 
         //token
         token: '',
-        user_id: Cookies.get('user_id') ? Cookies.get('user_id') : '',
+        user_id: Cookies.get('user_id') || '',
+        user_role: Cookies.get('user_role') || '',
 
         //no of entries
         showing_entries: [10, 20, 50],
@@ -134,12 +135,18 @@ const commonSlice = createSlice({
                 Cookies.set("user_id", action.payload?.data?.user_id)
             }
 
+            if (action.payload?.data?.user_role) {
+                // Cookies.set("token", action.payload?.data?.access_token)
+                Cookies.set("user_role", action.payload?.data?.user_role)
+            }
+
             return {
                 ...state,
                 buttonSpinner: false,
                 eyeOpen: !state.eyeOpen,
                 // token: action.payload?.data?.access_token,
-                user_id: action.payload?.data?.user_id
+                user_id: action.payload?.data?.user_id,
+                user_role: action.payload?.data?.user_role
             }
         },
         updateToast(state, action) {
@@ -184,11 +191,15 @@ const commonSlice = createSlice({
         logout(state, actions) {
             Cookies.remove("token");
             Cookies.remove("user_id");
+            Cookies.remove("user_role");
+
             return {
                 ...state,
                 token: '',
                 usernamee: '',
                 passwordd: '',
+                user_id:'',
+                user_role:''
             }
         },
 
