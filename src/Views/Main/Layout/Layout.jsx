@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
 import { Outlet } from 'react-router-dom';
 import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
-import { handleCurrentMenuInd, handleUpdateCanvasShow } from 'Actions/Common_actions/Common_action';
+import { handleCurrentMenuInd, handleLogout, handleUpdateCanvasShow } from 'Actions/Common_actions/Common_action';
 import Header from 'Components/Panel_compnent/Header';
 import Sidebar from 'Components/Panel_compnent/Sidebar';
 import store from 'StoreIndex';
@@ -18,6 +18,13 @@ const Layout = () => {
     const handleCanvasOpenOrClose = () => dispatch(handleUpdateCanvasShow)
     const { sidebarMenusAdmin, sidebarMenusEmployee, sidebarMenusSeoSpecialist } = JsonData()?.jsonOnly;
     const { commonState } = useSelector((state) => state);
+
+    useEffect(() => {
+        if (!state?.commonState?.user_id) {
+            navigate("/")
+            dispatch(handleLogout)
+        }
+    }, [state?.commonState?.user_id])
 
     useEffect(() => {
         const a = window.location.pathname.split('/')
@@ -54,12 +61,12 @@ const Layout = () => {
         let currentMenuName = commonState?.currentMenuName
         if (currentMenuName) {
             if (commonState?.user_role === "SEO Specialist" && !["Blog"]?.includes(currentMenuName)) {
-                dispatch(updateToast({ type: "error", message: "Access denied" }))
+                // dispatch(updateToast({ type: "error", message: "Access denied" }))
                 navigate("/dashboard/blog")
             }
 
             if (commonState?.user_role === "Employee" && !["Insurance", "insurance", "Fast Tag"]?.includes(currentMenuName)) {
-                dispatch(updateToast({ type: "error", message: "Access denied" }))
+                // dispatch(updateToast({ type: "error", message: "Access denied" }))
                 navigate("/dashboard/services/insurance")
             }
         }
@@ -70,12 +77,6 @@ const Layout = () => {
             dispatch(handleUpdateCanvasShow)
         }
     }, [state?.commonState?.innerWidth])
-
-    useEffect(() => {
-        if (!state?.commonState?.user_id) {
-            navigate("/")
-        }
-    }, [state?.commonState?.user_id])
 
     return (
         <Fragment>

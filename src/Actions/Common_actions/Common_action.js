@@ -41,7 +41,6 @@ export const handleCurrentMenuInd = (menus, myCurrPath) => dispatch => {
         let found = false; 
         
         menus.forEach((value) => {
-            console.log(myCurrPath , value?.route_name)
             if (value?.options) {
                 value.options.forEach((nestedValue) => {
                     if (myCurrPath === nestedValue.route_name) {
@@ -50,17 +49,16 @@ export const handleCurrentMenuInd = (menus, myCurrPath) => dispatch => {
                     }
                 });
             } else if (myCurrPath === value?.route_name) {
-                console.log(myCurrPath , value?.route_name)
                 dispatch(updateCurrentNavMenuIndex({ name: value?.name }));
                 found = true;
             }
         });
 
         if (!found) {
-            dispatch(updateCurrentNavMenuIndex({ name: 'Home' }));
+            dispatch(updateCurrentNavMenuIndex({ name: 'Invalid_route' }));
         }
     } else {
-        dispatch(updateCurrentNavMenuIndex({ name: 'Home' }));
+        dispatch(updateCurrentNavMenuIndex({ name: 'Invalid_route' }));
     }
 };
 

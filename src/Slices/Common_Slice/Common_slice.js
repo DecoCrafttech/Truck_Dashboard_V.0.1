@@ -203,7 +203,8 @@ const commonSlice = createSlice({
                 usernamee: '',
                 passwordd: '',
                 user_id: '',
-                user_role: ''
+                user_role: '',
+                currentMenuName:''
             }
         },
 
