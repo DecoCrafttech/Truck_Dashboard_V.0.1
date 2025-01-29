@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie'
 
-import { useCustomNavigate, useSize } from "Components/CustomHooks";
+import { useSize } from "Components/CustomHooks";
 import { handleBearerToken, handleClearErrors, handleOnlineOffilne, handleScreenSize } from "Actions/Common_actions/Common_action";
 import Layout from "Views/Main/Layout/Layout";
 import LoadDetails from "Views/Main/Pages/LoadDetails";
@@ -26,10 +26,9 @@ import ComingSoon from "Views/Common/coming-soon";
 
 
 const App = () => {
-  const { token, user_id, isOnline, Err, Toast_Type } = useSelector((state) => state.commonState);
+  const { isOnline, Err, Toast_Type } = useSelector((state) => state.commonState);
   const sizer = useSize();
   const dispatch = useDispatch();
-  const navigate = useCustomNavigate();
 
   //initial state
   useEffect(() => {
@@ -70,20 +69,27 @@ const App = () => {
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<UserProfileDetails />} />
           </Route>
+
           <Route path="analytics" element={<Analytics />} />
+
           <Route path="services" >
             <Route path="load_details" element={<LoadDetails />} />
             <Route path="truck_details" element={<TruckDetails />} />
             <Route path="driver_details" element={<DriverDetails />} />
+
             <Route path="buy_sell_details">
               <Route index element={<BuySellDetails />} />
               <Route path="view_details" element={<BuySellDetailsPage />} />
             </Route>
+
             <Route path="insurance" element={<ComingSoon page_title="Insurance Page" />} />
-            <Route path="fast_tag" element={<ComingSoon page_title="Fast Tag Page"/>} />
+            <Route path="fast_tag" element={<ComingSoon page_title="Fast Tag Page" />} />
           </Route>
+
           <Route path="blog" element={<Blog />} />
+
           <Route path="feedback_complaints" element={<Feedback />} />
+
           <Route path="crm" element={<Crm />} />
         </Route>
 

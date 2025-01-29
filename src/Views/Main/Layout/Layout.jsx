@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from 'react'
 import { Outlet } from 'react-router-dom';
-
-import { CustomUseLocationHook, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import { handleCurrentMenuInd, handleUpdateCanvasShow } from 'Actions/Common_actions/Common_action';
 import Header from 'Components/Panel_compnent/Header';
 import Sidebar from 'Components/Panel_compnent/Sidebar';
@@ -9,22 +8,65 @@ import store from 'StoreIndex';
 import JsonData from 'Utils/JsonData';
 import Images from 'Utils/Image';
 import { OverallModel } from 'Views/Common/OverallModal';
-import { updateToast } from 'Slices/Common_Slice/Common_slice';
+import { updateMenuOptions, updateToast } from 'Slices/Common_Slice/Common_slice';
+import { useSelector } from 'react-redux';
 
 const Layout = () => {
     const state = store.getState()
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
-    const location = CustomUseLocationHook();
     const handleCanvasOpenOrClose = () => dispatch(handleUpdateCanvasShow)
-    const menuOptions = JsonData()?.jsonOnly?.sidebarMenusAdmin;
+    const { sidebarMenusAdmin, sidebarMenusEmployee, sidebarMenusSeoSpecialist } = JsonData()?.jsonOnly;
+    const { commonState } = useSelector((state) => state);
+
+    useEffect(() => {
+        const a = window.location.pathname.split('/')
+        const b = a[a.length - 1] 
+
+        dispatch(handleCurrentMenuInd(state?.commonState?.menuOptions, b))
+    }, [window.location.pathname])
+
+    // Restrict roles 
+    useEffect(() => {
+        let currentMenuName = commonState?.currentMenuName
+        
+        if (commonState?.user_role === "SEO Specialist" && !["Blog"]?.includes(currentMenuName)) {
+            // dispatch(updateToast({ type: "error", message: "Access denied" }))
+            navigate("/dashboard/blog")
+        }
+
+        if (commonState?.user_role === "Employee" && !["Insurance", "Fast Tag"]?.includes(currentMenuName)) {
+            // dispatch(updateToast({ type: "error", message: "Access denied" }))
+            navigate("/dashboard/services/insurance")
+        }
+
+        switch (state?.commonState?.user_role) {
+            case "Super Admin":
+                dispatch(updateMenuOptions(sidebarMenusAdmin))
+                break;
+
+            case "admin":
+            case "Admin":
+                dispatch(updateMenuOptions(sidebarMenusAdmin))
+                break;
+
+            case "Employee":
+                dispatch(updateMenuOptions(sidebarMenusEmployee))
+                break;
+
+            case "SEO Specialist":
+                dispatch(updateMenuOptions(sidebarMenusSeoSpecialist))
+                break;
+
+            default:
+                break;
+        }
+    }, [commonState?.user_role, commonState?.currentMenuName])
 
     useEffect(() => {
         if (state?.commonState?.innerWidth >= 1200 && state?.commonState?.canvasShow) {
             dispatch(handleUpdateCanvasShow)
         }
-
-        dispatch(handleCurrentMenuInd(menuOptions, location[location.length - 1]))
     }, [state?.commonState?.innerWidth])
 
     useEffect(() => {
@@ -33,23 +75,6 @@ const Layout = () => {
         }
     }, [state?.commonState?.user_id])
 
-
-    // Restrict roles 
-    useEffect(() => {
-        if (state?.commonState?.user_role === "seo_specialist") {
-            if (!["Blog"]?.includes(state?.commonState?.currentMenuName)) {
-                dispatch(updateToast({ type: "error", message: "Access denied" }))
-                navigate("/dashboard/blog")
-            }
-        }
-        else if (state?.commonState?.user_role === "employee") {
-            if (!["Insurance", "Fast Tag"]?.includes(state?.commonState?.currentMenuName)) {
-                dispatch(updateToast({ type: "error", message: "Access denied" }))
-                navigate("/dashboard/services/insurance")
-            }
-        }
-    }, [state?.commonState?.user_role, state?.commonState?.currentMenuName])
-
     return (
         <Fragment>
             <div className="d-flex flex-wrap">
@@ -57,9 +82,10 @@ const Layout = () => {
                     responsiveOn={"xl"}
                     offCanvasShow={state?.commonState?.canvasShow}
                     handleCanvasOpenOrClose={handleCanvasOpenOrClose}
-                    menuOptions={menuOptions}
+                    menuOptions={state?.commonState?.menuOptions}
                     header={true}
                     companyLogo={Images.CompanyLogo}
+                    user_role={state?.commonState?.user_role}
                 />
 
                 <div className="col overflow-hidden">

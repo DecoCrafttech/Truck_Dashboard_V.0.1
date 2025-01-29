@@ -153,7 +153,7 @@ const TruckCard = ({
                                     className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}
                                     buttonName={placeholder ? "" : 'Delete'}
                                     clickFunction={() => dispatch(handleDeleteModal({ from: "Truck", type: "Delete", data: truck_data }))}
-                                    btnDisable={["admin"].includes(commonState?.user_role)}
+                                    btnDisable={!placeholder ? ["admin", "Admin"].includes(commonState?.user_role) : null}
                                 />
                             </div>
                             <div className="col px-1">
@@ -161,7 +161,7 @@ const TruckCard = ({
                                     className={`${placeholder ? "placeholder py-2 btn-outline-secondary w-100" : 'fs-13 w-100 btn-success'}`}
                                     buttonName={placeholder ? "" : 'Edit'}
                                     clickFunction={() => handleEditData(truck_data)}
-                                    btnDisable={["admin"].includes(commonState?.user_role)}
+                                    btnDisable={!placeholder ? ["admin", "Admin"].includes(commonState?.user_role) : null}
                                 />
                             </div>
                         </Card.Footer>

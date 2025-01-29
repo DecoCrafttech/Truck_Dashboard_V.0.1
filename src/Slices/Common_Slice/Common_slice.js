@@ -47,7 +47,9 @@ const commonSlice = createSlice({
 
         //apply filter
         apply_filter_clicked: false,
-        apply_filter: false
+        apply_filter: false,
+
+        menuOptions: []
     },
     reducers: {
         updateModalShow(state, actions) {
@@ -71,6 +73,8 @@ const commonSlice = createSlice({
         updateCurrentNavMenuIndex(state, action) {
             return {
                 ...state,
+                pageSize: 10,
+                currentPage: 1,
                 currentMenuName: action.payload?.name,
             }
         },
@@ -198,8 +202,8 @@ const commonSlice = createSlice({
                 token: '',
                 usernamee: '',
                 passwordd: '',
-                user_id:'',
-                user_role:''
+                user_id: '',
+                user_role: ''
             }
         },
 
@@ -309,6 +313,13 @@ const commonSlice = createSlice({
                 apply_filter: false
             }
         },
+
+        updateMenuOptions(state, action) {
+            return {
+                ...state,
+                menuOptions: action.payload
+            }
+        }
 
     },
     extraReducers: (builder) => {
@@ -532,7 +543,6 @@ const commonSlice = createSlice({
                 state.Toast_Type = "error"
             })
             .addCase(getFeedbackResponse, (state, action) => {
-                console.log(action.payload[0])
                 state.totalCount = action.payload[0]?.total_no_of_data
             })
 
@@ -602,7 +612,8 @@ export const {
     updateApplyFilterClickedTrue,
     updateApplyFilterClickedFalse,
 
-    updateEntriesCount
+    updateEntriesCount,
+    updateMenuOptions
 } = actions;
 
 export default reducer

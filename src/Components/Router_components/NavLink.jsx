@@ -10,7 +10,7 @@ const NavLinkComp = ({
 }) => {
 
   return (
-    <NavLink to={to} className={`${className}`} onClick={clickFunction}>
+    <NavLink to={to} className={`${className}`} onClick={clickFunction} end>
       {title}
     </NavLink>
   )

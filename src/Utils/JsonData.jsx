@@ -200,6 +200,7 @@ const JsonData = () => {
                 name: "Insurance",
                 route: "/dashboard/services/insurance",
                 route_name: "insurance",
+                type: "link",
                 in: 24
             },
             {
@@ -207,6 +208,7 @@ const JsonData = () => {
                 name: "Fast Tag",
                 route: "/dashboard/services/fast_tag",
                 route_name: "fast_tag",
+                type: "link",
                 in: 24
             }
         ],

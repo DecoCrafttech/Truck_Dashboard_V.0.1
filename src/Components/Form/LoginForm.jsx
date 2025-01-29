@@ -25,7 +25,7 @@ const LoginForm = () => {
             let username = usernamee
             let password = passwordd
             const basicAuth = { username, password };
-            dispatch(handleLogin(basicAuth, navigate))
+            dispatch(handleLogin(basicAuth))
         } else {
             dispatch(handleValidation)
         }
@@ -34,12 +34,21 @@ const LoginForm = () => {
     useEffect(() => {
         if (user_id && user_role) {
             switch (user_role) {
-                case "admin":
+                case "Super Admin":
                     navigate("/dashboard/home")
                     break;
 
                 case "admin":
+                case "Admin":
                     navigate("/dashboard/home")
+                    break;
+
+                case "Employee":
+                    navigate("/dashboard/services/insurance")
+                    break;
+
+                case "SEO Specialist":
+                    navigate("/dashboard/blog")
                     break;
 
                 default:
@@ -47,7 +56,6 @@ const LoginForm = () => {
             }
         }
     }, [token, user_id, user_role, dispatch])
-
 
     return (
         <Form noValidate validated={validated} className='pb-3'>
