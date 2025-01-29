@@ -38,25 +38,32 @@ export const handleOnlineOffilne = (isOnline) => dispatch => {
 
 export const handleCurrentMenuInd = (menus, myCurrPath) => dispatch => {
     if (myCurrPath) {
-        const ifNested = menus.filter((value) => {
-            const path = value?.options?.filter((nestedValue) => {
-                if (myCurrPath === nestedValue.route_name) {
-                    dispatch(updateCurrentNavMenuIndex({ name: nestedValue?.name }))
-                    return nestedValue
-                }
-            })
-            if (path?.length) {
-                return path
+        let found = false; 
+        
+        menus.forEach((value) => {
+            console.log(myCurrPath , value?.route_name)
+            if (value?.options) {
+                value.options.forEach((nestedValue) => {
+                    if (myCurrPath === nestedValue.route_name) {
+                        dispatch(updateCurrentNavMenuIndex({ name: nestedValue?.name }));
+                        found = true;
+                    }
+                });
+            } else if (myCurrPath === value?.route_name) {
+                console.log(myCurrPath , value?.route_name)
+                dispatch(updateCurrentNavMenuIndex({ name: value?.name }));
+                found = true;
             }
-        })
-        if (!ifNested.length) {
-            const currInd = menus.filter((v) => myCurrPath === v.route_name ? v : null)
-            dispatch(updateCurrentNavMenuIndex({ name: currInd[0]?.name }))
+        });
+
+        if (!found) {
+            dispatch(updateCurrentNavMenuIndex({ name: 'Home' }));
         }
     } else {
-        dispatch(updateCurrentNavMenuIndex({ name: 'Home' }))
+        dispatch(updateCurrentNavMenuIndex({ name: 'Home' }));
     }
-}
+};
+
 
 export const handleScreenSize = (currentSize) => (dispatch) => {
     dispatch(updateScreenCurrentDimension(currentSize))

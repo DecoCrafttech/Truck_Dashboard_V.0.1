@@ -14,10 +14,10 @@ const ComingSoon = ({
 							<h3 className="text-danger">{page_title}</h3>
 							<h4 className="text-secondary">Coming Soon</h4>
 						</div>
-						
-						{/* <div className="btn-wrapper mt-50">
+
+						<div className="btn-wrapper mt-50">
 							<Link to="/dashboard/home" className="btn btn-danger theme-btn-2 text-uppercase">Back to Home</Link>
-						</div> */}
+						</div>
 					</div>
 				</div>
 			</div>

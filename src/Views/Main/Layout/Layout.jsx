@@ -21,47 +21,49 @@ const Layout = () => {
 
     useEffect(() => {
         const a = window.location.pathname.split('/')
-        const b = a[a.length - 1] 
-
-        dispatch(handleCurrentMenuInd(state?.commonState?.menuOptions, b))
-    }, [window.location.pathname])
-
-    // Restrict roles 
-    useEffect(() => {
-        let currentMenuName = commonState?.currentMenuName
-        
-        if (commonState?.user_role === "SEO Specialist" && !["Blog"]?.includes(currentMenuName)) {
-            // dispatch(updateToast({ type: "error", message: "Access denied" }))
-            navigate("/dashboard/blog")
-        }
-
-        if (commonState?.user_role === "Employee" && !["Insurance", "Fast Tag"]?.includes(currentMenuName)) {
-            // dispatch(updateToast({ type: "error", message: "Access denied" }))
-            navigate("/dashboard/services/insurance")
-        }
-
+        const b = a[a.length - 1]
+        let menus
         switch (state?.commonState?.user_role) {
             case "Super Admin":
+                menus = sidebarMenusAdmin
                 dispatch(updateMenuOptions(sidebarMenusAdmin))
                 break;
 
             case "admin":
             case "Admin":
+                menus = sidebarMenusAdmin
                 dispatch(updateMenuOptions(sidebarMenusAdmin))
                 break;
 
             case "Employee":
+                menus = sidebarMenusEmployee
                 dispatch(updateMenuOptions(sidebarMenusEmployee))
                 break;
 
             case "SEO Specialist":
+                menus = sidebarMenusSeoSpecialist
                 dispatch(updateMenuOptions(sidebarMenusSeoSpecialist))
                 break;
 
             default:
                 break;
         }
-    }, [commonState?.user_role, commonState?.currentMenuName])
+        dispatch(handleCurrentMenuInd(menus, b))
+
+        // Restrict roles 
+        let currentMenuName = commonState?.currentMenuName
+        if (currentMenuName) {
+            if (commonState?.user_role === "SEO Specialist" && !["Blog"]?.includes(currentMenuName)) {
+                dispatch(updateToast({ type: "error", message: "Access denied" }))
+                navigate("/dashboard/blog")
+            }
+
+            if (commonState?.user_role === "Employee" && !["Insurance", "insurance", "Fast Tag"]?.includes(currentMenuName)) {
+                dispatch(updateToast({ type: "error", message: "Access denied" }))
+                navigate("/dashboard/services/insurance")
+            }
+        }
+    }, [window.location.pathname, commonState?.currentMenuName])
 
     useEffect(() => {
         if (state?.commonState?.innerWidth >= 1200 && state?.commonState?.canvasShow) {
