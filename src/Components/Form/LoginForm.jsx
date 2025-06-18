@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import sha256 from 'sha256';
-import { useSelector } from 'react-redux';
+import sha256 from 'sha256'; 
 import InputGroup from 'Components/Input/InputGroup';
 import ButtonComponent from 'Components/Button/Button';
-import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import SpinnerComponent from 'Components/Spinner/Spinner';
 import { handleEyeFunction, handleLogin, handleLoginCredentials, handleValidation } from 'Actions/Common_actions/Common_action';
 
 const LoginForm = () => {
-    const { usernamee, passwordd, eyeOpen, buttonSpinner, validated, token, user_id, user_role } = useSelector((state) => state.commonState);
+    const { commonState } = useCommonState();
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
 
@@ -21,9 +20,9 @@ const LoginForm = () => {
     };
 
     const handleSubmit = () => {
-        if (usernamee && passwordd) {
-            let username = usernamee
-            let password = passwordd
+        if (commonState?.usernamee && commonState?.passwordd) {
+            let username = commonState?.usernamee
+            let password = commonState?.passwordd
             const basicAuth = { username, password };
             dispatch(handleLogin(basicAuth))
         } else {
@@ -32,8 +31,8 @@ const LoginForm = () => {
     };
 
     useEffect(() => {
-        if (user_id && user_role) {
-            switch (user_role) {
+        if (commonState?.user_id && commonState?.user_role) {
+            switch (commonState?.user_role) {
                 case "Super Admin":
                     navigate("/dashboard/home")
                     break;
@@ -55,10 +54,10 @@ const LoginForm = () => {
                     break;
             }
         }
-    }, [token, user_id, user_role, dispatch])
+    }, [commonState?.token, commonState?.user_id, commonState?.user_role, dispatch])
 
     return (
-        <Form noValidate validated={validated} className='pb-3'>
+        <Form noValidate validated={commonState?.validated} className='pb-3'>
             <Row className="mb-3">
                 <InputGroup
                     controlId="validationLoginUsername"
@@ -68,7 +67,7 @@ const LoginForm = () => {
                     placeholder="Username"
                     inputError="Username required"
                     change={(e) => dispatch(handleLoginCredentials({ username: e.target.value }))}
-                    value={usernamee}
+                    value={commonState?.usernamee}
                 />
 
                 <InputGroup
@@ -78,8 +77,8 @@ const LoginForm = () => {
                     inputType="password"
                     placeholder="Password"
                     inputError="Password required"
-                    value={passwordd}
-                    eyeState={!eyeOpen}
+                    value={commonState?.passwordd}
+                    eyeState={!commonState?.eyeOpen}
                     change={(e) => dispatch(handleLoginCredentials({ password: e.target.value }))}
                     eyeFunctionClick={() => dispatch(handleEyeFunction())}
                     keyDown={handlSubmitOnEnter}
@@ -91,12 +90,12 @@ const LoginForm = () => {
                 className="btn-md btn-primary w-100"
                 clickFunction={handleSubmit}
                 title="Login"
-                buttonName={buttonSpinner ?
+                buttonName={commonState?.buttonSpinner ?
                     <SpinnerComponent />
                     :
                     "Login"
                 }
-                btnDisable={buttonSpinner}
+                btnDisable={commonState?.buttonSpinner}
             />
         </Form>
     )

@@ -1,14 +1,13 @@
 import { handleAddNewVehicle } from "Actions/Pages_actions/dashboardAction";
 import ButtonComponent from "Components/Button/Button";
-import { useDispatch } from "Components/CustomHooks";
+import { useCommonState, useDispatch } from "Components/CustomHooks";
 import InputOnly from "Components/Input/inputOnly";
 import SpinnerComponent from "Components/Spinner/Spinner";
-import { useSelector } from "react-redux";
 import { updateToast } from "Slices/Common_Slice/Common_slice";
 import { updateNewVehicle } from "Slices/Pages_slice/dashboard_slice";
 
 export const HandleAddvehicleOnChange = ({ parentDiv, divOneCls, divTwoCls }) => {
-    const { dashboardState } = useSelector((state) => state);
+    const { dashboardState } = useCommonState();
     const queryParams = new URLSearchParams(window.location.search);
     const dispatch = useDispatch();
     const userId = queryParams.get('id');

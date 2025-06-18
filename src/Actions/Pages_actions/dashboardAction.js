@@ -45,7 +45,6 @@ export const handleGetDashboardProfile = (params) => async (dispatch) => {
         const { data } = await axiosInstance.post("/get_dashboard_profile ", params);
 
         if (data.error_code === 0) {
-            console.log(data.data[0])
             dispatch(getDashboardProfileResponse(data.data[0]))
         } else {
             dispatch(getDashboardProfileFailure())

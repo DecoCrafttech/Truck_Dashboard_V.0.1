@@ -1,9 +1,7 @@
 import React from 'react';
 import ButtonComponent from 'Components/Button/Button';
 import Icons from 'Utils/Icons';
-
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'Components/CustomHooks';
+import { useCommonState, useDispatch } from 'Components/CustomHooks';
 import HeaderCard from 'Components/Card/HeaderCard';
 import { handleLogout } from 'Actions/Common_actions/Common_action';
 
@@ -11,7 +9,7 @@ const Header = ({
   offcanvasOn,
   offcanvasOnButton
 }) => {
-  const { currentMenuName } = useSelector((state) => state.commonState);
+  const { commonState } = useCommonState();
   const dispatch = useDispatch()
 
 
@@ -19,7 +17,7 @@ const Header = ({
     return <>
       <div className="col-12 d-flex flex-wrap align-items-center justify-content-between ">
         <div className="col">
-          {currentMenuName}
+          {commonState?.currentMenuName}
         </div>
 
         <div className="col d-inline-flex flex-wrap justify-content-end">

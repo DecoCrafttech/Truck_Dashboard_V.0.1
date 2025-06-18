@@ -1,10 +1,9 @@
 import { handleBuyAndSellViewDetails } from 'Actions/Pages_actions/ServicesActions';
 import ButtonComponent from 'Components/Button/Button';
-import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import Img from 'Components/Img/Img';
 import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import Icons from 'Utils/Icons';
 import JsonData from 'Utils/JsonData';
@@ -13,7 +12,7 @@ const BuySellDetailsPage = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const dispatch = useDispatch();
     const navigate = useCustomNavigate()
-    const { buyAndsell_glow, buyAndSell_detail_view } = useSelector((state) => state.servicesState)
+    const { servicesState } = useCommonState()
     const { buy_sell_carousel_settings } = JsonData()?.jsxJson
 
     useEffect(() => {
@@ -47,12 +46,12 @@ const BuySellDetailsPage = () => {
                             <div className="row">
                                 <div className="buy_sell_slider_container text-center my-5">
                                     {
-                                        buyAndsell_glow ?
+                                        servicesState?.buyAndsell_glow ?
                                             null
                                             :
-                                            buyAndSell_detail_view?.images?.length > 1 ?
+                                            servicesState?.buyAndSell_detail_view?.images?.length > 1 ?
                                                 <Slider {...buy_sell_carousel_settings}>
-                                                    {buyAndSell_detail_view?.images?.map((image, index) => {
+                                                    {servicesState?.buyAndSell_detail_view?.images?.map((image, index) => {
                                                         return (
                                                             <div className="col-12 d-inline-flex justify-content-center" key={index}>
                                                                 <Img src={image} height="300px" className='img-container' />
@@ -62,7 +61,7 @@ const BuySellDetailsPage = () => {
                                                 </Slider>
                                                 :
                                                 <div className="col-12 d-inline-flex justify-content-center">
-                                                    <Img src={buyAndSell_detail_view?.images ? buyAndSell_detail_view?.images[0] : ''} height="300px" className='img-container' />
+                                                    <Img src={servicesState?.buyAndSell_detail_view?.images ? servicesState?.buyAndSell_detail_view?.images[0] : ''} height="300px" className='img-container' />
                                                 </div>
                                     }
                                 </div>
@@ -74,10 +73,10 @@ const BuySellDetailsPage = () => {
                         <div className='col-12'>
                             <div className='row'>
                                 <div className='col-12 col-md-8'>
-                                    <h1 className='mt-0 ms-0'>{buyAndSell_detail_view?.brand}</h1>
+                                    <h1 className='mt-0 ms-0'>{servicesState?.buyAndSell_detail_view?.brand}</h1>
                                     <div className="product-ratting">
                                         <Fragment>
-                                            {[...Array(5)].map((starVal, starInd) => starInd < buyAndSell_detail_view?.user_review_count ?
+                                            {[...Array(5)].map((starVal, starInd) => starInd < servicesState?.buyAndSell_detail_view?.user_review_count ?
                                                 <span key={starInd}>
                                                     {Icons.startBlack}
                                                 </span>
@@ -86,13 +85,13 @@ const BuySellDetailsPage = () => {
                                                     {Icons.starGray}
                                                 </span>
                                             )}
-                                            < span className='text-secondary ms-1 fs-12'>({buyAndSell_detail_view?.user_review_count})</span>
+                                            < span className='text-secondary ms-1 fs-12'>({servicesState?.buyAndSell_detail_view?.user_review_count})</span>
                                         </Fragment>
                                     </div>
                                     <div className="ltn__blog-meta">
                                         <ul className="list-inline">
                                             <li className="list-inline-item ltn__blog-date mt-3">
-                                                <i className="far fa-calendar-alt" /> {buyAndSell_detail_view?.updt ? buyAndSell_detail_view?.updt.slice(5, 25) : ''}
+                                                <i className="far fa-calendar-alt" /> {servicesState?.buyAndSell_detail_view?.updt ? servicesState?.buyAndSell_detail_view?.updt.slice(5, 25) : ''}
                                             </li>
                                         </ul>
                                     </div>
@@ -104,57 +103,57 @@ const BuySellDetailsPage = () => {
                             <tbody>
                                 <tr>
                                     <th>Brand</th>
-                                    <td>{buyAndSell_detail_view?.brand}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.brand}</td>
                                 </tr>
                                 <tr>
                                     <th>Owner Name</th>
-                                    <td>{buyAndSell_detail_view?.owner_name}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.owner_name}</td>
                                 </tr>
                                 <tr>
                                     <th>Contact Number</th>
-                                    <td>{buyAndSell_detail_view?.contact_no}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.contact_no}</td>
                                 </tr>
                                 <tr>
                                     <th>Model</th>
-                                    <td>{buyAndSell_detail_view?.model}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.model}</td>
                                 </tr>
                                 <tr>
                                     <th>Vehicle Number</th>
-                                    <td>{buyAndSell_detail_view?.vehicle_number}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.vehicle_number}</td>
                                 </tr>
                                 <tr>
                                     <th>KMs Driven</th>
-                                    <td>{buyAndSell_detail_view?.kms_driven}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.kms_driven}</td>
                                 </tr>
                                 <tr>
                                     <th>Price</th>
-                                    <td>₹ {buyAndSell_detail_view?.price}</td>
+                                    <td>₹ {servicesState?.buyAndSell_detail_view?.price}</td>
                                 </tr>
                                 <tr>
                                     <th>No. of Tyres</th>
-                                    <td>{buyAndSell_detail_view?.no_of_tyres}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.no_of_tyres}</td>
                                 </tr>
                                 <tr>
                                     <th>Tonnage</th>
-                                    <td>{buyAndSell_detail_view?.tonnage}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.tonnage}</td>
                                 </tr>
                                 <tr>
                                     <th>Truck Body Type</th>
-                                    <td>{buyAndSell_detail_view?.truck_body_type}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.truck_body_type}</td>
                                 </tr>
                                 <tr>
                                     <th>Location</th>
-                                    <td>{buyAndSell_detail_view?.location}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.location}</td>
                                 </tr>
                                 <tr>
                                     <th>Last Updated</th>
-                                    <td>{buyAndSell_detail_view?.updt ? buyAndSell_detail_view?.updt.slice(5, 25) : ''}</td>
+                                    <td>{servicesState?.buyAndSell_detail_view?.updt ? servicesState?.buyAndSell_detail_view?.updt.slice(5, 25) : ''}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <h4 className="border-start border-danger border-3 ps-2">Description</h4>
-                    <p>{buyAndSell_detail_view?.description}</p>
+                    <p>{servicesState?.buyAndSell_detail_view?.description}</p>
                 </Card.Body>
             </Card>
         </div>

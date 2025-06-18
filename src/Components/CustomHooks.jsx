@@ -1,9 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch as useReduxDispatch } from 'react-redux';
+import { useDispatch as useReduxDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { handleScreenSize } from 'Actions/Common_actions/Common_action';
 import { useMemo } from 'react';
+import { createSelector } from '@reduxjs/toolkit';
+
+
+export const useCommonState = () => {
+  const selectCommonState = (state) => state.commonState;
+  const selectServicesState = (state) => state.servicesState;
+  const selectDashboardState = (state) => state.dashboardState;
+  const selectBlogState = (state) => state.blogState;
+  const selectFeedbackState = (state) => state.feedbackState;
+  const selectAnalyticsState = (state) => state.analyticsState;
+  const selectCrmState = (state) => state.crmState;
+
+  const selectMemoizedCommonState = createSelector(
+    [selectCommonState, selectServicesState, selectDashboardState, selectBlogState, selectFeedbackState, selectAnalyticsState, selectCrmState],
+    (commonState, servicesState, dashboardState, blogState, feedbackState, analyticsState, crmState) => (
+      { commonState, servicesState, dashboardState, blogState, feedbackState, analyticsState, crmState }
+    )
+  )
+  return useSelector(selectMemoizedCommonState);
+}
 
 
 //                                                   navigation hook                                                                         //

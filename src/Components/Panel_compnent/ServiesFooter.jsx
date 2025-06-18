@@ -1,13 +1,12 @@
 import React from 'react'
-import { useDispatch } from 'Components/CustomHooks'
+import { useCommonState, useDispatch } from 'Components/CustomHooks'
 import SelectBox from 'Components/Input/SelectBox'
 import Pagination from 'Components/Pagination/Pagination'
 import { Card } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
 import { updateEntriesCount } from 'Slices/Common_Slice/Common_slice'
 
 const ServiesFooter = () => {
-    const { commonState } = useSelector((state) => state);
+    const { commonState } = useCommonState();
     const dispatch = useDispatch()
 
 
@@ -30,7 +29,7 @@ const ServiesFooter = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 <div className="col-12 col-md-6 d-inline-flex justify-content-end">
                     <Pagination totalCount={commonState?.totalCount} currentPage={commonState?.currentPage} pageSize={commonState?.pageSize} />
                 </div>

@@ -19,7 +19,7 @@ const BlogCard = ({
     const sanitizedContent = DOMPurify.sanitize(blogData?.blog_content || '');
 
     return (
-        <Card className='border-0 rounded-3 h-100'>
+        <Card className='border-0 rounded-3 pb-2 h-100'>
             {
                 placeholder ?
                     <div className='p-3 pb-0'>

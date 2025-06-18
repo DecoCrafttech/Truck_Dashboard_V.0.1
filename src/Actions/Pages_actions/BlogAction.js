@@ -106,8 +106,7 @@ export const handleDeleteBlogApi = blog_id => async (dispatch) => {
 
         if (data.error_code === 0) {
             dispatch(blogDeletionResponse(data?.data))
-        } else {
-            console.log(data.message)
+        } else { 
             dispatch(blogDeletionFailure())
             dispatch(updateToast({ message: data?.message, type: "error" }))
 

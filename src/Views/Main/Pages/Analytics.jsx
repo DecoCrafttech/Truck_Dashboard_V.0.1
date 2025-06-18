@@ -1,13 +1,12 @@
 import { handlendIndividualSelectedAnalysis, handlendOverallAnalysis } from 'Actions/Pages_actions/AnalyticsAction';
 import { handleFilterModal } from 'Actions/Pages_actions/ServicesActions';
 import ButtonComponent from 'Components/Button/Button';
-import { useDispatch } from 'Components/CustomHooks';
+import { useCommonState, useDispatch } from 'Components/CustomHooks';
 import Input from 'Components/Input/Input';
 import ReactDropdownSelect from 'Components/Input/ReactDropdownSelect';
 import SpinnerComponent from 'Components/Spinner/Spinner';
 import React, { useEffect } from 'react';
 import { Card } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { PieChart, Pie, Cell } from "recharts";
 import { updateOverallAnalysis, updateReportDate } from 'Slices/Pages_slice/Analytice_slice';
@@ -17,7 +16,7 @@ import { DownloadPDF } from 'ResuableFunctions/PdfConvertor';
 import { updateToast } from 'Slices/Common_Slice/Common_slice';
 
 export const Analytics = () => {
-    const { commonState, servicesState, analyticsState } = useSelector((state) => state)
+    const { commonState, servicesState, analyticsState } = useCommonState()
     const { analyticsPieChart, analyticsButtons } = JsonData()?.jsxJson
     const { overallAnalysis, analatics_load_table_head, analatics_truck_table_head, analatics_driver_table_head, analatics_buy_sell_table_head } = JsonData()?.jsonOnly
     const dispatch = useDispatch()

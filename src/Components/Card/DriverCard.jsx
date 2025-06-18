@@ -51,8 +51,8 @@ const DriverCard = ({
 
 
     return (
-        <div className={`${is_delete_card ? "col-12" : "col-12 col-sm-6 col-lg-4"} p-2 d-inline-flex`}>
-            <Card className="card-border w-100 rounded-3 shadow border-0">
+        <div className={`${is_delete_card ? "col-12" : "col-12 col-sm-6 col-lg-4"} p-2`}>
+            <Card className="card-border w-100 rounded-3 shadow border-0 pb-2 h-100">
                 <Card.Header className="d-flex align-items-center bg-transparent border-0">
                     <div className="col">
                         {placeholder ?
@@ -111,7 +111,7 @@ const DriverCard = ({
 
                 {
                     !is_delete_card ?
-                        <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 mt-1">
+                        <Card.Footer className="card-footer bg-transparent border-0 d-flex pt-0 my-2">
                             <div className="col px-1">
                                 <ButtonComponent
                                     className={`${placeholder ? "placeholder py-2 w-100 btn-outline-secondary" : 'fs-13 w-100 btn-outline-danger'}`}

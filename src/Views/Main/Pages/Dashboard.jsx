@@ -1,16 +1,15 @@
 import React, { Fragment, useEffect } from 'react'
-import { useSelector } from 'react-redux';
 import JsonData from 'Utils/JsonData'
 import Icons from 'Utils/Icons';
 import { handleGetDashboard } from 'Actions/Pages_actions/dashboardAction';
-import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import Img from 'Components/Img/Img';
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter';
 
 
 const Dashboard = () => {
-    const { commonState, dashboardState } = useSelector((state) => state);
+    const { commonState, dashboardState } = useCommonState();
     const dashboardMenu = JsonData()?.jsxJson?.dashboardMenus;
     const dispatch = useDispatch();
     const navigate = useCustomNavigate();
@@ -29,7 +28,7 @@ const Dashboard = () => {
     function dashboardBasicMetrics() {
         return dashboardMenu?.map((value, index) => (
             <div className="col-3 px-2" key={index}>
-                <div className="card border-0">
+                <div className="card border-0 h-100">
                     <div className="card-body">
                         <div className="d-block">
                             <span className='dashboard-icon'>{value?.icon}</span>

@@ -1,6 +1,6 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
-import { useCustomNavigate, useDispatch } from 'Components/CustomHooks'
+import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks'
 import Icons from 'Utils/Icons'
 import Img from 'Components/Img/Img'
 import ButtonComponent from 'Components/Button/Button'
@@ -8,7 +8,6 @@ import InputOnly from 'Components/Input/inputOnly'
 import { isValidBase64 } from 'ResuableFunctions/ValidateBAseString'
 import { updateToast } from 'Slices/Common_Slice/Common_slice'
 import { handleDeleteVehicle, handleGetDashboardProfile } from 'Actions/Pages_actions/dashboardAction'
-import { useSelector } from 'react-redux'
 import { HandleAddvehicleOnChange } from 'ResuableFunctions/ValidVehicleNumber'
 import SpinnerComponent from 'Components/Spinner/Spinner'
 import LoadCard from 'Components/Card/LoadCard'
@@ -17,7 +16,7 @@ import TruckCard from 'Components/Card/TruckCard'
 import DriverCard from 'Components/Card/DriverCard'
 
 const UserProfileDetails = () => {
-    const { dashboardState, commonState } = useSelector((state) => state)
+    const { dashboardState, commonState } = useCommonState()
     const navigate = useCustomNavigate()
     const dispatch = useDispatch()
     const queryParams = new URLSearchParams(window.location.search);
@@ -57,7 +56,7 @@ const UserProfileDetails = () => {
         return [{ key: "Mail ID", value: dashboardState?.profile_data?.email }, { key: "State", value: dashboardState?.profile_data?.state }, { key: "Category", value: dashboardState?.profile_data?.category }]
             .map((value, index) => (
                 value.key === "State" ?
-                    <div className='col-12 d-inline-flex mb-2 info-icon ' key={index}>
+                    <div className='col-12 d-inline-flex mb-2 info-icon' key={index}>
                         <div className="col-6 col-sm-4 col-md-5 col-lg-6 col-xxl-4">
                             <h6 className='text-secondary fw-bold'>{value.key}</h6>
                         </div>
@@ -306,11 +305,10 @@ const UserProfileDetails = () => {
                     </section>
 
                     {/* load cards  */}
-                    <section className="w-100 mt-4 p-1">
+                    <section className="w-100 mt-4 p-">
                         <Card className='rounded-1'>
                             {cardHeader('Load Post', (e) => console.log(e.target.value), (e) => console.log(e.code), (e) => console.log(e.code))}
-
-                            <Card.Body>
+                            <Card.Body className='row'>
                                 {dashboardState?.profileGlow ?
                                     [...Array(6)].map((value, placeholderInd) => (
                                         <LoadCard placeholder={dashboardState?.profileGlow} key={placeholderInd} />
@@ -335,8 +333,7 @@ const UserProfileDetails = () => {
                     <section className="w-100 mt-4 p-1">
                         <Card className='rounded-1'>
                             {cardHeader('Truck Post', (e) => console.log(e.target.value), (e) => console.log(e.code), (e) => console.log(e.code))}
-
-                            <Card.Body>
+                            <Card.Body className='row'>
                                 {dashboardState?.profileGlow ?
                                     [...Array(6)].map((value, placeholderInd) => (
                                         <TruckCard placeholder={dashboardState?.profileGlow} key={placeholderInd} />
@@ -361,8 +358,7 @@ const UserProfileDetails = () => {
                     <section className="w-100 mt-4 p-1">
                         <Card className='rounded-1'>
                             {cardHeader('Driver Post', (e) => console.log(e.target.value), (e) => console.log(e.code), (e) => console.log(e.code))}
-
-                            <Card.Body>
+                            <Card.Body className='row'>
                                 {dashboardState?.profileGlow ?
                                     [...Array(6)].map((value, placeholderInd) => (
                                         <DriverCard placeholder={dashboardState?.driver_glow} key={placeholderInd} />
@@ -387,8 +383,7 @@ const UserProfileDetails = () => {
                     <section className="w-100 mt-4 p-1">
                         <Card className='rounded-1'>
                             {cardHeader('Buy & Sell Post', (e) => console.log(e.target.value), (e) => console.log(e.code), (e) => console.log(e.code))}
-
-                            <Card.Body>
+                            <Card.Body className='row'>
                                 {dashboardState?.profileGlow ?
                                     [...Array(6)].map((value, placeholderInd) => (
                                         <BuyandSellCard placeholder={dashboardState?.profileGlow} key={placeholderInd} />

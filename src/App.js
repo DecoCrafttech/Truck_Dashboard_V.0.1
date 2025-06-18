@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ToastContainer } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie'
 
-import { useSize } from "Components/CustomHooks";
+import { useCommonState, useSize } from "Components/CustomHooks";
 import { handleBearerToken, handleClearErrors, handleOnlineOffilne, handleScreenSize } from "Actions/Common_actions/Common_action";
 import Layout from "Views/Main/Layout/Layout";
 import LoadDetails from "Views/Main/Pages/LoadDetails";
@@ -26,7 +26,7 @@ import ComingSoon from "Views/Common/coming-soon";
 
 
 const App = () => {
-  const { isOnline, Err, Toast_Type } = useSelector((state) => state.commonState);
+  const { commonState } = useCommonState((state) => state.commonState);
   const sizer = useSize();
   const dispatch = useDispatch();
 
@@ -39,16 +39,16 @@ const App = () => {
 
   //error state
   useEffect(() => {
-    if (Err) {
-      toast(Err, {
+    if (commonState?.Err) {
+      toast(commonState?.Err, {
         position: "top-right",
-        type: Toast_Type,
+        type: commonState?.Toast_Type,
         onOpen: () => dispatch(handleClearErrors),
         autoClose: 1600
       })
       return
     }
-  }, [Toast_Type, Err, dispatch])
+  }, [commonState?.Toast_Type, commonState?.Err, dispatch])
 
   window.addEventListener('online', () => {
     dispatch(handleOnlineOffilne(true))
@@ -58,7 +58,7 @@ const App = () => {
     dispatch(handleOnlineOffilne(false))
   });
 
-  return isOnline ?
+  return commonState?.isOnline ?
     <HelmetProvider>
       <ToastContainer theme='light' />
       <Routes>
@@ -69,27 +69,23 @@ const App = () => {
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<UserProfileDetails />} />
           </Route>
-
           <Route path="analytics" element={<Analytics />} />
 
           <Route path="services" >
             <Route path="load_details" element={<LoadDetails />} />
             <Route path="truck_details" element={<TruckDetails />} />
             <Route path="driver_details" element={<DriverDetails />} />
-
             <Route path="buy_sell_details">
               <Route index element={<BuySellDetails />} />
               <Route path="view_details" element={<BuySellDetailsPage />} />
             </Route>
-
             <Route path="insurance" element={<ComingSoon page_title="Insurance Page" />} />
             <Route path="fast_tag" element={<ComingSoon page_title="Fast Tag Page" />} />
+            <Route path="petrol_bunks" element={<ComingSoon page_title="Fast Tag Page" />} />
           </Route>
 
           <Route path="blog" element={<Blog />} />
-
           <Route path="feedback_complaints" element={<Feedback />} />
-
           <Route path="crm" element={<Crm />} />
         </Route>
 

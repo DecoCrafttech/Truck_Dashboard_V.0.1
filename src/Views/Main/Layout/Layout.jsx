@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react'
 import { Outlet } from 'react-router-dom';
-import { useCustomNavigate, useDispatch } from 'Components/CustomHooks';
+import { useCommonState, useCustomNavigate, useDispatch } from 'Components/CustomHooks';
 import { handleCurrentMenuInd, handleLogout, handleUpdateCanvasShow } from 'Actions/Common_actions/Common_action';
 import Header from 'Components/Panel_compnent/Header';
 import Sidebar from 'Components/Panel_compnent/Sidebar';
@@ -8,8 +8,7 @@ import store from 'StoreIndex';
 import JsonData from 'Utils/JsonData';
 import Images from 'Utils/Image';
 import { OverallModel } from 'Views/Common/OverallModal';
-import { updateMenuOptions, updateToast } from 'Slices/Common_Slice/Common_slice';
-import { useSelector } from 'react-redux';
+import { updateMenuOptions } from 'Slices/Common_Slice/Common_slice';
 
 const Layout = () => {
     const state = store.getState()
@@ -17,7 +16,7 @@ const Layout = () => {
     const navigate = useCustomNavigate();
     const handleCanvasOpenOrClose = () => dispatch(handleUpdateCanvasShow)
     const { sidebarMenusAdmin, sidebarMenusEmployee, sidebarMenusSeoSpecialist } = JsonData()?.jsonOnly;
-    const { commonState } = useSelector((state) => state);
+    const { commonState } = useCommonState();
 
     useEffect(() => {
         if (!state?.commonState?.user_id) {

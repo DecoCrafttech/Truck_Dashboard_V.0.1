@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter';
 import ButtonComponent from 'Components/Button/Button';
-import { useDispatch } from 'Components/CustomHooks';
+import { useCommonState, useDispatch } from 'Components/CustomHooks';
 import { update_crm_status_entry_user_id, updateSelectedButton } from 'Slices/Pages_slice/Crm_slice';
 import { handleGetCrmDashboard, handleGetCrmModal } from 'Actions/Pages_actions/CrmActions';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
@@ -11,7 +10,7 @@ import Icons from 'Utils/Icons';
 import { initializeFilterDetails } from 'Slices/Pages_slice/Services_slice';
 
 const Crm = () => {
-    const { commonState, crmState } = useSelector((state) => state);
+    const { commonState, crmState } = useCommonState();
     const dispatch = useDispatch()
 
     const params = {

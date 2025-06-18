@@ -10,7 +10,7 @@ import CrmCard from "Components/Card/CrmCard";
 import DriverCard from "Components/Card/DriverCard";
 import LoadCard from "Components/Card/LoadCard";
 import TruckCard from "Components/Card/TruckCard";
-import { useDispatch } from "Components/CustomHooks";
+import { useCommonState, useDispatch } from "Components/CustomHooks";
 import GoogleLocationInput from "Components/Input/GoogleLocationInput";
 import Input from "Components/Input/Input";
 import ReactDropdownSelect from "Components/Input/ReactDropdownSelect";
@@ -20,7 +20,6 @@ import ModalComponent from "Components/Modal/Modal";
 import SpinnerComponent from "Components/Spinner/Spinner";
 import { Fragment } from "react";
 import ReactQuill from "react-quill";
-import { useSelector } from "react-redux";
 import { updateApplyFilterClickedTrue, updateModalShow } from "Slices/Common_Slice/Common_slice";
 import { resetOverallChartFilter } from "Slices/Pages_slice/Analytice_slice";
 import { ResetbuyAndsellFilterData, ResetLoadFilterData, ResetTruckFilterData } from "Slices/Pages_slice/Services_slice";
@@ -28,7 +27,7 @@ import Icons from "Utils/Icons";
 import JsonData from "Utils/JsonData";
 
 export function OverallModel() {
-    const { commonState, servicesState, blogState, feedbackState, crmState } = useSelector((state) => state);
+    const { commonState, servicesState, blogState, feedbackState, crmState } = useCommonState();
     const dispatch = useDispatch();
     const JsonJsx = JsonData()?.jsxJson;
 

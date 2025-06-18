@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter';
 import { handleGetFeedbackComplaints } from 'Actions/Pages_actions/FeedbackAction';
 import ButtonComponent from 'Components/Button/Button';
 import { updateFeedbackModal } from 'Slices/Pages_slice/Feedback_slice';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
+import { useCommonState } from 'Components/CustomHooks';
 
 const Feedback = () => {
-    const { commonState, feedbackState } = useSelector((state) => state);
+    const { commonState, feedbackState } = useCommonState();
     const dispatch = useDispatch();
 
     const params = {

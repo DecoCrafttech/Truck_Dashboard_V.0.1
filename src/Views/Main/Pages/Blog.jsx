@@ -2,17 +2,16 @@ import { handleResetAlMenus } from 'Actions/Common_actions/Common_action'
 import { handleCreateBlogModal, handleGetBlog } from 'Actions/Pages_actions/BlogAction'
 import ButtonComponent from 'Components/Button/Button'
 import BlogCard from 'Components/Card/BlogCard'
-import { useDispatch } from 'Components/CustomHooks'
+import { useCommonState, useDispatch } from 'Components/CustomHooks'
 import SelectBox from 'Components/Input/SelectBox'
 import Pagination from 'Components/Pagination/Pagination'
 import React, { Fragment, useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { updateEntriesCount } from 'Slices/Common_Slice/Common_slice'
-import Icons from 'Utils/Icons' 
+import Icons from 'Utils/Icons'
 
 const Blog = () => {
-    const { commonState, blogState } = useSelector((state) => state)
-    const dispatch = useDispatch() 
+    const { commonState, blogState } = useCommonState()
+    const dispatch = useDispatch()
     const params = {
         page_no: commonState?.currentPage,
         data_limit: commonState?.pageSize

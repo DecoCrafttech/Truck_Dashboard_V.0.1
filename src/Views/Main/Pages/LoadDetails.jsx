@@ -2,16 +2,15 @@ import { handleResetAlMenus } from 'Actions/Common_actions/Common_action'
 import { handleCreateModal, handleFilterModal, handleGetLoads } from 'Actions/Pages_actions/ServicesActions'
 import ButtonComponent from 'Components/Button/Button'
 import LoadCard from 'Components/Card/LoadCard'
-import { useDispatch } from 'Components/CustomHooks'
+import { useCommonState, useDispatch } from 'Components/CustomHooks'
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter'
 import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
 import { SearchComponent } from 'ResuableFunctions/SearchFun'
 import Icons from 'Utils/Icons'
 
 const LoadDetails = () => {
-    const { commonState, servicesState } = useSelector((state) => state);
+    const { commonState, servicesState } = useCommonState();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -96,7 +95,7 @@ const LoadDetails = () => {
                 </div>
 
                 <Card className='w-100 main-content-card-height mt-3 px-0 py-1 rounded border-0'>
-                    <Card.Body className='h-100 overflowY w-100 rounded placeholder-glow'>
+                    <Card.Body className='row overflowY w-100 rounded placeholder-glow'>
                         {servicesState?.load_glow ?
                             [...Array(6)].map((value, placeholderInd) => (
                                 <LoadCard placeholder={servicesState?.load_glow} key={placeholderInd}/>
