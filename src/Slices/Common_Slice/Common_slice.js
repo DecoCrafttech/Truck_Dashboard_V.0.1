@@ -5,7 +5,7 @@ import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogRes
 import { getCrmDashboardFailure, getCrmDashboardRequest, getCrmDashboardResponse, getCrmModalFailure, getCrmModalRequest, update_crm_status_entry_user_id, updateCrmStatusEntryFailure, updateCrmStatusEntryResponse, updateSelectedButton } from "Slices/Pages_slice/Crm_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
 import { getFeedbackFailure, getFeedbackRequest, getFeedbackResponse, updateFeedbackModal, updateFeedbackStatusFailure, updateFeedbackStatusResponse } from "Slices/Pages_slice/Feedback_slice";
-import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellImageDeleteFailure, buyAndsellPostFailure, buyAndsellPostResponse, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
+import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellImageDeleteFailure, buyAndsellPostFailure, buyAndsellPostResponse, DriverDeleteResponse, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, DriverPostResponse, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, LoadPostResponse, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, TruckDeleteResponse, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, TruckPostResponse, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
 
 const commonSlice = createSlice({
     name: 'commonSlice',
@@ -371,12 +371,16 @@ const commonSlice = createSlice({
                 state.modalShow = false
                 state.validated = false
             })
+            .addCase(LoadPostResponse, (state, action) => {
+                state.re_render = true
+            })
             .addCase(LoadPostFailure, (state, action) => {
                 state.Err = action.payload
                 state.Toast_Type = "error"
             })
             .addCase(LoadDeleteResponse, (state, action) => {
                 state.modalShow = false
+                state.re_render = true
             })
             .addCase(LoadDeleteFailure, (state, action) => {
                 state.Err = action.payload
@@ -387,14 +391,20 @@ const commonSlice = createSlice({
             .addCase(truckGetRequest, (state, action) => {
                 state.totalCount = 0
                 state.modalShow = false
-            }) 
+            })
             .addCase(TruckPostRequest, (state, action) => {
                 state.modalShow = false
                 state.validated = false
             })
+            .addCase(TruckPostResponse, (state, action) => {
+                state.re_render = true
+            })
             .addCase(TruckPostFailure, (state, action) => {
                 state.Err = action.payload
                 state.Toast_Type = "error"
+            })
+            .addCase(TruckDeleteResponse, (state, action) => {
+                state.re_render = true
             })
 
             //driver
@@ -407,9 +417,15 @@ const commonSlice = createSlice({
                 state.modalShow = false
                 state.validated = false
             })
+            .addCase(DriverPostResponse, (state, action) => {
+                state.re_render = true
+            })
             .addCase(DriverPostFailure, (state, action) => {
                 state.Err = action.payload
                 state.Toast_Type = "error"
+            })
+            .addCase(DriverDeleteResponse, (state, action) => {
+                state.re_render = true
             })
 
             //buy and sell
@@ -421,6 +437,7 @@ const commonSlice = createSlice({
             .addCase(buyAndsellPostResponse, (state, action) => {
                 state.modalShow = false
                 state.validated = false
+                state.re_render = true
             })
             .addCase(buyAndsellPostFailure, (state, action) => {
                 state.Err = action.payload
@@ -428,6 +445,7 @@ const commonSlice = createSlice({
             })
             .addCase(buyAndsellDeleteResponse, (state, action) => {
                 state.modalShow = false
+                state.re_render = true
             })
             .addCase(buyAndsellDeleteFailure, (state, action) => {
                 state.Err = action.payload

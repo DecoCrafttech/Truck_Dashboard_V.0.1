@@ -748,6 +748,21 @@ const JsonData = () => {
                 Err: commonState?.validated && !servicesState?.new_edit_load_card?.no_of_tyres ? "No of tyres required" : ''
             },
             {
+                name: "Truck size (ft)",
+                type: "text",
+                category: "input",
+                placeholder: "Enter Truck size (ft)",
+                divClassName: "mb-2 col-12 col-md-6",
+                value: servicesState?.new_edit_load_card?.truck_size || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value)) {
+                        dispatch(handleLoadInputOnChange({ truck_size: e.target.value }))
+                    }
+                },
+                isMandatory: true,
+                Err: commonState?.validated && !servicesState?.new_edit_load_card?.truck_size ? "Truck size required" : ''
+            },
+            {
                 name: "Description",
                 type: "textbox",
                 category: "textbox",
@@ -833,6 +848,21 @@ const JsonData = () => {
                 options: jsonOnly.noOfTyres,
                 change: (e) => dispatch(handleOnchangeLoadFilter({ no_of_tyres: e.target.value })),
                 isMandatory: true
+            },
+            {
+                name: "Truck size (ft)",
+                type: "text",
+                category: "input",
+                placeholder: "Enter Truck size (ft)",
+                divClassName: "mb-2 col-12 col-md-6",
+                value: servicesState?.load_filter_card?.truck_size || '',
+                change: (e) => {
+                    if (/^\d*$/.test(e.target.value)) {
+                        dispatch(handleOnchangeLoadFilter({ truck_size: e.target.value }))
+                    }
+                },
+                isMandatory: true,
+                Err: commonState?.validated && !servicesState?.load_filter_card?.truck_size ? "Truck size required" : ''
             },
             {
                 name: "Material",

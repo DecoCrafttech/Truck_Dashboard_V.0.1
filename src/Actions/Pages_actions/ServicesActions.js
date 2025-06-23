@@ -173,13 +173,16 @@ export const handleGetLoads = (params) => async (dispatch) => {
     }
 }
 
-export const handlePostOrEditLoad = (servicesState) => async (dispatch) => {
+export const handlePostOrEditLoad = (params) => async (dispatch) => {
+    let servicesState = params?.servicesState;
+    
     if (servicesState?.user_data?.user_id) {
         if (servicesState?.new_edit_load_card?.company_name &&
             servicesState?.new_edit_load_card?.contact_no &&
             servicesState?.new_edit_load_card?.from_location &&
             servicesState?.new_edit_load_card?.to_location &&
             servicesState?.new_edit_load_card?.material &&
+            servicesState?.new_edit_load_card?.truck_size &&
             servicesState?.new_edit_load_card?.tone &&
             servicesState?.new_edit_load_card?.truck_body_type &&
             servicesState?.new_edit_load_card?.no_of_tyres) {
@@ -192,6 +195,7 @@ export const handlePostOrEditLoad = (servicesState) => async (dispatch) => {
                     from: servicesState?.new_edit_load_card?.from_location,
                     to: servicesState?.new_edit_load_card?.to_location,
                     material: servicesState?.new_edit_load_card?.material,
+                    truck_size: servicesState?.new_edit_load_card?.truck_size,
                     tone: servicesState?.new_edit_load_card?.tone,
                     truck_body_type: servicesState?.new_edit_load_card?.truck_body_type,
                     no_of_tyres: servicesState?.new_edit_load_card?.no_of_tyres,
@@ -264,7 +268,10 @@ export const handleGetTruck = (params) => async (dispatch) => {
     }
 }
 
-export const handlePostOrEditTruck = (commonState, servicesState, jsonOnly) => async (dispatch) => {
+export const handlePostOrEditTruck = (params) => async (dispatch) => {
+    let servicesState = params?.servicesState;
+    let commonState = params?.commonState;
+    let jsonOnly = params?.jsonOnly;
     let locations;
 
     if (commonState?.user_id) {
@@ -365,7 +372,9 @@ export const handleGetDriver = (params) => async (dispatch) => {
     }
 }
 
-export const handlePostOrEditDriver = (servicesState) => async (dispatch) => {
+export const handlePostOrEditDriver = (params) => async (dispatch) => {
+    let servicesState = params?.servicesState;
+
     if (servicesState?.user_data?.user_id) {
         if (servicesState?.new_edit_driver_card?.vehicle_number?.length &&
             servicesState?.new_edit_driver_card?.company_name &&
@@ -450,15 +459,13 @@ export const handleGetBuyandSell = (params) => async (dispatch) => {
     }
 }
 
-export const handleBuyAndSellInputOnChange = (inputData) => dispatch => {
-    dispatch(updateBuyAndSellEditData(inputData))
-}
+export const handleBuyAndSellInputOnChange = (inputData) => dispatch => dispatch(updateBuyAndSellEditData(inputData));
 
-export const handleOnchangeBuyAndSellFilter = (inputData) => dispatch => {
-    dispatch(updateBuyAndSellFilterData(inputData))
-}
+export const handleOnchangeBuyAndSellFilter = (inputData) => dispatch => dispatch(updateBuyAndSellFilterData(inputData));
 
-export const handlePostOrEditBuyAndSell = (servicesState) => async (dispatch) => {
+export const handlePostOrEditBuyAndSell = (params) => async (dispatch) => {
+    let servicesState = params?.servicesState;
+
     if (servicesState?.user_data?.user_id) {
 
         if (servicesState?.new_edit_buyAndsell_card?.vehicle_number?.length &&

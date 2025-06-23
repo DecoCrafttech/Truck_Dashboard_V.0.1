@@ -559,19 +559,19 @@ export function OverallModel() {
     function dynamicPostFun() {
         switch (servicesState?.modal_from) {
             case "Load":
-                dispatch(handlePostOrEditLoad(commonState, servicesState, jsonOnly))
+                dispatch(handlePostOrEditLoad({ commonState, servicesState, jsonOnly }))
                 break;
 
             case "Truck":
-                dispatch(handlePostOrEditTruck(commonState, servicesState, jsonOnly))
+                dispatch(handlePostOrEditTruck({ commonState, servicesState, jsonOnly }))
                 break;
 
             case "Driver":
-                dispatch(handlePostOrEditDriver(commonState, servicesState, jsonOnly))
+                dispatch(handlePostOrEditDriver({ commonState, servicesState, jsonOnly }))
                 break;
 
             case "BuyAndSell":
-                dispatch(handlePostOrEditBuyAndSell(commonState, servicesState, jsonOnly))
+                dispatch(handlePostOrEditBuyAndSell({ commonState, servicesState, jsonOnly }))
                 break;
 
             default:
@@ -582,19 +582,19 @@ export function OverallModel() {
     function dynamicEditFun() {
         switch (servicesState?.modal_from) {
             case "Load":
-                dispatch(handlePostOrEditLoad(commonState, servicesState, jsonOnly))
+                dispatch(handlePostOrEditLoad({ commonState, servicesState, jsonOnly }))
                 break;
 
             case "Truck":
-                dispatch(handlePostOrEditTruck(commonState, servicesState, jsonOnly))
+                dispatch(handlePostOrEditTruck({ commonState, servicesState, jsonOnly }))
                 break;
 
             case "Driver":
-                dispatch(handlePostOrEditDriver(commonState, servicesState, jsonOnly))
+                dispatch(handlePostOrEditDriver({ commonState, servicesState, jsonOnly }))
                 break;
 
             case "BuyAndSell":
-                dispatch(handlePostOrEditBuyAndSell(commonState, servicesState, jsonOnly))
+                dispatch(handlePostOrEditBuyAndSell({ commonState, servicesState, jsonOnly }))
                 break;
 
             default:
