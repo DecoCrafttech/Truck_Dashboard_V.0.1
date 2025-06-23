@@ -32,7 +32,8 @@ const feedbackSlice = createSlice({
         getFeedbackRequest(state, action) {
             return {
                 ...state,
-                initialGlow: true
+                initialGlow: true,
+                feeback_data: []
             }
         },
         getFeedbackResponse(state, action) {

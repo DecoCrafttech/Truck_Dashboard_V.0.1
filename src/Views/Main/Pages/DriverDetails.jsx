@@ -8,50 +8,55 @@ import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { SearchComponent } from 'ResuableFunctions/SearchFun'
 import Icons from 'Utils/Icons'
+import JsonData from 'Utils/JsonData'
 
 const DriverDetails = () => {
     const { commonState, servicesState } = useCommonState();
     const dispatch = useDispatch();
+    const { jsonOnly } = JsonData();
+
     useEffect(() => {
         dispatch(handleResetAlMenus)
     }, [])
 
-    const params = {
-        driver_name: "",
-        vehicle_number: "",
-        contact_no: "",
-        truck_name: "",
-        company_name: "",
-        from_location: "",
-        to_location: [],
-        truck_body_type: "",
-        no_of_tyres: "",
-        description: "",
-        page_no: commonState?.currentPage || 1,
-        search_val: commonState?.search_clicked ? commonState?.search_value?.trim() || "" : "",
-        data_limit: commonState?.pageSize || 10
-    }
-
     useEffect(() => {
-        if (commonState?.search_clicked) {
-            dispatch(handleGetDriver(params))
-        }
-        else if (commonState?.apply_filter_clicked) {
-            const filteredToLoc = servicesState?.driver_filter_card?.to_location?.map((v) => v?.label)
+        if (commonState?.re_render) {
+            const newParams = {}
+            let locations;
 
-            const newParams = { ...params }
-            newParams.from_location = servicesState?.driver_filter_card?.from_location || ''
-            newParams.to_location = servicesState?.driver_filter_card?.to_location ? filteredToLoc : [] || []
-            newParams.truck_body_type = servicesState?.driver_filter_card?.truck_body_type || ''
-            newParams.no_of_tyres = servicesState?.driver_filter_card?.no_of_tyres || ''
+            const filteredToLoc = servicesState?.driver_filter_card?.to_location?.map((v) => v?.label)
+            const select_all_location = jsonOnly?.states?.map((v) => v.label)
+            if (filteredToLoc?.length) locations = filteredToLoc[0] === "Select all" ? select_all_location : filteredToLoc
+
+            if (commonState?.apply_filter) {
+                newParams.truck_name = servicesState?.driver_filter_card?.truck_name || ''
+                newParams.driver_name = servicesState?.driver_filter_card?.driver_name || ''
+                newParams.from_location = servicesState?.driver_filter_card?.from_location || ''
+                newParams.to_location = locations || []
+                newParams.truck_body_type = servicesState?.driver_filter_card?.truck_body_type || ''
+                newParams.no_of_tyres = servicesState?.driver_filter_card?.no_of_tyres || ''
+                newParams.truck_size = servicesState?.driver_filter_card?.truck_size || ''
+            } else {
+                newParams.driver_name = ''
+                newParams.from_location = ''
+                newParams.to_location = []
+                newParams.truck_body_type = ''
+                newParams.no_of_tyres = ''
+                newParams.truck_size = ''
+                newParams.truck_name = ''
+            }
+
+            newParams.search_val = commonState?.search ? commonState?.search_value?.trim() || "" : ""
+            newParams.company_name = ""
+            newParams.vehicle_number = ""
+            newParams.contact_no = ""
+            newParams.page_no = commonState?.currentPage || 1
+            newParams.data_limit = parseInt(commonState?.pageSize) || 10
+            newParams.endpoint = "/dashboard_truck_details"
 
             dispatch(handleGetDriver(newParams))
         }
-        else {
-            dispatch(handleGetDriver(params))
-        }
-
-    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter, servicesState?.re_render])
+    }, [commonState?.pageSize, commonState?.currentPage, commonState?.re_render])
 
 
     return (
@@ -102,16 +107,23 @@ const DriverDetails = () => {
                                 <DriverCard placeholder={servicesState?.driver_glow} key={placeholderInd} />
                             ))
                             :
-                            servicesState?.alldrivers_details.map((driverData, driverInd) => (
-                                <Fragment key={driverInd}>
-                                    <DriverCard placeholder={servicesState?.driver_glow} driver_data={driverData} commonState={commonState}/>
-                                </Fragment>
-                            ))
+                            servicesState?.alldrivers_details?.length ?
+                                servicesState?.alldrivers_details.map((driverData, driverInd) => (
+                                    <Fragment key={driverInd}>
+                                        <DriverCard placeholder={servicesState?.driver_glow} driver_data={driverData} commonState={commonState} />
+                                    </Fragment>
+                                ))
+                                :
+                                <div className="h-100 row align-items-center justify-content-center">
+                                    <div className="col text-center">
+                                        <p>No Data Found</p>
+                                    </div>
+                                </div>
                         }
                     </Card.Body>
                 </Card>
 
-                {commonState?.totalCount ? <ServiesFooter /> : null}
+                {commonState?.totalCount > 0 ? <ServiesFooter /> : null}
             </div>
         </Fragment>
     )

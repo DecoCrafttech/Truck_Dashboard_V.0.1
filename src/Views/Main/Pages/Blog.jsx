@@ -23,7 +23,7 @@ const Blog = () => {
 
     useEffect(() => {
         dispatch(handleGetBlog(params))
-    }, [commonState?.pageSize, commonState?.currentPage, blogState?.get_blog_recall])
+    }, [commonState?.pageSize, commonState?.currentPage, blogState?.get_blog_recall, commonState?.re_render])
 
     return (
         <Fragment>

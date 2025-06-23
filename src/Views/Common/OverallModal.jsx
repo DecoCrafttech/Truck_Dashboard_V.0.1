@@ -29,7 +29,7 @@ import JsonData from "Utils/JsonData";
 export function OverallModel() {
     const { commonState, servicesState, blogState, feedbackState, crmState } = useCommonState();
     const dispatch = useDispatch();
-    const JsonJsx = JsonData()?.jsxJson;
+    const { jsxJson, jsonOnly } = JsonData();
 
     const modules = {
         toolbar: [
@@ -135,12 +135,12 @@ export function OverallModel() {
 
         if (servicesState?.modal_from === "Load") {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
-                funBy = JsonJsx?.loadAddEditInputs
+                funBy = jsxJson?.loadAddEditInputs
             } else {
-                let restrictDate = JsonJsx?.loadFilterInputs?.filter((v) => v?.name !== "From Date" && v?.name !== "To Date")
+                let restrictDate = jsxJson?.loadFilterInputs?.filter((v) => v?.name !== "From Date" && v?.name !== "To Date")
 
                 if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
-                    funBy = JsonJsx?.loadFilterInputs
+                    funBy = jsxJson?.loadFilterInputs
                 } else {
                     funBy = restrictDate
                 }
@@ -149,11 +149,11 @@ export function OverallModel() {
 
         if (servicesState?.modal_from === "Truck") {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
-                funBy = JsonJsx?.truckAddEditInputs
+                funBy = jsxJson?.truckAddEditInputs
             } else {
-                let restrictDate = JsonJsx?.truckFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date")
+                let restrictDate = jsxJson?.truckFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date")
                 if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
-                    funBy = JsonJsx?.truckFilterInputs
+                    funBy = jsxJson?.truckFilterInputs
                 } else {
                     funBy = restrictDate
                 }
@@ -162,11 +162,11 @@ export function OverallModel() {
 
         if (servicesState?.modal_from === "Driver") {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
-                funBy = JsonJsx?.driverAddEditInputs
+                funBy = jsxJson?.driverAddEditInputs
             } else {
-                let restrictDate = JsonJsx?.driverFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date")
+                let restrictDate = jsxJson?.driverFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date")
                 if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
-                    funBy = JsonJsx?.driverFilterInputs
+                    funBy = jsxJson?.driverFilterInputs
                 } else {
                     funBy = restrictDate
                 }
@@ -175,11 +175,11 @@ export function OverallModel() {
 
         if (servicesState?.modal_from === "BuyAndSell") {
             if (["Edit", "Create"].includes(servicesState?.modal_type)) {
-                funBy = JsonJsx?.buyAndSellAddEdit
+                funBy = jsxJson?.buyAndSellAddEdit
             } else {
-                let restrictDate = JsonJsx?.buyAndSellFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date" && v.name !== "State list")
+                let restrictDate = jsxJson?.buyAndSellFilterInputs?.filter((v) => v.name !== "From Date" && v.name !== "To Date" && v.name !== "State list")
                 if (window.location.pathname === "/dashboard/analytics" || window.location.pathname === "/dashboard/analytics/") {
-                    funBy = JsonJsx?.buyAndSellFilterInputs
+                    funBy = jsxJson?.buyAndSellFilterInputs
                 } else {
                     funBy = restrictDate
                 }
@@ -187,27 +187,27 @@ export function OverallModel() {
         }
 
         if (servicesState?.modal_from === "Blog") {
-            funBy = JsonJsx?.blogInputs
+            funBy = jsxJson?.blogInputs
         }
 
         if (servicesState?.modal_from === "Feedback") {
             if (["", "not solved"].includes(servicesState?.modal_type)) {
-                const removeSolvedDate = JsonJsx?.feebbackUpdateOrWatchStatus?.filter((v) => v?.name !== "solved_date")
+                const removeSolvedDate = jsxJson?.feebbackUpdateOrWatchStatus?.filter((v) => v?.name !== "solved_date")
                 funBy = removeSolvedDate
             } else {
-                funBy = JsonJsx?.feebbackUpdateOrWatchStatus
+                funBy = jsxJson?.feebbackUpdateOrWatchStatus
             }
         }
 
         if (servicesState?.modal_from === "Overall") {
-            funBy = JsonJsx?.analyticsOverallLineChartFilter
+            funBy = jsxJson?.analyticsOverallLineChartFilter
         }
 
         if (servicesState?.modal_from === "CRM") {
             if (servicesState?.modal_type === "Edit") {
-                funBy = JsonJsx?.crmStatusModal
+                funBy = jsxJson?.crmStatusModal
             } else {
-                funBy = JsonJsx?.crmStatusBeforeSaleEntryModal
+                funBy = jsxJson?.crmStatusBeforeSaleEntryModal
             }
         }
 
@@ -437,7 +437,7 @@ export function OverallModel() {
                             servicesState?.is_mobile_num_verified ?
                                 dynamicInput()
                                 :
-                                JsonJsx?.verifyMobileNumber?.map((ipVal, iPInd) => {
+                                jsxJson?.verifyMobileNumber?.map((ipVal, iPInd) => {
                                     return <div className="col-12 p-1 mt-2 p-4">
                                         <Input
                                             type={ipVal?.type}
@@ -559,19 +559,19 @@ export function OverallModel() {
     function dynamicPostFun() {
         switch (servicesState?.modal_from) {
             case "Load":
-                dispatch(handlePostOrEditLoad(servicesState))
+                dispatch(handlePostOrEditLoad(commonState, servicesState, jsonOnly))
                 break;
 
             case "Truck":
-                dispatch(handlePostOrEditTruck(servicesState))
+                dispatch(handlePostOrEditTruck(commonState, servicesState, jsonOnly))
                 break;
 
             case "Driver":
-                dispatch(handlePostOrEditDriver(servicesState))
+                dispatch(handlePostOrEditDriver(commonState, servicesState, jsonOnly))
                 break;
 
             case "BuyAndSell":
-                dispatch(handlePostOrEditBuyAndSell(servicesState))
+                dispatch(handlePostOrEditBuyAndSell(commonState, servicesState, jsonOnly))
                 break;
 
             default:
@@ -582,19 +582,19 @@ export function OverallModel() {
     function dynamicEditFun() {
         switch (servicesState?.modal_from) {
             case "Load":
-                dispatch(handlePostOrEditLoad(servicesState))
+                dispatch(handlePostOrEditLoad(commonState, servicesState, jsonOnly))
                 break;
 
             case "Truck":
-                dispatch(handlePostOrEditTruck(servicesState))
+                dispatch(handlePostOrEditTruck(commonState, servicesState, jsonOnly))
                 break;
 
             case "Driver":
-                dispatch(handlePostOrEditDriver(servicesState))
+                dispatch(handlePostOrEditDriver(commonState, servicesState, jsonOnly))
                 break;
 
             case "BuyAndSell":
-                dispatch(handlePostOrEditBuyAndSell(servicesState))
+                dispatch(handlePostOrEditBuyAndSell(commonState, servicesState, jsonOnly))
                 break;
 
             default:

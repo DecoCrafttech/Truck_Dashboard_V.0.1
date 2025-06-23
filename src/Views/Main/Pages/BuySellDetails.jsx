@@ -8,54 +8,61 @@ import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { SearchComponent } from 'ResuableFunctions/SearchFun'
 import Icons from 'Utils/Icons'
+import JsonData from 'Utils/JsonData'
 
 const BuySellDetails = () => {
     const { commonState, servicesState } = useCommonState();
     const dispatch = useDispatch();
-
-    const params = {
-        owner_name: "",
-        kms_driven: "",
-        brand: "",
-        model: "",
-        vehicle_number: "",
-        contact_no: "",
-        truck_name: "",
-        company_name: "",
-        price: "",
-        location: "",
-        tonnage: "",
-        description: "",
-        page_no: commonState?.currentPage || 1,
-        search_val: commonState?.search_clicked ? commonState?.search_value?.trim() || "" : "",
-        data_limit: commonState?.pageSize || 10
-    }
+    const { jsonOnly } = JsonData();
 
     useEffect(() => {
         dispatch(handleResetAlMenus)
     }, [])
 
     useEffect(() => {
-        if (commonState?.search_clicked) {
-            dispatch(handleGetBuyandSell(params))
-        }
-        else if (commonState?.apply_filter_clicked) {
-            const newParams = { ...params }
-            newParams.model = servicesState?.buyAndsell_filter_card?.model || ''
-            newParams.brand = servicesState?.buyAndsell_filter_card?.brand || ''
-            newParams.location = servicesState?.buyAndsell_filter_card?.location ? [servicesState?.buyAndsell_filter_card?.location] : [] || []
-            newParams.kms_driven = servicesState?.buyAndsell_filter_card?.kms_driven || ''
-            newParams.price = servicesState?.buyAndsell_filter_card?.price || ''
-            newParams.tonnage = servicesState?.buyAndsell_filter_card?.tonnage || ''
-            newParams.truck_body_type = servicesState?.buyAndsell_filter_card?.truck_body_type || ''
-            newParams.no_of_tyres = servicesState?.buyAndsell_filter_card?.no_of_tyres || ''
+        if (commonState?.re_render) {
+            const newParams = {}
+            let locations;
+
+            const filteredToLoc = servicesState?.buyAndsell_filter_card?.to_location?.map((v) => v?.label)
+            const select_all_location = jsonOnly?.states?.map((v) => v.label)
+            if (filteredToLoc?.length) locations = filteredToLoc[0] === "Select all" ? select_all_location : filteredToLoc
+
+            if (commonState?.apply_filter) {
+                newParams.owner_name = servicesState?.buyAndsell_filter_card?.owner_name || ''
+                newParams.kms_driven = servicesState?.buyAndsell_filter_card?.kms_driven || ''
+                newParams.location = servicesState?.buyAndsell_filter_card?.location ? [servicesState?.buyAndsell_filter_card?.location] : [] || []
+                newParams.brand = servicesState?.buyAndsell_filter_card?.brand || ''
+                newParams.model = servicesState?.buyAndsell_filter_card?.model || ''
+                newParams.truck_name = servicesState?.buyAndsell_filter_card?.truck_name || ''
+                newParams.price = servicesState?.buyAndsell_filter_card?.price || ''
+                newParams.tonnage = servicesState?.buyAndsell_filter_card?.tonnage || ''
+                newParams.truck_body_type = servicesState?.buyAndsell_filter_card?.truck_body_type || ''
+                newParams.no_of_tyres = servicesState?.buyAndsell_filter_card?.no_of_tyres || ''
+            } else {
+                newParams.owner_name = ''
+                newParams.kms_driven = ''
+                newParams.location = []
+                newParams.brand = ''
+                newParams.model = ''
+                newParams.truck_name = ''
+                newParams.price = ''
+                newParams.tonnage = ''
+                newParams.truck_body_type = ''
+                newParams.no_of_tyres = ''
+            }
+
+            newParams.search_val = commonState?.search ? commonState?.search_value?.trim() || "" : ""
+            newParams.company_name = ""
+            newParams.vehicle_number = ""
+            newParams.contact_no = ""
+            newParams.page_no = commonState?.currentPage || 1
+            newParams.data_limit = parseInt(commonState?.pageSize) || 10
+            newParams.endpoint = "/dashboard_buy_sell_details"
 
             dispatch(handleGetBuyandSell(newParams))
         }
-        else {
-            dispatch(handleGetBuyandSell(params))
-        }
-    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter, servicesState?.re_render])
+    }, [commonState?.pageSize, commonState?.currentPage, commonState?.re_render])
 
 
     return (
@@ -106,16 +113,23 @@ const BuySellDetails = () => {
                                 <BuyandSellCard placeholder={servicesState?.buyAndsell_glow} key={placeholderInd} />
                             ))
                             :
-                            servicesState?.allbuyAndsell_details.map((buyAndSellData, buyAndSellInd) => (
-                                <Fragment key={buyAndSellInd}>
-                                    <BuyandSellCard placeholder={servicesState?.buyAndsell_glow} buy_sell_data={buyAndSellData} commonState={commonState} />
-                                </Fragment>
-                            ))
+                            servicesState?.allbuyAndsell_details?.length ?
+                                servicesState?.allbuyAndsell_details.map((buyAndSellData, buyAndSellInd) => (
+                                    <Fragment key={buyAndSellInd}>
+                                        <BuyandSellCard placeholder={servicesState?.buyAndsell_glow} buy_sell_data={buyAndSellData} commonState={commonState} />
+                                    </Fragment>
+                                ))
+                                :
+                                <div className="h-100 row align-items-center justify-content-center">
+                                    <div className="col text-center">
+                                        <p>No Data Found</p>
+                                    </div>
+                                </div>
                         }
                     </Card.Body>
                 </Card>
 
-                {commonState?.totalCount ? <ServiesFooter /> : null}
+                {commonState?.totalCount > 0 ? <ServiesFooter /> : null}
             </div>
 
         </Fragment>

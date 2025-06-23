@@ -8,50 +8,52 @@ import React, { Fragment, useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { SearchComponent } from 'ResuableFunctions/SearchFun'
 import Icons from 'Utils/Icons'
+import JsonData from 'Utils/JsonData'
 
 const LoadDetails = () => {
     const { commonState, servicesState } = useCommonState();
     const dispatch = useDispatch();
+    const { jsonOnly } = JsonData();
 
     useEffect(() => {
         dispatch(handleResetAlMenus)
     }, [])
 
-    const params = {
-        company_name: "",
-        from_location: "",
-        to_location: [],
-        material: "",
-        tone: "",
-        truck_body_type: "",
-        no_of_tyres: "",
-        description: "",
-        page_no: commonState?.currentPage || 1,
-        search_val: commonState?.search_clicked ? commonState?.search_value?.trim() || "" : "",
-        data_limit: commonState?.pageSize || 10
-    }
-
     useEffect(() => {
-        if (commonState?.search_clicked) {
-            dispatch(handleGetLoads(params))
-        }
-        else if (commonState?.apply_filter_clicked) {
-            const newParams = { ...params }
-            const filteredToLoc = servicesState?.load_filter_card?.to_location?.map((v) => v?.label)
+        if (commonState?.re_render) {
+            const newParams = {}
+            let locations;
 
-            newParams.from_location = servicesState?.load_filter_card?.from_location || ''
-            newParams.to_location = servicesState?.load_filter_card?.to_location ? filteredToLoc : [] || []
-            newParams.truck_body_type = servicesState?.load_filter_card?.truck_body_type || ''
-            newParams.no_of_tyres = servicesState?.load_filter_card?.no_of_tyres || ''
-            newParams.tone = servicesState?.load_filter_card?.tone || ''
-            newParams.material = servicesState?.load_filter_card?.material || ''
+            const filteredToLoc = servicesState?.load_filter_card?.to_location?.map((v) => v?.label)
+            const select_all_location = jsonOnly?.states?.map((v) => v.label)
+            if (filteredToLoc?.length) locations = filteredToLoc[0] === "Select all" ? select_all_location : filteredToLoc
+
+            if (commonState?.apply_filter) {
+                newParams.from_location = servicesState?.load_filter_card?.from_location || ''
+                newParams.to_location = locations || []
+                newParams.truck_body_type = servicesState?.load_filter_card?.truck_body_type || ''
+                newParams.no_of_tyres = servicesState?.load_filter_card?.no_of_tyres || ''
+                newParams.tone = servicesState?.load_filter_card?.tone || ''
+                newParams.material = servicesState?.load_filter_card?.material || ''
+            } else {
+                newParams.from_location = ''
+                newParams.to_location = []
+                newParams.truck_body_type = ''
+                newParams.no_of_tyres = ''
+                newParams.tone = ''
+                newParams.material = ''
+            }
+            newParams.search_val = commonState?.search ? commonState?.search_value?.trim() || "" : ""
+            newParams.company_name = ""
+            newParams.page_no = commonState?.currentPage || 1
+            newParams.data_limit = parseInt(commonState?.pageSize) || 10
+            newParams.endpoint = "/dashboard_load_details"
+
 
             dispatch(handleGetLoads(newParams))
         }
-        else {
-            dispatch(handleGetLoads(params))
-        }
-    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter, servicesState?.re_render])
+    }, [commonState?.pageSize, commonState?.currentPage, commonState?.re_render])
+
 
     return (
         <Fragment>
@@ -98,7 +100,7 @@ const LoadDetails = () => {
                     <Card.Body className='row overflowY w-100 rounded placeholder-glow'>
                         {servicesState?.load_glow ?
                             [...Array(6)].map((value, placeholderInd) => (
-                                <LoadCard placeholder={servicesState?.load_glow} key={placeholderInd}/>
+                                <LoadCard placeholder={servicesState?.load_glow} key={placeholderInd} />
                             ))
                             :
                             servicesState?.allLoads_details?.length ?
@@ -115,7 +117,7 @@ const LoadDetails = () => {
                     </Card.Body>
                 </Card>
 
-                {commonState?.totalCount ? <ServiesFooter /> : null}
+                {commonState?.totalCount > 0 ? <ServiesFooter /> : null}
             </div>
 
         </Fragment>

@@ -8,53 +8,57 @@ import { Card } from 'react-bootstrap'
 import { SearchComponent } from 'ResuableFunctions/SearchFun'
 import Icons from 'Utils/Icons'
 import ServiesFooter from 'Components/Panel_compnent/ServiesFooter'
+import JsonData from 'Utils/JsonData'
 
 const TruckDetails = () => {
     const { commonState, servicesState } = useCommonState();
     const dispatch = useDispatch();
+    const { jsonOnly } = JsonData();
+
+    useEffect(() => {
+        if (commonState?.re_render) {
+            const newParams = {}
+            let locations;
+
+            const filteredToLoc = servicesState?.truck_filter_card?.to_location?.map((v) => v?.label)
+            const select_all_location = jsonOnly?.states?.map((v) => v.label)
+            if (filteredToLoc?.length) locations = filteredToLoc[0] === "Select all" ? select_all_location : filteredToLoc
+
+            if (commonState?.apply_filter) {
+                newParams.truck_name = servicesState?.truck_filter_card?.truck_name || ''
+                newParams.from_location = servicesState?.truck_filter_card?.from_location || ''
+                newParams.to_location = locations || []
+                newParams.tone = servicesState?.truck_filter_card?.tone || ''
+                newParams.truck_body_type = servicesState?.truck_filter_card?.truck_body_type || ''
+                newParams.no_of_tyres = servicesState?.truck_filter_card?.no_of_tyres || ''
+                newParams.truck_size = servicesState?.truck_filter_card?.truck_size || ''
+            } else {
+                newParams.truck_name = ''
+                newParams.from_location = ''
+                newParams.to_location = []
+                newParams.truck_body_type = ''
+                newParams.no_of_tyres = ''
+                newParams.truck_size = ''
+                newParams.tone = ''
+            }
+
+            newParams.search_val = commonState?.search ? commonState?.search_value?.trim() || "" : ""
+            newParams.company_name = ""
+            newParams.vehicle_number = ""
+            newParams.contact_no = ""
+            newParams.page_no = commonState?.currentPage || 1
+            newParams.data_limit = parseInt(commonState?.pageSize) || 10
+            newParams.endpoint = "/dashboard_truck_details"
+
+
+            dispatch(handleGetTruck(newParams))
+        }
+    }, [commonState?.pageSize, commonState?.currentPage, commonState?.re_render])
 
     useEffect(() => {
         dispatch(handleResetAlMenus)
     }, [])
 
-    const params = {
-        vehicle_number: "",
-        contact_no: "",
-        truck_name: "",
-        company_name: "",
-        from_location: "",
-        to_location: [],
-        tone: "",
-        truck_body_type: "",
-        no_of_tyres: "",
-        description: "",
-        page_no: commonState?.currentPage || 1,
-        search_val: commonState?.search_clicked ? commonState?.search_value?.trim() || "" : "",
-        data_limit: commonState?.pageSize || 10
-    }
-
-    useEffect(() => {
-        if (commonState?.search_clicked) {
-            dispatch(handleGetTruck(params))
-        }
-        else if (commonState?.apply_filter_clicked) {
-            const newParams = { ...params }
-            const filteredToLoc = servicesState?.truck_filter_card?.to_location?.map((v) => v?.label)
-
-            newParams.truck_name = servicesState?.truck_filter_card?.truck_name || ''
-            newParams.from_location = servicesState?.truck_filter_card?.from_location || ''
-            newParams.to_location = servicesState?.truck_filter_card?.to_location ? filteredToLoc : [] || []
-            newParams.tone = servicesState?.truck_filter_card?.tone || ''
-            newParams.truck_body_type = servicesState?.truck_filter_card?.truck_body_type || ''
-            newParams.no_of_tyres = servicesState?.truck_filter_card?.no_of_tyres || ''
-
-            dispatch(handleGetTruck(newParams))
-        }
-        else {
-            dispatch(handleGetTruck(params))
-        }
-
-    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, commonState?.apply_filter_clicked, commonState?.apply_filter, servicesState?.re_render])
 
     return (
         <Fragment>
@@ -104,16 +108,22 @@ const TruckDetails = () => {
                                 <TruckCard placeholder={servicesState?.truck_glow} key={placeholderInd} />
                             ))
                             :
-                            servicesState?.alltrucks_details.map((truckData, truckInd) => (
-                                <Fragment key={truckInd}>
-                                    <TruckCard placeholder={servicesState?.truck_glow} truck_data={truckData} key={truckInd} commonState={commonState} />
-                                </Fragment>
-                            ))
+                            servicesState?.alltrucks_details?.length ?
+                                servicesState?.alltrucks_details.map((truckData, truckInd) => (
+                                    <Fragment key={truckInd}>
+                                        <TruckCard placeholder={servicesState?.truck_glow} truck_data={truckData} key={truckInd} commonState={commonState} />
+                                    </Fragment>))
+                                :
+                                <div className='w-100 blog-main-content-height d-inline-flex align-items-center justify-content-center'>
+                                    <div className="col-6 text-center">
+                                        <h6>No Data Found</h6>
+                                    </div>
+                                </div>
                         }
                     </Card.Body>
                 </Card>
 
-                {commonState?.totalCount ? <ServiesFooter /> : null}
+                {commonState?.totalCount > 0 ? <ServiesFooter /> : null}
             </div>
         </Fragment>
     )

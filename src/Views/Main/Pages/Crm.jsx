@@ -8,6 +8,7 @@ import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import Img from 'Components/Img/Img';
 import Icons from 'Utils/Icons';
 import { initializeFilterDetails } from 'Slices/Pages_slice/Services_slice';
+import SpinnerComponent from 'Components/Spinner/Spinner';
 
 const Crm = () => {
     const { commonState, crmState } = useCommonState();
@@ -15,17 +16,19 @@ const Crm = () => {
 
     const params = {
         page_no: commonState?.currentPage || 1,
-        search_val: commonState?.search_clicked ? commonState?.search_value?.trim() || "" : "",
+        search_val: commonState?.search ? commonState?.search_value?.trim() || "" : "",
         data_limit: commonState?.pageSize || 10
     }
 
     useEffect(() => {
-        if (crmState?.slected_button === "after_sale") {
-            dispatch(handleGetCrmDashboard({ endpoint: "/get_crm_dashboard", data: params, slected_button: crmState?.slected_button }))
-        } else {
-            dispatch(handleGetCrmDashboard({ endpoint: "/get_crm_before_sales", data: params, slected_button: crmState?.slected_button }))
+        if (commonState?.re_render) {
+            dispatch(handleGetCrmDashboard({
+                endpoint: crmState?.slected_button === "after_sale" ? "/get_crm_dashboard" : "/get_crm_before_sales",
+                data: params,
+                slected_button: crmState?.slected_button
+            }))
         }
-    }, [commonState?.currentPage, commonState?.pageSize, commonState?.search_clicked, crmState?.slected_button, crmState?.recall_again])
+    }, [commonState?.currentPage, commonState?.pageSize, commonState?.re_render, crmState?.slected_button, crmState?.recall_again])
 
     function crmTableHeader() {
         switch (crmState?.slected_button) {
@@ -159,21 +162,42 @@ const Crm = () => {
                                 null
                         }
                     </div>
-                    <div className="table-responsive h-100 overflow-scroll">
-                        <table className="table table-hover">
-                            <thead>
-                                {crmTableHeader()}
-                            </thead>
-                            <tbody>
-                                {
-                                    crmState?.crm_dashboard_data?.map((crmVal, crmInd) => (
-                                        crmTableBody(crmVal, crmInd)
-                                    ))
-                                }
+                    {!crmState?.initalGlow ?
+                        crmState?.crm_dashboard_data?.length ?
+                            <div className="table-responsive h-100 overflow-scroll">
+                                <table className="table table-hover">
+                                    <thead>
+                                        {crmTableHeader()}
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            crmState?.crm_dashboard_data?.map((crmVal, crmInd) => (
+                                                crmTableBody(crmVal, crmInd)
+                                            ))
+                                        }
 
-                            </tbody>
-                        </table>
-                    </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                            :
+
+                            <div className="feedback-table-height">
+                                <div className="h-100 row align-items-center justify-content-center">
+                                    <div className="col text-center">
+                                        <p>No Data Found</p>
+                                    </div>
+                                </div>
+                            </div>
+                        :
+                        <div className="feedback-table-height">
+                            <div className="h-100 row align-items-center justify-content-center">
+                                <div className="col text-center">
+                                    <SpinnerComponent />
+                                    <p>Getting details...</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
 

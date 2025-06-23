@@ -41,7 +41,7 @@ export function SearchComponent({ className, placeholder }) {
 
             <span className="input-group-start-icon">{Icons.searchIcon}</span>
             {commonState?.search_value ? <span className="input-group-end-icon-two cursor-pointer" onClick={handleSearchClicked}>{Icons.searchIcon}</span> : null}
-            <span className={`${!commonState?.search_clicked ? "pe-none" : 'cursor-pointer'} input-group-end-icon-one`} onClick={() => dispatch(clearSearch())}>{Icons.searchCancelIcon}</span>
+            <span className={`${!commonState?.search ? "pe-none" : 'cursor-pointer'} input-group-end-icon-one`} onClick={() => dispatch(clearSearch())}>{Icons.searchCancelIcon}</span>
         </div>
     );
 

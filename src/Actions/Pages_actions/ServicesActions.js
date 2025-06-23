@@ -70,29 +70,16 @@ import {
 } from 'Slices/Pages_slice/Services_slice';
 
 
-export const handleCreateModal = (from, type) => dispatch => {
-    dispatch(updateCreateModalDetails({ from, type }))
-}
-
-export const handleDeleteModal = deleteData => dispatch => {
-    dispatch(updateDeleteDetails(deleteData))
-}
+export const handleCreateModal = (from, type) => dispatch => dispatch(updateCreateModalDetails({ from, type }))
+export const handleDeleteModal = deleteData => dispatch => dispatch(updateDeleteDetails(deleteData))
 
 export const handleEditModal = editData => async (dispatch) => {
-    if (editData?.from === "Truck" || editData?.from === "Driver" || editData?.from === "BuyAndSell") {
-        dispatch(getUserVehicleList({ user_id: editData?.data?.user_id, editData }))
-    } else {
-        dispatch(updateEditDetails(editData))
-    }
+    if (editData?.from === "Truck" || editData?.from === "Driver" || editData?.from === "BuyAndSell") dispatch(getUserVehicleList({ user_id: editData?.data?.user_id, editData }))
+    else dispatch(updateEditDetails(editData))
 }
 
-export const handleFilterModal = (from, type) => dispatch => {
-    dispatch(initializeFilterDetails({ from, type }))
-}
-
-export const handleOnchangeVerifyMobileNumber = (inputData) => dispatch => {
-    dispatch(updateVerifyMobileNumberData(inputData))
-}
+export const handleFilterModal = (from, type) => dispatch => dispatch(initializeFilterDetails({ from, type }))
+export const handleOnchangeVerifyMobileNumber = (inputData) => dispatch => dispatch(updateVerifyMobileNumberData(inputData))
 
 const getUserVehicleList = (params) => async (dispatch) => {
     try {
@@ -102,7 +89,7 @@ const getUserVehicleList = (params) => async (dispatch) => {
                 dispatch(updateUserVehicleList(response?.data?.data))
                 dispatch(updateEditDetails(params?.editData))
             } else {
-                dispatch(updateToast({ message: response?.data?.message, type: "error" }))
+                dispatch(updateToast({ message: 'No Vehicles found', type: "error" }))
             }
         } else {
             dispatch(updateToast({ message: response?.data?.message, type: "error" }))
@@ -164,10 +151,16 @@ export const handlePostVerification = (servicesState) => async (dispatch) => {
 
 //                                                              load api's                                                                  //
 //get all loads api
+export const handleLoadInputOnChange = (inputData) => dispatch => dispatch(updateLoadEditData(inputData))
+export const handleOnchangeLoadFilter = (inputData) => dispatch => dispatch(updateLoadFilterData(inputData))
+
 export const handleGetLoads = (params) => async (dispatch) => {
+    let loadParams = { ...params };
+    delete loadParams.endpoint;
+
     try {
         dispatch(loadGetRequest())
-        const { data } = await axiosInstance.post("/dashboard_load_details", params)
+        const { data } = await axiosInstance.post(params?.endpoint, loadParams)
 
         if (data?.error_code === 0) {
             dispatch(loadGetResponse(data?.data))
@@ -178,14 +171,6 @@ export const handleGetLoads = (params) => async (dispatch) => {
     } catch (err) {
         dispatch(updateToast({ message: err?.message, type: "error" }))
     }
-}
-
-export const handleLoadInputOnChange = (inputData) => dispatch => {
-    dispatch(updateLoadEditData(inputData))
-}
-
-export const handleOnchangeLoadFilter = (inputData) => dispatch => {
-    dispatch(updateLoadFilterData(inputData))
 }
 
 export const handlePostOrEditLoad = (servicesState) => async (dispatch) => {
@@ -257,10 +242,16 @@ export const handleDeleteLoad = (servicesState) => async (dispatch) => {
 
 //                                                              truck api's                                                                  //
 //get all truck api
+export const handleTruckInputOnChange = (inputData) => dispatch => dispatch(updateTruckEditData(inputData))
+export const handleOnchangeTruckFilter = (inputData) => dispatch => dispatch(updateTruckFilterData(inputData))
+
 export const handleGetTruck = (params) => async (dispatch) => {
+    let truckParams = { ...params };
+    delete truckParams.endpoint;
+
     try {
         dispatch(truckGetRequest())
-        const { data } = await axiosInstance.post("/dashboard_truck_details", params)
+        const { data } = await axiosInstance.post(params?.endpoint, truckParams)
 
         if (data?.error_code === 0) {
             dispatch(truckGetResponse(data?.data))
@@ -273,16 +264,10 @@ export const handleGetTruck = (params) => async (dispatch) => {
     }
 }
 
-export const handleTruckInputOnChange = (inputData) => dispatch => {
-    dispatch(updateTruckEditData(inputData))
-}
+export const handlePostOrEditTruck = (commonState, servicesState, jsonOnly) => async (dispatch) => {
+    let locations;
 
-export const handleOnchangeTruckFilter = (inputData) => dispatch => {
-    dispatch(updateTruckFilterData(inputData))
-}
-
-export const handlePostOrEditTruck = (servicesState) => async (dispatch) => {
-    if (servicesState?.user_data?.user_id) {
+    if (commonState?.user_id) {
         if (servicesState?.new_edit_truck_card?.vehicle_number?.length &&
             servicesState?.new_edit_truck_card?.company_name &&
             servicesState?.new_edit_truck_card?.contact_no &&
@@ -298,20 +283,31 @@ export const handlePostOrEditTruck = (servicesState) => async (dispatch) => {
             dispatch(handleResetValidation)
 
             try {
+                if (servicesState?.new_edit_truck_card?.to_location?.length) {
+                    if (servicesState?.new_edit_truck_card?.to_location[0]?.label) {
+                        const filteredToLoc = servicesState?.new_edit_truck_card?.to_location?.map((v) => v?.label)
+                        const select_all_location = jsonOnly?.states?.map((v) => v.label)
+                        if (filteredToLoc?.length) locations = filteredToLoc[0] === "Select all" ? select_all_location : filteredToLoc
+                    } else {
+                        locations = servicesState?.new_edit_truck_card?.to_location
+                    }
+                }
+
                 const params = {
                     ...servicesState?.new_edit_truck_card,
                     vehicle_number: servicesState?.new_edit_truck_card?.vehicle_number_selected,
                     from: servicesState?.new_edit_truck_card?.from_location,
-                    to: servicesState?.new_edit_truck_card?.to_location?.map((v) => v?.label),
+                    to: locations,
+                    to_location: locations,
                     truck_name: servicesState?.new_edit_truck_card?.truck_brand_name,
-                    user_id: servicesState?.user_data?.user_id,
+                    user_id: commonState?.user_id,
                     truck_id: servicesState?.new_edit_truck_card?.truck_id,
                     description: servicesState?.new_edit_truck_card?.description || '',
                 }
 
                 const { data } = await axiosInstance.post("/truck_entry", params);
                 if (data?.error_code === 0) {
-                    dispatch(TruckPostResponse())
+                    dispatch(TruckPostResponse(servicesState?.new_edit_truck_card))
                 } else {
                     dispatch(TruckPostFailure(data?.message))
                 }
@@ -348,9 +344,11 @@ export const handleDeleteTruck = (servicesState) => async (dispatch) => {
 
 }
 
-
 //                                                              driver api's                                                                  //
 //get all loads api
+export const handleDriverInputOnChange = (inputData) => dispatch => dispatch(updateDriverEditData(inputData))
+export const handleOnchangeDriverFilter = (inputData) => dispatch => dispatch(updateDriverFilterData(inputData))
+
 export const handleGetDriver = (params) => async (dispatch) => {
     try {
         dispatch(driverGetRequest())
@@ -365,14 +363,6 @@ export const handleGetDriver = (params) => async (dispatch) => {
     } catch (err) {
         dispatch(updateToast({ message: err?.message, type: "error" }))
     }
-}
-
-export const handleDriverInputOnChange = (inputData) => dispatch => {
-    dispatch(updateDriverEditData(inputData))
-}
-
-export const handleOnchangeDriverFilter = (inputData) => dispatch => {
-    dispatch(updateDriverFilterData(inputData))
 }
 
 export const handlePostOrEditDriver = (servicesState) => async (dispatch) => {
@@ -439,14 +429,15 @@ export const handleDeleteDriver = (servicesState) => async (dispatch) => {
 
 }
 
-
-
 //                                                              buy and sell api's                                                                  //
 //get all buy and sell api
 export const handleGetBuyandSell = (params) => async (dispatch) => {
     try {
+        let buy_sell_params = { ...params };
+        delete buy_sell_params.endpoint;
+
         dispatch(buyAndsellGetRequest())
-        const { data } = await axiosInstance.post("/dashboard_buy_sell_details", params)
+        const { data } = await axiosInstance.post(params?.endpoint, buy_sell_params)
 
         if (data?.error_code === 0) {
             dispatch(buyAndsellGetResponse(data?.data))

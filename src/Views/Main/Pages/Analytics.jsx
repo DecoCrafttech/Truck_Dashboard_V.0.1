@@ -37,144 +37,146 @@ export const Analytics = () => {
                 to_date: analyticsState?.overall_chart_filter?.to_date || new Date().toISOString().split('T')[0]
             }))
         }
-    }, [commonState?.apply_filter_clicked, commonState?.apply_filter, analyticsState?.clear_filter])
+    }, [commonState?.apply_filter_clicked])
 
     //individual data
     useEffect(() => {
-        if (analyticsState?.selected_Line_chart === "Load") {
-            const newParams = {
-                company_name: "",
-                from_location: "",
-                to_location: [],
-                material: "",
-                tone: "",
-                truck_body_type: "",
-                no_of_tyres: "",
+        if (!commonState?.re_render) {
+            if (analyticsState?.selected_Line_chart === "Load") {
+                const newParams = {
+                    company_name: "",
+                    from_location: "",
+                    to_location: [],
+                    material: "",
+                    tone: "",
+                    truck_body_type: "",
+                    no_of_tyres: "",
+                }
+
+                const filteredToLoc = servicesState?.load_filter_card?.to_location?.map((v) => v?.label)
+                newParams.from_date = servicesState?.load_filter_card?.from_date ?
+                    servicesState?.load_filter_card?.from_date
+                    :
+                    analyticsState?.report_getting_date
+
+                newParams.to_date = servicesState?.load_filter_card?.to_date ?
+                    servicesState?.load_filter_card?.to_date
+                    :
+                    analyticsState?.report_getting_date
+
+
+                newParams.from_location = servicesState?.load_filter_card?.from_location || ''
+                newParams.to_location = servicesState?.load_filter_card?.to_location ? filteredToLoc : [] || []
+                newParams.truck_body_type = servicesState?.load_filter_card?.truck_body_type || ''
+                newParams.no_of_tyres = servicesState?.load_filter_card?.no_of_tyres || ''
+                newParams.tone = servicesState?.load_filter_card?.tone || ''
+                newParams.material = servicesState?.load_filter_card?.material || ''
+                dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_load_analytics", params: newParams, from: "Load" }))
             }
+            else if (analyticsState?.selected_Line_chart === "Truck") {
+                const newParams = {
+                    vehicle_number: "",
+                    contact_no: "",
+                    truck_name: "",
+                    truck_brand_name: "",
+                    company_name: "",
+                    from_location: "",
+                    to_location: [],
+                    tone: "",
+                    truck_body_type: "",
+                    no_of_tyres: "",
+                }
 
-            const filteredToLoc = servicesState?.load_filter_card?.to_location?.map((v) => v?.label)
-            newParams.from_date = servicesState?.load_filter_card?.from_date ?
-                servicesState?.load_filter_card?.from_date
-                :
-                analyticsState?.report_getting_date
+                const filteredToLoc = servicesState?.truck_filter_card?.to_location?.map((v) => v?.label)
+                newParams.from_date = servicesState?.truck_filter_card?.from_date ?
+                    servicesState?.truck_filter_card?.from_date
+                    :
+                    analyticsState?.report_getting_date
 
-            newParams.to_date = servicesState?.load_filter_card?.to_date ?
-                servicesState?.load_filter_card?.to_date
-                :
-                analyticsState?.report_getting_date
+                newParams.to_date = servicesState?.truck_filter_card?.to_date ?
+                    servicesState?.truck_filter_card?.to_date
+                    :
+                    analyticsState?.report_getting_date
 
-
-            newParams.from_location = servicesState?.load_filter_card?.from_location || ''
-            newParams.to_location = servicesState?.load_filter_card?.to_location ? filteredToLoc : [] || []
-            newParams.truck_body_type = servicesState?.load_filter_card?.truck_body_type || ''
-            newParams.no_of_tyres = servicesState?.load_filter_card?.no_of_tyres || ''
-            newParams.tone = servicesState?.load_filter_card?.tone || ''
-            newParams.material = servicesState?.load_filter_card?.material || ''
-            dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_load_analytics", params: newParams, from: "Load" }))
-        }
-        else if (analyticsState?.selected_Line_chart === "Truck") {
-            const newParams = {
-                vehicle_number: "",
-                contact_no: "",
-                truck_name: "",
-                truck_brand_name: "",
-                company_name: "",
-                from_location: "",
-                to_location: [],
-                tone: "",
-                truck_body_type: "",
-                no_of_tyres: "",
+                newParams.truck_name = servicesState?.truck_filter_card?.truck_name || ''
+                newParams.from_location = servicesState?.truck_filter_card?.from_location || ''
+                newParams.to_location = servicesState?.truck_filter_card?.to_location ? filteredToLoc : [] || []
+                newParams.tone = servicesState?.truck_filter_card?.tone || ''
+                newParams.truck_body_type = servicesState?.truck_filter_card?.truck_body_type || ''
+                newParams.no_of_tyres = servicesState?.truck_filter_card?.no_of_tyres || ''
+                dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_truck_analytics", params: newParams, from: "Truck" }))
             }
+            else if (analyticsState?.selected_Line_chart === "Driver") {
+                const newParams = {
+                    driver_name: "",
+                    vehicle_number: "",
+                    contact_no: "",
+                    truck_name: "",
+                    company_name: "",
+                    from_location: "",
+                    to_location: [],
+                    truck_body_type: "",
+                    no_of_tyres: "",
+                }
 
-            const filteredToLoc = servicesState?.truck_filter_card?.to_location?.map((v) => v?.label)
-            newParams.from_date = servicesState?.truck_filter_card?.from_date ?
-                servicesState?.truck_filter_card?.from_date
-                :
-                analyticsState?.report_getting_date
+                const filteredToLoc = servicesState?.driver_filter_card?.to_location?.map((v) => v?.label)
+                newParams.from_date = servicesState?.driver_filter_card?.from_date ?
+                    servicesState?.driver_filter_card?.from_date
+                    :
+                    analyticsState?.report_getting_date
 
-            newParams.to_date = servicesState?.truck_filter_card?.to_date ?
-                servicesState?.truck_filter_card?.to_date
-                :
-                analyticsState?.report_getting_date
+                newParams.to_date = servicesState?.driver_filter_card?.to_date ?
+                    servicesState?.driver_filter_card?.to_date
+                    :
+                    analyticsState?.report_getting_date
 
-            newParams.truck_name = servicesState?.truck_filter_card?.truck_name || ''
-            newParams.from_location = servicesState?.truck_filter_card?.from_location || ''
-            newParams.to_location = servicesState?.truck_filter_card?.to_location ? filteredToLoc : [] || []
-            newParams.tone = servicesState?.truck_filter_card?.tone || ''
-            newParams.truck_body_type = servicesState?.truck_filter_card?.truck_body_type || ''
-            newParams.no_of_tyres = servicesState?.truck_filter_card?.no_of_tyres || ''
-            dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_truck_analytics", params: newParams, from: "Truck" }))
-        }
-        else if (analyticsState?.selected_Line_chart === "Driver") {
-            const newParams = {
-                driver_name: "",
-                vehicle_number: "",
-                contact_no: "",
-                truck_name: "",
-                company_name: "",
-                from_location: "",
-                to_location: [],
-                truck_body_type: "",
-                no_of_tyres: "",
+                newParams.from_location = servicesState?.driver_filter_card?.from_location || ''
+                newParams.to_location = servicesState?.driver_filter_card?.to_location ? filteredToLoc : [] || []
+                newParams.truck_body_type = servicesState?.driver_filter_card?.truck_body_type || ''
+                newParams.no_of_tyres = servicesState?.driver_filter_card?.no_of_tyres || ''
+                dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_driver_analytics", params: newParams, from: "Driver" }))
             }
+            else if (analyticsState?.selected_Line_chart === "BuyAndSell") {
+                const newParams = {
+                    owner_name: "",
+                    kms_driven: "",
+                    brand: "",
+                    model: "",
+                    vehicle_number: "",
+                    contact_no: "",
+                    truck_name: "",
+                    company_name: "",
+                    price: "",
+                    location: "",
+                    tonnage: "",
+                    statelist: []
+                }
+                const filteredStatelist = servicesState?.buyAndsell_filter_card?.statelist?.map((v) => v?.label)
 
-            const filteredToLoc = servicesState?.driver_filter_card?.to_location?.map((v) => v?.label)
-            newParams.from_date = servicesState?.driver_filter_card?.from_date ?
-                servicesState?.driver_filter_card?.from_date
-                :
-                analyticsState?.report_getting_date
+                newParams.from_date = servicesState?.buyAndsell_filter_card?.from_date ?
+                    servicesState?.buyAndsell_filter_card?.from_date
+                    :
+                    analyticsState?.report_getting_date
 
-            newParams.to_date = servicesState?.driver_filter_card?.to_date ?
-                servicesState?.driver_filter_card?.to_date
-                :
-                analyticsState?.report_getting_date
+                newParams.to_date = servicesState?.buyAndsell_filter_card?.to_date ?
+                    servicesState?.buyAndsell_filter_card?.to_date
+                    :
+                    analyticsState?.report_getting_date
 
-            newParams.from_location = servicesState?.driver_filter_card?.from_location || ''
-            newParams.to_location = servicesState?.driver_filter_card?.to_location ? filteredToLoc : [] || []
-            newParams.truck_body_type = servicesState?.driver_filter_card?.truck_body_type || ''
-            newParams.no_of_tyres = servicesState?.driver_filter_card?.no_of_tyres || ''
-            dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_driver_analytics", params: newParams, from: "Driver" }))
-        }
-        else if (analyticsState?.selected_Line_chart === "BuyAndSell") {
-            const newParams = {
-                owner_name: "",
-                kms_driven: "",
-                brand: "",
-                model: "",
-                vehicle_number: "",
-                contact_no: "",
-                truck_name: "",
-                company_name: "",
-                price: "",
-                location: "",
-                tonnage: "",
-                statelist: []
+                newParams.model = servicesState?.buyAndsell_filter_card?.model || ''
+                newParams.brand = servicesState?.buyAndsell_filter_card?.brand || ''
+                newParams.location = servicesState?.buyAndsell_filter_card?.location ? [servicesState?.buyAndsell_filter_card?.location] : [] || []
+                newParams.kms_driven = servicesState?.buyAndsell_filter_card?.kms_driven || ''
+                newParams.price = servicesState?.buyAndsell_filter_card?.price || ''
+                newParams.tonnage = servicesState?.buyAndsell_filter_card?.tonnage || ''
+                newParams.truck_body_type = servicesState?.buyAndsell_filter_card?.truck_body_type || ''
+                newParams.no_of_tyres = servicesState?.buyAndsell_filter_card?.no_of_tyres || ''
+                newParams.statelist = filteredStatelist || []
+
+                dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_buy_and_sell_analytics", params: newParams, from: "BuyAndSell" }))
             }
-            const filteredStatelist = servicesState?.buyAndsell_filter_card?.statelist?.map((v) => v?.label)
-
-            newParams.from_date = servicesState?.buyAndsell_filter_card?.from_date ?
-                servicesState?.buyAndsell_filter_card?.from_date
-                :
-                analyticsState?.report_getting_date
-
-            newParams.to_date = servicesState?.buyAndsell_filter_card?.to_date ?
-                servicesState?.buyAndsell_filter_card?.to_date
-                :
-                analyticsState?.report_getting_date
-
-            newParams.model = servicesState?.buyAndsell_filter_card?.model || ''
-            newParams.brand = servicesState?.buyAndsell_filter_card?.brand || ''
-            newParams.location = servicesState?.buyAndsell_filter_card?.location ? [servicesState?.buyAndsell_filter_card?.location] : [] || []
-            newParams.kms_driven = servicesState?.buyAndsell_filter_card?.kms_driven || ''
-            newParams.price = servicesState?.buyAndsell_filter_card?.price || ''
-            newParams.tonnage = servicesState?.buyAndsell_filter_card?.tonnage || ''
-            newParams.truck_body_type = servicesState?.buyAndsell_filter_card?.truck_body_type || ''
-            newParams.no_of_tyres = servicesState?.buyAndsell_filter_card?.no_of_tyres || ''
-            newParams.statelist = filteredStatelist || []
-
-            dispatch(handlendIndividualSelectedAnalysis({ endpoint: "get_buy_and_sell_analytics", params: newParams, from: "BuyAndSell" }))
         }
-    }, [commonState?.apply_filter_clicked, commonState?.apply_filter, analyticsState?.selected_Line_chart, analyticsState?.report_getting_date])
+    }, [analyticsState?.selected_Line_chart, analyticsState?.report_getting_date, commonState?.re_render])
 
     function dynamicLineCharts(chartType) {
         switch (chartType) {
@@ -495,147 +497,219 @@ export const Analytics = () => {
             <div className="container-fluid h-100 overflowY">
                 <div className="d-flex flex-wrap">
                     {/* pie charts  */}
-                    <div className="col-xxl-4 p-2">
-                        <Card className="border-0 overflow-hidden">
-                            <Card.Header className="border-0 py-4 row align-items-center">
-                                <div className="col-8">
-                                    <h6 className='fw-bold'>Analytics</h6>
-                                </div>
-                            </Card.Header>
-                            <Card.Body className="py-5 d-inline-flex justify-content-center">
-                                <PieChart width={parentWidth} height={parentHeight}>
-                                    <Pie
-                                        data={analyticsPieChart}
-                                        cx={parentWidth / 2}
-                                        cy={parentHeight / 2}
-                                        innerRadius={parentWidth * 0.2}
-                                        outerRadius={parentWidth * 0.28}
-                                        paddingAngle={3}
-                                        cornerRadius={8}
-                                        dataKey="value"
-                                        nameKey="name"
-                                    >
-                                        {analyticsPieChart?.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.color} />
-                                        ))}
-                                    </Pie>
-
-                                    <Tooltip content={<CustomTooltip />} />
-                                </PieChart>
-                            </Card.Body>
-
-                            <div className="row col-12 py-3">
-                                {
-                                    analyticsPieChart?.map((value, index) => (
-                                        <div className="col-6 ps-5" key={index}>
-                                            <span style={{ background: value?.color, height: "1rem", width: "1rem", display: "inline-block" }}></span>
-                                            <p className='d-inline-block ps-2 text-secondary fs-14'>{value?.type}</p>
-                                            <p className='d-inline-block ps-2 text-secondary'>: {value?.value}</p>
+                    <div className="col-12 col-xxl-4 p-2">
+                        {analyticsState?.initialGlow ?
+                            <Card className="border-0 overflow-hidden" style={{ height: "39rem" }}>
+                                <Card.Header className="border-0 py-4 row align-items-center">
+                                    <div className="col-8">
+                                        <h6 className='fw-bold'>Analytics</h6>
+                                    </div>
+                                </Card.Header>
+                                <Card.Body className="h-100 row align-items-center justify-content-center">
+                                    <div className="col text-center">
+                                        <SpinnerComponent />
+                                        <p className='w-100'>Getting Analysis</p>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                            :
+                            analyticsPieChart?.filter((item) => item?.value > 0)?.length ?
+                                < Card className="border-0 overflow-hidden">
+                                    <Card.Header className="border-0 py-4 row align-items-center">
+                                        <div className="col-8">
+                                            <h6 className='fw-bold'>Analytics</h6>
                                         </div>
-                                    ))
-                                }
-                            </div>
-                        </Card>
+                                    </Card.Header>
+                                    <Card.Body className="py-5 d-inline-flex justify-content-center">
+                                        <PieChart width={parentWidth} height={parentHeight}>
+                                            <Pie
+                                                data={analyticsPieChart}
+                                                cx={parentWidth / 2}
+                                                cy={parentHeight / 2}
+                                                innerRadius={parentWidth * 0.2}
+                                                outerRadius={parentWidth * 0.28}
+                                                paddingAngle={3}
+                                                cornerRadius={8}
+                                                dataKey="value"
+                                                nameKey="name"
+                                            >
+                                                {analyticsPieChart?.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+
+                                            <Tooltip content={<CustomTooltip />} />
+                                        </PieChart>
+                                    </Card.Body>
+                                    <div className="row col-12 py-3">
+                                        {
+                                            analyticsPieChart?.map((value, index) => (
+                                                <div className="col-6 ps-5" key={index}>
+                                                    <span style={{ background: value?.color, height: "1rem", width: "1rem", display: "inline-block" }}></span>
+                                                    <p className='d-inline-block ps-2 text-secondary fs-14'>{value?.type}</p>
+                                                    <p className='d-inline-block ps-2 text-secondary'>: {value?.value}</p>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </Card>
+                                :
+                                <Card className="border-0 overflow-hidden" style={{ height: "39rem" }}>
+                                    <Card.Header className="border-0 py-4 row align-items-center">
+                                        <div className="col-8">
+                                            <h6 className='fw-bold'>Analytics</h6>
+                                        </div>
+                                    </Card.Header>
+                                    <Card.Body className="h-100 row align-items-center justify-content-center">
+                                        <div className="col text-center">
+                                            <p className='w-100'>No Data Found</p>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                        }
                     </div>
 
                     {/* line charts  */}
-                    <div className="col-xxl-8 p-2">
-                        <Card className='border-0'>
-                            <Card.Header className='border-0 py-2 row align-items-center'>
-                                <div className="col-7">
-                                    <h6 className='fw-bold'>Daily Requirements and Tracking Details</h6>
-                                </div>
-                                <div className="col-5 d-flex flex-wrap align-items-center justify-content-end">
-                                    <div className="col-4 p-2">
-                                        <ButtonComponent
-                                            className="bg-white border py-2 w-100"
-                                            buttonName="Filter"
-                                            clickFunction={dynamicFilter("Overall")}
-                                        />
+                    <div className="col-12 col-xxl-8 p-2">
+                        {analyticsState?.initialGlow ?
+                            <Card className="border-0 overflow-hidden" style={{ height: "39rem" }}>
+                                <Card.Header className="border-0 py-4 row align-items-center">
+                                    <div className="col-8">
+                                        <h6 className='fw-bold'>Daily Requirements and Tracking Details</h6>
                                     </div>
+                                </Card.Header>
+                                <Card.Body className="h-100 row align-items-center justify-content-center">
+                                    <div className="col text-center">
+                                        <SpinnerComponent />
+                                        <p className='w-100'>Collecting Daily Requirements and Tracking Details...</p>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                            :
+                            <Card className='border-0' style={{ height: "39rem" }}>
+                                <Card.Header className='border-0 py-2 row align-items-center'>
+                                    <div className="col-7">
+                                        <h6 className='fw-bold'>Daily Requirements and Tracking Details</h6>
+                                    </div>
+                                    <div className="col-5 d-flex flex-wrap align-items-center justify-content-end">
+                                        <div className="col-4 p-2">
+                                            <ButtonComponent
+                                                className="bg-white border py-2 w-100"
+                                                buttonName="Filter"
+                                                clickFunction={dynamicFilter("Overall")}
+                                            />
+                                        </div>
 
-                                    <div className="col-4">
-                                        <ReactDropdownSelect
-                                            multi={false}
-                                            options={overallAnalysis}
-                                            labelField="label"
-                                            valueField="label"
-                                            value={analyticsState?.overall_analytics_select_box_data}
-                                            change={(value) => dispatch(updateOverallAnalysis(value))}
-                                            className='rounded filter-select-dropdown'
-                                        />
+                                        <div className="col-4">
+                                            <ReactDropdownSelect
+                                                multi={false}
+                                                options={overallAnalysis}
+                                                labelField="label"
+                                                valueField="label"
+                                                value={analyticsState?.overall_analytics_select_box_data}
+                                                change={(value) => dispatch(updateOverallAnalysis(value))}
+                                                className='rounded filter-select-dropdown'
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            </Card.Header>
-                            <Card.Body className='py-5 px-3'>
-                                <ResponsiveContainer width="100%" height={450}>
-                                    {dynamicLineCharts()}
-                                </ResponsiveContainer>
-                            </Card.Body>
-                        </Card>
+                                </Card.Header>
+                                {
+                                    analyticsPieChart?.filter((item) => item?.value > 0)?.length ?
+                                        <Card.Body className="py-5 px-3 ">
+                                            <ResponsiveContainer width="100%" height={450}>
+                                                {dynamicLineCharts()}
+                                            </ResponsiveContainer>
+                                        </Card.Body>
+                                        :
+                                        <Card.Body className='h-100 row align-items-center justify-content-center'>
+                                            <div className="col text-center">
+                                                <p className='w-100'>No Data Found</p>
+                                            </div>
+                                        </Card.Body>
+                                }
+                            </Card>
+                        }
                     </div>
 
                     {/* button */}
                     <div className="row align-items-center border-bottom w-100 mt-5">
                         {
-                            analyticsButtons?.map((buttonVal, buttonInd) => (
-                                <div className='col' key={buttonInd}>
-                                    {dynamicSelectButton(buttonVal)}
-                                </div>
-                            ))
+                            analyticsState?.initialGlow ?
+                                null
+                                :
+                                analyticsButtons?.map((buttonVal, buttonInd) => (
+                                    <div className='col' key={buttonInd}>
+                                        {dynamicSelectButton(buttonVal)}
+                                    </div>
+                                ))
                         }
                     </div>
 
                     {/* selected charts  */}
                     <div className="col-12 p-2">
-                        <Card className='border-0'>
-                            <Card.Header className='border-0 py-4 row align-items-center'>
-                                <div className="col-6">
-                                    <h6 className='fw-bold'>{analyticsState?.selected_Line_chart === "BuyAndSell" ? "Buy & Sell" : analyticsState?.selected_Line_chart} Details</h6>
-                                </div>
-                                <div className="col-6 d-flex flex-wrap align-items-center justify-content-end">
-                                    <div className="col-3 p-2">
-                                        <ButtonComponent
-                                            className="bg-white border py-2 w-100"
-                                            buttonName="Filter"
-                                            clickFunction={dynamicFilter(analyticsState?.selected_Line_chart)}
-                                        />
+                        {analyticsState?.initialGlow ?
+                            <Card className="border-0 overflow-hidden" style={{ height: "39rem" }}>
+                                <Card.Header className="border-0 py-4 row align-items-center">
+                                    <div className="col-8">
+                                        <h6 className='fw-bold'>Analytics</h6>
+                                    </div>
+                                </Card.Header>
+                                <Card.Body className="h-100 row align-items-center justify-content-center">
+                                    <div className="col text-center">
+                                        <SpinnerComponent />
+                                        <p className='w-100'>Collecting Load Analysis...</p>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                            :
+                            <Card className='border-0' style={{ height: "39rem" }}>
+                                <Card.Header className='border-0 py-4 row align-items-center'>
+                                    <div className="col-6">
+                                        <h6 className='fw-bold'>{analyticsState?.selected_Line_chart === "BuyAndSell" ? "Buy & Sell" : analyticsState?.selected_Line_chart} Details</h6>
+                                    </div>
+                                    <div className="col-6 d-flex flex-wrap align-items-center justify-content-end">
+                                        <div className="col-3 p-2">
+                                            <ButtonComponent
+                                                className="bg-white border py-2 w-100"
+                                                buttonName="Filter"
+                                                clickFunction={dynamicFilter(analyticsState?.selected_Line_chart)}
+                                            />
 
-                                    </div>
-                                    <div className="col-3">
-                                        <Input
-                                            type="date"
-                                            max={new Date().toISOString().split('T')[0]}
-                                            value={analyticsState?.report_getting_date}
-                                            change={(e) => dispatch(updateReportDate(e.target.value))}
-                                        />
-                                    </div>
-                                    <div className="col-1">
-                                        <ButtonComponent
-                                            buttonName={Icons?.downloadIcon}
-                                            title="Download report"
-                                            className="btn btn-transparent"
-                                            clickFunction={() => handleDownloadReport(analyticsState?.selected_Line_chart)}
-                                        />
-                                    </div>
-                                </div>
-                            </Card.Header>
-                            <Card.Body className='py-5 px-3'>
-                                {
-                                    analyticsState?.selected_analytics_glow ?
-                                        <div className="line_graph_glow_height row align-items-center justify-content-center">
-                                            <div className="col text-center ">
-                                                <SpinnerComponent variant="info" />
-                                                <p className='fs-14 mt-2 text-info'>Getting details</p>
-                                            </div>
                                         </div>
+                                        <div className="col-3">
+                                            <Input
+                                                type="date"
+                                                max={new Date().toISOString().split('T')[0]}
+                                                value={analyticsState?.report_getting_date}
+                                                change={(e) => dispatch(updateReportDate(e.target.value))}
+                                            />
+                                        </div>
+                                        <div className="col-1">
+                                            <ButtonComponent
+                                                buttonName={Icons?.downloadIcon}
+                                                title="Download report"
+                                                className="btn btn-transparent"
+                                                clickFunction={() => handleDownloadReport(analyticsState?.selected_Line_chart)}
+                                            />
+                                        </div>
+                                    </div>
+                                </Card.Header>
+                                {
+                                    analyticsState?.selected_Line_chart?.length ?
+                                        <Card.Body className='py-5 px-3'>
+                                            <ResponsiveContainer width="100%" height={450}>
+                                                {dynamicLineCharts(analyticsState?.selected_Line_chart)}
+                                            </ResponsiveContainer>
+                                        </Card.Body>
                                         :
-                                        <ResponsiveContainer width="100%" height={450}>
-                                            {dynamicLineCharts(analyticsState?.selected_Line_chart)}
-                                        </ResponsiveContainer>
+                                        <Card.Body className='h-100 row align-items-center justify-content-center'>
+                                            <div className="col text-center">
+                                                <p className='w-100'>No Data Found</p>
+                                            </div>
+                                        </Card.Body>
                                 }
-                            </Card.Body>
-                        </Card>
+                            </Card>
+                        }
                     </div>
 
                     {/* table */}
@@ -649,21 +723,29 @@ export const Analytics = () => {
                             <div className="feedback-table-height p-3 card-body">
                                 <div className="table-responsive h-100 overflow-scroll">
                                     {
-                                        analyticsState?.selected_analytics_data?.data?.length ?
-                                            <table className="table ">
-                                                <thead>
-                                                    {dynamicTableHeader(analyticsState?.selected_Line_chart)}
-                                                </thead>
-                                                <tbody>
-                                                    {dynamicTableBody(analyticsState?.selected_Line_chart)}
-                                                </tbody>
-                                            </table>
-                                            :
-                                            <div className="d-flex flex-wrap h-100 w-100 align-items-center justify-content-center">
-                                                <div className="col-8 text-center">
-                                                    <p>No Data Found</p>
+                                        analyticsState?.initialGlow ?
+                                            <div className="h-100 row align-items-center justify-content-center">
+                                                <div className="col text-center">
+                                                    <SpinnerComponent />
+                                                    <p className='w-100'>Collecting Load Analysis...</p>
                                                 </div>
                                             </div>
+                                            :
+                                            analyticsState?.selected_analytics_data?.data?.length ?
+                                                <table className="table ">
+                                                    <thead>
+                                                        {dynamicTableHeader(analyticsState?.selected_Line_chart)}
+                                                    </thead>
+                                                    <tbody>
+                                                        {dynamicTableBody(analyticsState?.selected_Line_chart)}
+                                                    </tbody>
+                                                </table>
+                                                :
+                                                <div className="d-flex flex-wrap h-100 w-100 align-items-center justify-content-center">
+                                                    <div className="col-8 text-center">
+                                                        <p>No Data Found</p>
+                                                    </div>
+                                                </div>
                                     }
                                 </div>
                             </div>
@@ -671,6 +753,6 @@ export const Analytics = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }; 

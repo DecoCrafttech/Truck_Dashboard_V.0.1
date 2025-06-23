@@ -92,6 +92,7 @@ const crmSlice = createSlice({
         getCrmModalRequest(state, action) {
             return {
                 ...state,
+                crm_view_data: [],
                 crm_modal_glow: true
             }
         },

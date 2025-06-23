@@ -73,6 +73,25 @@ const filesizes = (bytes, decimals = 2) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 };
 
+function react_dropdown_location_formatter(data, states) {
+    if (data?.length) {
+        if (!data[0]?.label) {
+            let show_updated_location_data = data?.map((v) => {
+                console.log(v)
+                return states?.filter((state) => state?.label?.toLowerCase().includes(v.toLowerCase()))
+            });
+
+            return show_updated_location_data?.flat()
+        }
+        else {
+            return data
+        }
+    } else {
+        return data
+    }
+}
+
+
 const JsonData = () => {
     //main selectors
     const dispatch = useDispatch();
@@ -773,7 +792,24 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                options: jsonOnly.states,
+                options: servicesState?.load_filter_card?.to_location?.length ?
+                    servicesState?.load_filter_card?.to_location?.some((v) => v?.label?.toLowerCase() === "select all")
+                        ? [
+                            { value: 0, label: 'Select all', disabled: false },
+                            ...jsonOnly.states.map((state) => ({
+                                ...state,
+                                disabled: true,
+                            })),
+                        ]
+                        : [
+                            { value: 0, label: 'Select all', disabled: true },
+                            ...jsonOnly.states,
+                        ]
+                    :
+                    [
+                        { value: 0, label: 'Select all', disabled: false },
+                        ...jsonOnly.states,
+                    ],
                 value: servicesState?.load_filter_card?.to_location || [],
                 change: (value) => dispatch(handleOnchangeLoadFilter({ to_location: value })),
                 isMandatory: true
@@ -908,8 +944,25 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_truck_card?.to_location || [],
-                options: jsonOnly.states,
+                options: servicesState?.new_edit_truck_card?.to_location?.length ?
+                    servicesState?.new_edit_truck_card?.to_location?.some((v) => v?.label?.toLowerCase() === "select all")
+                        ? [
+                            { value: 0, label: 'Select all', disabled: false },
+                            ...jsonOnly.states.map((state) => ({
+                                ...state,
+                                disabled: true,
+                            })),
+                        ]
+                        : [
+                            { value: 0, label: 'Select all', disabled: true },
+                            ...jsonOnly.states,
+                        ]
+                    :
+                    [
+                        { value: 0, label: 'Select all', disabled: false },
+                        ...jsonOnly.states,
+                    ],
+                value: react_dropdown_location_formatter(servicesState?.new_edit_truck_card?.to_location, jsonOnly?.states) || [],
                 change: (value) => dispatch(handleTruckInputOnChange({ to_location: value })),
                 isMandatory: true,
                 Err: commonState?.validated && !servicesState?.new_edit_truck_card?.to_location?.length ? "To location required" : ''
@@ -995,7 +1048,25 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                options: jsonOnly.states,
+                options: servicesState?.truck_filter_card?.to_location?.length ?
+                    servicesState?.truck_filter_card?.to_location?.some((v) => v?.label?.toLowerCase() === "select all")
+                        ? [
+                            { value: 0, label: 'Select all', disabled: false },
+                            ...jsonOnly.states.map((state) => ({
+                                ...state,
+                                disabled: true,
+                            })),
+                        ]
+                        : [
+                            { value: 0, label: 'Select all', disabled: true },
+                            ...jsonOnly.states,
+                        ]
+                    :
+                    [
+                        { value: 0, label: 'Select all', disabled: false },
+                        ...jsonOnly.states,
+                    ],
+                value: servicesState?.truck_filter_card?.to_location || [],
                 value: servicesState?.truck_filter_card?.to_location || [],
                 change: (value) => dispatch(handleOnchangeTruckFilter({ to_location: value })),
                 isMandatory: true
@@ -1099,12 +1170,32 @@ const JsonData = () => {
             },
             {
                 name: "To",
-                type: "text",
-                category: "googleLocation",
+                type: "select",
+                category: "select",
                 placeholder: "",
-                value: servicesState?.new_edit_driver_card?.to_location || '',
-                change: (e) => dispatch(handleDriverInputOnChange({ to_location: e.target.value })),
-                placedSelectedClick: (slectedLoc) => dispatch(handleDriverInputOnChange({ to_location: slectedLoc })),
+                divClassName: "mb-2 col-12 col-md-6",
+                multi: true,
+                create: false,
+                options: servicesState?.new_edit_driver_card?.to_location?.length ?
+                    servicesState?.new_edit_driver_card?.to_location?.some((v) => v?.label?.toLowerCase() === "select all")
+                        ? [
+                            { value: 0, label: 'Select all', disabled: false },
+                            ...jsonOnly.states.map((state) => ({
+                                ...state,
+                                disabled: true,
+                            })),
+                        ]
+                        : [
+                            { value: 0, label: 'Select all', disabled: true },
+                            ...jsonOnly.states,
+                        ]
+                    :
+                    [
+                        { value: 0, label: 'Select all', disabled: false },
+                        ...jsonOnly.states,
+                    ],
+                value: react_dropdown_location_formatter(servicesState?.new_edit_driver_card?.to_location, jsonOnly?.states) || [],
+                change: (value) => dispatch(handleDriverInputOnChange({ to_location: value })),
                 isMandatory: true
             },
 
@@ -1172,7 +1263,24 @@ const JsonData = () => {
                 type: "select",
                 category: "select",
                 placeholder: "",
-                options: jsonOnly.states,
+                options: servicesState?.driver_filter_card?.to_location?.length ?
+                    servicesState?.driver_filter_card?.to_location?.some((v) => v?.label?.toLowerCase() === "select all")
+                        ? [
+                            { value: 0, label: 'Select all', disabled: false },
+                            ...jsonOnly.states.map((state) => ({
+                                ...state,
+                                disabled: true,
+                            })),
+                        ]
+                        : [
+                            { value: 0, label: 'Select all', disabled: true },
+                            ...jsonOnly.states,
+                        ]
+                    :
+                    [
+                        { value: 0, label: 'Select all', disabled: false },
+                        ...jsonOnly.states,
+                    ],
                 value: servicesState?.driver_filter_card?.to_location || [],
                 change: (value) => dispatch(handleOnchangeDriverFilter({ to_location: value })),
                 isMandatory: true

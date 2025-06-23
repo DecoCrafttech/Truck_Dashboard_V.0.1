@@ -6,6 +6,7 @@ import ButtonComponent from 'Components/Button/Button';
 import { updateFeedbackModal } from 'Slices/Pages_slice/Feedback_slice';
 import { SearchComponent } from 'ResuableFunctions/SearchFun';
 import { useCommonState } from 'Components/CustomHooks';
+import SpinnerComponent from 'Components/Spinner/Spinner';
 
 const Feedback = () => {
     const { commonState, feedbackState } = useCommonState();
@@ -13,19 +14,13 @@ const Feedback = () => {
 
     const params = {
         page_no: commonState?.currentPage || 1,
-        search_val: commonState?.search_clicked ? commonState?.search_value?.trim() || "" : "",
+        search_val: commonState?.search ? commonState?.search_value?.trim() || "" : "",
         data_limit: commonState?.pageSize || 10
     }
 
     useEffect(() => {
-        if (commonState?.search_clicked) {
-            dispatch(handleGetFeedbackComplaints(params))
-        }
-        else {
-            dispatch(handleGetFeedbackComplaints(params))
-        }
-
-    }, [commonState?.pageSize, commonState?.currentPage, commonState?.search_clicked, feedbackState?.re_render])
+        if (commonState?.re_render) dispatch(handleGetFeedbackComplaints(params))
+    }, [commonState?.pageSize, commonState?.currentPage, feedbackState?.re_render, commonState?.re_render])
 
     function dynamicActionButton(sts, data) {
         switch (sts) {
@@ -63,43 +58,59 @@ const Feedback = () => {
                     </div>
                 </div>
                 {
-                    feedbackState?.feeback_data?.length ?
-                        <div className="feedback-table-height p-3 card-body">
-                            <div className="table-responsive h-100 overflow-scroll">
-                                <table className="table ">
-                                    <thead>
-                                        <tr>
-                                            <th className="table-head">Complaint ID</th>
-                                            <th className="table-head">Entry Type</th>
-                                            <th className="table-head">Customer Name</th>
-                                            <th className="table-head">Category</th>
-                                            <th className="table-head">Phone Number</th>
-                                            <th className="table-head">Email</th>
-                                            <th className="table-head">Feedback</th>
-                                            <th className="table-head">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            feedbackState?.feeback_data?.map((v, i) => (
-                                                <tr className='table-body-tr'>
-                                                    <td>{v?.complaint_id}</td>
-                                                    <td>{v?.entry_type}</td>
-                                                    <td>{v?.customer_name}</td>
-                                                    <td>{v?.category}</td>
-                                                    <td>{v?.phone_no}</td>
-                                                    <td>{v?.email_id}</td>
-                                                    <td>{v?.content}</td>
-                                                    <td>{dynamicActionButton(v?.status, v)}</td>
-                                                </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                </table>
+                    feedbackState?.initialGlow ?
+                        <div className="feedback-table-height">
+                            <div className="h-100 row align-items-center justify-content-center">
+                                <div className="col text-center">
+                                    <SpinnerComponent />
+                                    <p>Getting details...</p>
+                                </div>
                             </div>
                         </div>
                         :
-                        null
+                        feedbackState?.feeback_data?.length ?
+                            <div className="feedback-table-height p-3 card-body">
+                                <div className="table-responsive h-100 overflow-scroll">
+                                    <table className="table ">
+                                        <thead>
+                                            <tr>
+                                                <th className="table-head">Complaint ID</th>
+                                                <th className="table-head">Entry Type</th>
+                                                <th className="table-head">Customer Name</th>
+                                                <th className="table-head">Category</th>
+                                                <th className="table-head">Phone Number</th>
+                                                <th className="table-head">Email</th>
+                                                <th className="table-head">Feedback</th>
+                                                <th className="table-head">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                feedbackState?.feeback_data?.map((v, i) => (
+                                                    <tr className='table-body-tr'>
+                                                        <td>{v?.complaint_id}</td>
+                                                        <td>{v?.entry_type}</td>
+                                                        <td>{v?.customer_name}</td>
+                                                        <td>{v?.category}</td>
+                                                        <td>{v?.phone_no}</td>
+                                                        <td>{v?.email_id}</td>
+                                                        <td>{v?.content}</td>
+                                                        <td>{dynamicActionButton(v?.status, v)}</td>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            :
+                            <div className="feedback-table-height">
+                                <div className="h-100 row align-items-center justify-content-center">
+                                    <div className="col text-center">
+                                        <p>No Data Found</p>
+                                    </div>
+                                </div>
+                            </div>
                 }
             </div>
 

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie'
 import { getIndividualAnalyticsFailure, getIndividualAnalyticsRequest, getOverallAnalyticsRequest, resetOverallChartFilter } from "Slices/Pages_slice/Analytice_slice";
 import { blogDeletionResponse, getBlogRequest, getBlogResponse, updateAddBlogResponse, updateBlogEditData, updateBlogModalType, updateDeleteBlog, updateEditBlog } from "Slices/Pages_slice/Blog_slice";
-import { getCrmDashboardFailure, getCrmDashboardRequest, getCrmDashboardResponse, getCrmModalFailure, getCrmModalRequest, update_crm_status_entry_user_id, updateCrmStatusEntryFailure, updateCrmStatusEntryResponse } from "Slices/Pages_slice/Crm_slice";
+import { getCrmDashboardFailure, getCrmDashboardRequest, getCrmDashboardResponse, getCrmModalFailure, getCrmModalRequest, update_crm_status_entry_user_id, updateCrmStatusEntryFailure, updateCrmStatusEntryResponse, updateSelectedButton } from "Slices/Pages_slice/Crm_slice";
 import { getDashboardRequest, getDashboardResponse } from "Slices/Pages_slice/dashboard_slice";
 import { getFeedbackFailure, getFeedbackRequest, getFeedbackResponse, updateFeedbackModal, updateFeedbackStatusFailure, updateFeedbackStatusResponse } from "Slices/Pages_slice/Feedback_slice";
 import { buyAndsellDeleteFailure, buyAndsellDeleteResponse, buyAndsellGetRequest, buyAndsellGetResponse, buyAndsellImageDeleteFailure, buyAndsellPostFailure, buyAndsellPostResponse, driverGetRequest, driverGetResponse, DriverPostFailure, DriverPostRequest, initializeFilterDetails, LoadDeleteFailure, LoadDeleteResponse, loadGetRequest, loadGetResponse, LoadPostFailure, LoadPostRequest, MobileNumVerificationRequest, ResetbuyAndsellFilterData, ResetDriverFilterData, ResetLoadFilterData, ResetTruckFilterData, truckGetRequest, truckGetResponse, TruckPostFailure, TruckPostRequest, updateCreateModalDetails, updateDeleteDetails, updateEditDetails } from "Slices/Pages_slice/Services_slice";
@@ -42,14 +42,14 @@ const commonSlice = createSlice({
 
         //search 
         search_value: '',
-        search_clicked: false,
+        search: false,
         apply_filter: false,
 
         //apply filter
-        apply_filter_clicked: false,
         apply_filter: false,
 
-        menuOptions: []
+        menuOptions: [],
+        re_render: true
     },
     reducers: {
         updateModalShow(state, actions) {
@@ -75,6 +75,7 @@ const commonSlice = createSlice({
                 ...state,
                 pageSize: 10,
                 currentPage: 1,
+                re_render: true,
                 currentMenuName: action.payload?.name,
             }
         },
@@ -204,7 +205,7 @@ const commonSlice = createSlice({
                 passwordd: '',
                 user_id: '',
                 user_role: '',
-                currentMenuName:''
+                currentMenuName: ''
             }
         },
 
@@ -232,9 +233,9 @@ const commonSlice = createSlice({
                 currentPage: 1,
                 entries_selected: false,
                 search_value: '',
-                search_clicked: false,
+                search: false,
                 apply_filter: false,
-                apply_filter_clicked: false
+                re_render: true,
             }
         },
 
@@ -242,13 +243,15 @@ const commonSlice = createSlice({
         updatePaginationSize(state, action) {
             return {
                 ...state,
-                pageSize: action.payload
+                pageSize: action.payload,
+                re_render: true
             }
         },
         updateCurrentPage(state, action) {
             return {
                 ...state,
-                currentPage: action.payload
+                currentPage: action.payload,
+                re_render: true
             }
         },
 
@@ -257,22 +260,23 @@ const commonSlice = createSlice({
             return {
                 ...state,
                 search_value: action.payload,
-                search_clicked: false
             }
         },
         clearSearch(state, action) {
             return {
                 ...state,
                 search_value: '',
-                search_clicked: false
+                search: false,
+                re_render: true,
+                pageSize: 10,
+                currentPage: 1
             }
         },
         updateSearchClickedTrue(state, action) {
             return {
                 ...state,
-                search_clicked: true,
-                apply_filter: false,
-                apply_filter_clicked: false,
+                re_render: true,
+                search: true,
                 totalCount: 0,
                 pageSize: 10,
                 currentPage: 1
@@ -281,7 +285,11 @@ const commonSlice = createSlice({
         updateSearchClickedFalse(state, action) {
             return {
                 ...state,
-                search_clicked: true
+                search_clicked: false,
+                re_render: true,
+                search: false,
+                pageSize: 10,
+                currentPage: 1
             }
         },
 
@@ -292,6 +300,7 @@ const commonSlice = createSlice({
                 currentPage: 1,
                 pageSize: action.payload,
                 entries_selected: true,
+                re_render: true
             }
         },
 
@@ -299,9 +308,8 @@ const commonSlice = createSlice({
         updateApplyFilterClickedTrue(state, action) {
             return {
                 ...state,
-                apply_filter_clicked: true,
                 apply_filter: true,
-                search_clicked: false,
+                re_render: true,
                 totalCount: 0,
                 pageSize: 10,
                 currentPage: 1
@@ -310,8 +318,8 @@ const commonSlice = createSlice({
         updateApplyFilterClickedFalse(state, action) {
             return {
                 ...state,
-                apply_filter_clicked: false,
-                apply_filter: false
+                apply_filter: false,
+                re_render: true,
             }
         },
 
@@ -330,8 +338,8 @@ const commonSlice = createSlice({
                 state.totalCount = 0
             })
             .addCase(getDashboardResponse, (state, action) => {
-                state.totalCount = action.payload?.row_count
-                state.apply_filter = false
+                state.totalCount = action.payload?.row_count ? parseInt(action.payload?.row_count) : 0
+                state.re_render = false
                 state.modalShow = false
             })
 
@@ -358,10 +366,6 @@ const commonSlice = createSlice({
             .addCase(loadGetRequest, (state, action) => {
                 state.totalCount = 0
                 state.modalShow = false
-                state.apply_filter = false
-            })
-            .addCase(loadGetResponse, (state, action) => {
-                state.totalCount = action.payload?.total_no_of_data
             })
             .addCase(LoadPostRequest, (state, action) => {
                 state.modalShow = false
@@ -378,23 +382,12 @@ const commonSlice = createSlice({
                 state.Err = action.payload
                 state.Toast_Type = "error"
             })
-            .addCase(ResetLoadFilterData, (state, action) => {
-                state.modalShow = false
-                state.apply_filter_clicked = false
-                state.apply_filter = false
-            })
-
-
 
             //truck
             .addCase(truckGetRequest, (state, action) => {
                 state.totalCount = 0
-                state.apply_filter = false
                 state.modalShow = false
-            })
-            .addCase(truckGetResponse, (state, action) => {
-                state.totalCount = action.payload?.total_no_of_data
-            })
+            }) 
             .addCase(TruckPostRequest, (state, action) => {
                 state.modalShow = false
                 state.validated = false
@@ -403,23 +396,12 @@ const commonSlice = createSlice({
                 state.Err = action.payload
                 state.Toast_Type = "error"
             })
-            .addCase(ResetTruckFilterData, (state, action) => {
-                state.modalShow = false
-                state.apply_filter_clicked = false
-                state.apply_filter = false
-            })
-
 
             //driver
             .addCase(driverGetRequest, (state, action) => {
                 state.totalCount = 0
                 state.modalShow = false
                 state.validated = false
-            })
-            .addCase(driverGetResponse, (state, action) => {
-                state.totalCount = action.payload?.total_no_of_data
-                state.apply_filter = false
-                state.modalShow = false
             })
             .addCase(DriverPostRequest, (state, action) => {
                 state.modalShow = false
@@ -429,23 +411,12 @@ const commonSlice = createSlice({
                 state.Err = action.payload
                 state.Toast_Type = "error"
             })
-            .addCase(ResetDriverFilterData, (state, action) => {
-                state.modalShow = false
-                state.apply_filter_clicked = false
-                state.apply_filter = false
-            })
-
 
             //buy and sell
             .addCase(buyAndsellGetRequest, (state, action) => {
                 state.totalCount = 0
                 state.modalShow = false
                 state.validated = false
-            })
-            .addCase(buyAndsellGetResponse, (state, action) => {
-                state.totalCount = action.payload?.total_no_of_data
-                state.apply_filter = false
-                state.modalShow = false
             })
             .addCase(buyAndsellPostResponse, (state, action) => {
                 state.modalShow = false
@@ -462,18 +433,10 @@ const commonSlice = createSlice({
                 state.Err = action.payload
                 state.Toast_Type = "error"
             })
-            .addCase(ResetbuyAndsellFilterData, (state, action) => {
-                state.modalShow = false
-                state.apply_filter_clicked = false
-                state.apply_filter = false
-            })
 
             //blog page
             .addCase(getBlogRequest, (state, action) => {
                 state.totalCount = 0
-            })
-            .addCase(getBlogResponse, (state, action) => {
-                state.totalCount = action.payload?.total_no_of_data
             })
 
             .addCase(updateBlogEditData, (state, action) => {
@@ -544,11 +507,13 @@ const commonSlice = createSlice({
                 state.Toast_Type = "error"
             })
             .addCase(getFeedbackResponse, (state, action) => {
-                state.totalCount = action.payload[0]?.total_no_of_data
+                state.re_render = false
+                state.totalCount = action.payload[0]?.total_no_of_data ? parseInt(action.payload[0]?.total_no_of_data) : 0
+
             })
 
 
-            //crm dashboard
+            //crm dashboard 
             .addCase(getCrmModalRequest, (state, action) => {
                 state.modalShow = true
             })
@@ -556,7 +521,8 @@ const commonSlice = createSlice({
                 state.totalCount = 0
             })
             .addCase(getCrmDashboardResponse, (state, action) => {
-                state.totalCount = action.payload?.row_count
+                state.re_render = false
+                state.totalCount = action.payload?.row_count ? parseInt(action.payload?.row_count) : 0
             })
             .addCase(getCrmDashboardFailure, (state, action) => {
                 state.Err = action.payload
@@ -577,6 +543,39 @@ const commonSlice = createSlice({
                 state.Toast_Type = "error"
             })
 
+            .addMatcher(
+                (action) => [
+                    getBlogResponse.toString(),
+                    driverGetResponse.toString(),
+                    loadGetResponse.toString(),
+                    truckGetResponse.toString(),
+                    buyAndsellGetResponse.toString(),
+
+                ].includes(action.type),
+                (state, action) => {
+                    state.re_render = false
+                    state.totalCount = action.payload?.total_no_of_data ? parseInt(action.payload?.total_no_of_data) : 0
+                }
+            )
+
+            .addMatcher(
+                (action) => [
+                    updateSelectedButton.toString(),
+                    ResetbuyAndsellFilterData.toString(),
+                    ResetDriverFilterData.toString(),
+                    ResetTruckFilterData.toString(),
+                    ResetLoadFilterData.toString()
+
+                ].includes(action.type),
+                (state) => {
+                    state.pageSize = 10
+                    state.currentPage = 1
+                    state.search_value = ''
+                    state.search = false
+                    state.re_render = true
+                    state.apply_filter = false
+                }
+            )
     }
 })
 
